@@ -1,45 +1,37 @@
-(function foo() {
-  var a = 3;
-  console.log(a); // 3
-}) // 加括号，外部调不到 foo()报错
+// 包括变量和函数在内的所有声明都会在任何代码被执行前首先被处理。
+// 这个过程就好像变量和函数声明从它们在代码中出现的位置被“移动”到了最上面。这个过程就叫作提升。
+a = 2;
+var a;
+console.log(a); //2
 
-// var a = 2;
-// (function foo2(global) {
-//   var a = 3;
-//   console.log(a);
-//   console.log(global.a)
-// })(window); // 浏览器环境
+// =>
+// var a;
+// a = 2;
+// console.log(a);
+// var a = 2; => var a; a = 2; 
+// 第一个定义声明是在编译阶段进行的。第二个赋值声明会被留在原地等待执行阶段。
 
-// (function foo2() {
-//   def(window);
-// })(function def(global) {
-//   var a = 3;
-//   console.log(a);
-//   console.log(global.a)
-// }) 
+console.log(a); //undefined
+var a = 2;
 
-for (var i = 0; i < 3; i++) {
-  console.log(i)
-}
+// =>
+// var a;
+// console.log(a);
+// a = 2;
 
-
-console.log(bar) // undefined
-
-var a = 3;
-// if 的 {} 中使用 var 声明变量，变量会声明在全局作用域,用let 声明不会
-//{
-//  var a = 5;
-//}
-// console.log(a) //5 如果是let,则是undefined
-
-if (a === 3) {
-  var bar = 35;
-  // console.log(bar);
-}
-console.log(bar) //35
-
-//但是使用 let 进行的声明不会在块作用域中进行提升。声明的代码被运行之前，声明并不“存在”。
-// {
-//   console.log(bar); // ReferenceError!
-//   let bar = 2;
+foo(); // TypeError: foo is not a function
+//bar(); // ReferenceError: bar is not defined
+// 如果它是一个函数声明而不是函数表达式，那么就会赋值,因为函数声明会提前，函数表达式不会提前
+// 函数声明: function foo(){}/函数表达式: var foo = function()
+var foo = function bar() {
+  console.log(123);
+};
+// var foo;
+// foo();
+// bar();
+// foo = function(){
+//   console.log(123)
+// }
+// function bar(){
+//   console.log(123)
 // }

@@ -91,10 +91,71 @@ console.log(a); // 2  a被泄漏到全局作用域上了！
 
 #### 1.3 函数作用域和块作用域
 
-> &emsp;&emsp;函数是 JavaScript 中最常见的作用域单元。本质上，声明在一个函数内部的变量或函数会在所处的作用域中“隐藏”起来，这是有意为之的良好软件的设计原则。  
+> &emsp;&emsp;函数是 JavaScript 中最常见的作用域单元。本质上，声明在一个函数内部的变量或函数会在所处的作用域中“隐藏”起来，这是有意为之的良好软件的设计原则。
+
+#### 理解:
+
+```javascript
+// 1. 隐藏函数，不污染全局
+function foo() {
+  var b = 5;
+  function bar() {
+    console.log(b);
+  }
+}
+bar(); // Uncaught ReferenceError: bar is not defined
+console.log(b); // ReferenceError: b is not defined
+
+// 2.函数自执行
+var a = 2;
+(function foo1(global) {
+  var a = 3;
+  console.log(a); //3
+  console.log(global.a); //2
+})(window); // 浏览器环境
+
+(function foo2() {
+  def(window); // 浏览器环境
+})(function def(global) {
+  var a = 3;
+  console.log(a); //3
+  console.log(global.a); //2
+});
+```
+
+> &emsp;&emsp;从 ES3 开始，try/catch 结构在 catch 分句中具有块作用域。
+
+#### 理解:
+
+```javascript
+try {
+  undefined(); // 执行一个非法操作来强制制造一个异常
+} catch (err) {
+  console.log(err); // 能够正常执行！
+}
+console.log(err); // ReferenceError: err is not defined
+```
+
+&emsp;&emsp;err 仅存在 catch 分句内部，当试图从别处引用它时会抛出错误。
+
 > &emsp;&emsp;但函数不是唯一的作用域单元。块作用域指的是变量和函数不仅可以属于所处的作用域，也可以属于某个代码块（通常指 { .. } 内部）。  
-> &emsp;&emsp;从 ES3 开始，try/catch 结构在 catch 分句中具有块作用域。  
 > &emsp;&emsp;在 ES6 中引入了 let 关键字（var 关键字的表亲），用来在任意代码块中声明变量。if(..) { let a = 2; } 会声明一个劫持了 if 的 { .. } 块的变量，并且将变量添加到这个块中。
+
+#### 理解:
+
+```javascript
+var a = true;
+if (a) {
+  var b = 1;
+}
+if (a) {
+  let c = 2;
+}
+console.log(b); // 1
+console.log(c); // ReferenceError: c is not defined
+```
+
+&emsp;&emsp;当使用 var 声明变量时，它写在哪里都是一样的，因为它们最终都会属于外部作用域。但是 let 声明变量时，c 在 { } 块级作用域中，外部无法直接获取。
 
 #### 1.4 提升
 
@@ -121,3 +182,7 @@ console.log(a); // 2  a被泄漏到全局作用域上了！
 #### 2.6 行为委托
 
 #### 2.7 ES 中的 Class
+
+```
+
+```
