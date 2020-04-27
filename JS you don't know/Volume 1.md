@@ -82,8 +82,6 @@ console.log(o2.a); // undefined
 console.log(a); // 2  a被泄漏到全局作用域上了！
 ```
 
-#### 理解:
-
 &emsp;&emsp;尽管 with 块可以将一个对象处理为词法作用域，但是这个块内部正常的 var 声明并不会被限制在这个块的作用域中，而是被添加到 with 所处的函数作用域中。  
 &emsp;&emsp;当我们传递 o1 给 with 时，with 所声明的作用域是 o1，而这个作用域中含有一个同 o1.a 属性相符的标识符。但当我们将 o2 作为作用域时，其中并没有 a 标识符，因此进行了正常的 LHS 标识符查找
 
@@ -158,6 +156,56 @@ console.log(c); // ReferenceError: c is not defined
 &emsp;&emsp;当使用 var 声明变量时，它写在哪里都是一样的，因为它们最终都会属于外部作用域。但是 let 声明变量时，c 在 { } 块级作用域中，外部无法直接获取。
 
 #### 1.4 提升
+
+> &emsp;&emsp;包括变量和函数在内的所有声明都会在任何代码被执行前首先被处理。这个过程就好像变量和函数声明从它们在代码中出现的位置被“移动”到了最上面。这个过程就叫作提升。
+
+#### 理解:
+
+```javascript
+console.log(a); //undefined
+var a = 2;
+// ↓↓ js执行顺序 ↓↓
+var a; // 定义声明是在编译阶段进行的
+console.log(a);
+a = 2; // 赋值声明会被留在原地等待执行阶段
+```
+
+> &emsp;&emsp;1.函数声明会提升，函数表达式不会提升。2.函数声明和变量声明都会被提升。函数会首先被提升，然后才是变量。
+
+#### 理解: 1.
+
+```javascript
+foo(); // TypeError: foo is not a function ，因为 var foo; 提前了,未命名为函数
+bar(); // 函数声明
+var foo = function bar() {
+  console.log("函数表达式");
+};
+function bar() {
+  console.log("函数声明");
+}
+```
+
+#### 理解: 2.
+
+```javascript
+foo(); //2
+var foo;
+function foo() {
+  console.log(1);
+}
+function foo() {
+  console.log(2);
+}
+//函数优先,尽管var在先，但是函数声明在前,var foo;被忽略，因为是重复声明,但是函数声明可以覆盖;
+// ↓↓ js执行顺序 ↓↓
+function foo() {
+  console.log(1);
+}
+function foo() {
+  console.log(2);
+}
+foo();
+```
 
 #### 1.5 作用域闭包
 
