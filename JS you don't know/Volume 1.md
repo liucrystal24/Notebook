@@ -170,7 +170,7 @@ console.log(a);
 a = 2; // 赋值声明会被留在原地等待执行阶段
 ```
 
-> &emsp;&emsp;1.函数声明会提升，函数表达式不会提升。2.函数声明和变量声明都会被提升。函数会首先被提升，然后才是变量。
+> &emsp;&emsp;1.<font color=#ff0000>函数声明</font>会<font color=#ff0000>提升</font>，<font color=#ff0000>函数表达式</font>不会<font color=#ff0000>提升</font>。2.函数声明和变量声明都会被提升。函数会首先被提升，然后才是变量。
 
 #### 理解: 1.
 
@@ -209,7 +209,7 @@ foo();
 
 #### 1.5 作用域闭包
 
-> &emsp;&emsp;当函数可以记住并访问所在的词法作用域时，就产生了闭包，即使函数是在当前词法作用域之外执行。无论通过何种手段将内部函数传递到所在的词法作用域以外，它都会持有对原始定义作用域的引用，无论在何处执行这个函数都会使用闭包。      
+> &emsp;&emsp;当函数可以记住并访问所在的词法作用域时，就产生了闭包，即使函数是在当前词法作用域之外执行。无论通过何种手段将内部函数传递到所在的词法作用域以外，它都会持有对原始定义作用域的引用，无论在何处执行这个函数都会使用闭包。
 
 ```javascript
 function foo() {
@@ -222,11 +222,12 @@ function foo() {
 var baz = foo();
 baz(); //2
 ```
+
 #### 理解:
 
-&emsp;&emsp;bar()显然可以被正常执行。但是在这个例子中，它在自己定义的<font color=ff0000>词法作用域以外的地方执行</font>。foo()执行后，通常foo()的整个内部作用域都被销毁，因为我们知道引擎有垃圾回收器用来释放不再使用的内存空间。由于bar()所声明的位置，<font color=ff0000>它拥有涵盖foo()内部作用域的闭包</font>，使得该作用域能够一直存活，以供bar()在之后任何时间进行引用。bar()依然持有对该作用域的引用，而这个引用就叫作闭包。
+&emsp;&emsp;bar()显然可以被正常执行。但是在这个例子中，它在自己定义的<font color=ff0000>词法作用域以外的地方执行</font>。foo()执行后，通常 foo()的整个内部作用域都被销毁，因为我们知道引擎有垃圾回收器用来释放不再使用的内存空间。由于 bar()所声明的位置，<font color=ff0000>它拥有涵盖 foo()内部作用域的闭包</font>，使得该作用域能够一直存活，以供 bar()在之后任何时间进行引用。bar()依然持有对该作用域的引用，而这个引用就叫作闭包。
 
-#### 例:
+#### 例 1:
 
 ```javascript
 for (var i = 1; i <= 5; i++) {
@@ -237,28 +238,29 @@ for (var i = 1; i <= 5; i++) {
 // 希望每秒输出一次,分别为1~6
 // 实际每秒输出一次,都是6
 ```
+
 #### 理解:
 
-&emsp;&emsp;<font color=ff0000>延迟函数的回调会在循环结束时才执行</font>，尽管循环中的五个函数是在各个迭代中分别定义的，但是它们都被封闭在一个共享的全局作用域中，因此实际上只有一个i。我们需要更多的闭包作用域，特别是在循环的过程中每个迭代都需要一个闭包作用域。
+&emsp;&emsp;<font color=ff0000>延迟函数的回调会在循环结束时才执行</font>，尽管循环中的五个函数是在各个迭代中分别定义的，但是它们都被封闭在一个共享的全局作用域中，因此实际上只有一个 i。我们需要更多的闭包作用域，特别是在循环的过程中每个迭代都需要一个闭包作用域。
 
-#### 改进1:
+#### 改进 1:
 
 ```javascript
 for (var i = 1; i <= 5; i++) {
   (function () {
-    var j = i;// 需要有自己的变量，用来在每个迭代中储存i的值
+    var j = i; // 需要有自己的变量，用来在每个迭代中储存i的值
     setTimeout(function timer() {
       console.log(j);
     }, j * 1000);
   })();
 }
 ```
-#### 改进2:
+
+#### 改进 2:
 
 let 将一个块转换成一个可以被关闭的作用域
 
 ```javascript
-
 for (var i = 1; i <= 5; i++) {
   let j = i; // 闭包的块作用域
   setTimeout(function timer() {
@@ -266,9 +268,10 @@ for (var i = 1; i <= 5; i++) {
   }, j * 1000);
 }
 ```
-#### 改进3:
 
-for循环头部的let声明,变量在循环过程中不止被声明一次，每次迭代都会声明。随后的每个迭代都会使用上一个迭代结束时的值来初始化这个变量。
+#### 改进 3:
+
+for 循环头部的 let 声明,变量在循环过程中不止被声明一次，每次迭代都会声明。随后的每个迭代都会使用上一个迭代结束时的值来初始化这个变量。
 
 ```javascript
 for (let i = 1; i <= 5; i++) {
@@ -277,56 +280,139 @@ for (let i = 1; i <= 5; i++) {
   }, i * 1000);
 }
 ```
-> &emsp;&emsp;模块模式需要具备两个必要条件。1. 必须有外部的封闭函数，该函数必须至少被调用一次（每次调用都会创建一个新的模块实例）。2. 封闭函数必须返回至少一个内部函数，这样内部函数才能在私有作用域中形成闭包，并且可以访问或者修改私有的状态。  
+
+#### 例 2:
 
 ```javascript
-function Module(){
+function fun(n, x) {
+  console.log(x); // 输出第二位
+  return {
+    fun: function (m) {
+      return fun(m, n);
+    },
+  };
+}
+
+/* --- undefined 0 0 0 --- */
+var a = fun(0);
+// fun(0,x) => 输出: console.log(undefined)
+//          => return { fun:function(m){return fun(m,0)} }
+a.fun(1);
+// 调用 return 的 fun 并传递 m = 1 ,function(1)
+// => return fun(1,0)
+// => 输出: console.log(0) return 的值未被调用
+a.fun(2);
+// 同上,调用 return 的 fun 并传递 m = 2 ,function(2)
+// => return fun(2,0)
+// => 输出: console.log(0) return 的值未被调用
+a.fun(3);
+// 同上,调用 return 的 fun 并传递 m = 3 ,function(3)
+// => return fun(3,0)
+// => 输出: console.log(0) return 的值未被调用
+
+/* --- undefined 0 1 2 --- */
+var b = fun(0).fun(1).fun(2).fun(3);
+// fun(0).fun(1) 同上过程 'var a = fun(0), a.fun(1)' 所以输出为 undefined 0
+// => 上方 return的值未被调用，但是此处被调用, m=1 传递给 fun 的 n,则下个 n = 1
+// xxx.fun(2)=> m=2, n=1, return fun(2,1)
+// => 输出: console.log(1) m=2 传递给 fun 的 n,则下个 n = 2
+// xxx.fun(3) => m=3 n=2, return fun(3,2)
+// => 输出: console.log(2)
+
+/* --- undefined 0 1 1 --- */
+var c = fun(0).fun(1);
+// fun(0).fun(1) 同上过程 'var a = fun(0), a.fun(1)' 所以输出为 undefined 0
+c.fun(2);
+// c.fun(2) 相当于上方 b 的 xxx.fun(2), return fun(2,1),输出1
+c.fun(3);
+// c.fun(2) 相当于上方 c 的 将参数传递为 3,return fun(3,1),因为输出第二位，所以还是输出1
+```
+
+> &emsp;&emsp;无论通过何种手段将内部函数传递到所在的词法作用域以外，它都会持有对原始定义作用域的引用，无论在何处执行这个函数都会使用闭包。
+
+#### 理解:
+
+```javascript
+var nAdd;
+var t = function () {
+  var n = 99;
+  // 将内部函数传递到所在的词法作用域以外
+  nAdd = function () {
+    n = n + 1;
+  };
+  var t2 = function () {
+    console.log(n);
+  };
+  return t2;
+};
+
+let a1 = t();
+
+let a2 = t();
+// 闭包 nAdd() 跟着 a2走
+nAdd();
+
+let a3 = t();
+// ? 为什么n+1 没有影响 a3,而是影响 a2 ?
+// ! 因为 a3 是一个新的function
+
+a1(); // 99
+a2(); // 100
+a3(); // 99
+```
+
+> &emsp;&emsp;模块模式需要具备两个必要条件。1. 必须有外部的封闭函数，该函数必须至少被调用一次（每次调用都会创建一个新的模块实例）。2. 封闭函数必须返回至少一个内部函数，这样内部函数才能在私有作用域中形成闭包，并且可以访问或者修改私有的状态。
+
+```javascript
+function Module() {
   let arr = [1, 2, 3];
-  let task = ' go shopping';
-  function todo(){
+  let task = " go shopping";
+  function todo() {
     console.log("Let's" + task);
   }
-  function atos(){
-    console.log(arr.join(''));
+  function atos() {
+    console.log(arr.join(""));
   }
   return {
-    todo : todo,
-    atos : atos
-  }
+    todo: todo,
+    atos: atos,
+  };
 }
 let $ = Module();
 $.todo(); // Let's go shopping
 $.atos(); // 123
 ```
 
-> &emsp;&emsp;<font color=ff0000>import :</font> 将一个模块中的一个或多个API导入到当前作用域中，并分别绑定在一个变量上。<font color=ff0000>module :</font> 将整个模块的 API 导入并绑定到一个变量上。<font color=ff0000>export :</font> 将当前模块的一个标识符（变量、函数）导出为公 共API。这些操作可以在模块定义中根据需要使用任意多次。
+> &emsp;&emsp;<font color=ff0000>import :</font> 将一个模块中的一个或多个 API 导入到当前作用域中，并分别绑定在一个变量上。<font color=ff0000>module :</font> 将整个模块的 API 导入并绑定到一个变量上。<font color=ff0000>export :</font> 将当前模块的一个标识符（变量、函数）导出为公 共 API。这些操作可以在模块定义中根据需要使用任意多次。
 
 bar.js :
 
 ```javascript
-function hello(who) { 
-  return "Let me introduce: " + who; 
+function hello(who) {
+  return "Let me introduce: " + who;
 }
 export hello;
 ```
+
 foo.js :
 
 ```javascript
 // 仅从 "bar" 模块导入 hello()
-import hello from "bar"; 
-var hungry = "hippo"; 
-function awesome() { 
+import hello from "bar";
+var hungry = "hippo";
+function awesome() {
   console.log( hello( hungry ).toUpperCase() );
 }
 export awesome;
 ```
+
 baz.js :
 
 ```javascript
 // 导入完整的 "foo" 和 "bar" 模块
-module foo from "foo"; 
-module bar from "bar"; 
-console.log( bar.hello( "rhino" ) ); // Let me introduce: rhino 
+module foo from "foo";
+module bar from "bar";
+console.log( bar.hello( "rhino" ) ); // Let me introduce: rhino
 foo.awesome(); // LET ME INTRODUCE: HIPPO
 ```
 
