@@ -1,28 +1,39 @@
-// 无论通过何种手段将内部函数传递到所在的词法作用域以外，它都会持有对原始定义作用域的引用，无论在何处执行这个函数都会使用闭包。
-let nAdd;
-let t = function () {
-  let n = 99;
-  nAdd = function () {
-    n = n + 1;
-  }
-  let t2 = function () {
-    console.log(n)
-  }
-  return t2;
-};
+function ins() {
+  return this.name
+}
+function speak(params) {
+  let greeting = "Hello , I'm " + ins.call(this);
+  console.log(greeting)
+}
+let me = {
+  name: 'chris'
+}
+
+ins.call(me);
+speak.call(me);
 
 
-let a1 = t();
+//---------------------
+// * var count = 1;
+function test(params) {
+  console.log(this.count)
+  // ? 这里 this 如果指向 全局，为什么添加了 *,仍然显示undefined 
+  // ! node中没有Window,而是global,结构不一样
+  // ！在 Chrome 中 this.count 可以拿到全局值，指向 Window.count
+  this.count++;
+  // ? this指的是哪里
+  // ? 全局
+  // 如果这行不加，则执行时, ReferenceError: count is not defined
+}
+test.count = 0;
+test() // undefined
+// ? 添加*,如果指向全局，不是已经创建了吗，为什么还是undefined
+// ! 同上 node 和 Chrome 环境不同
+// test 中的 this 没有指向自己
+// 应使用 test.call(test);
+console.log(test.count) // 0 
+console.log(count) // count: NaN
+// ? this.count变成了全局
 
-let a2 = t();
-// 闭包 nAdd() 跟着 a2走
-nAdd(); 
 
-let a3 = t(); 
-// ? 为什么n+1 没有影响 a3,而是影响 a2 ?
-// ! 因为 a3 是一个新的function
-
-a1(); // 99
-a2(); // 100
-a3(); // 99
 
