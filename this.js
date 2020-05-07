@@ -50,17 +50,17 @@ function foo() {
   console.log(this.a);
 }
 var obj1 = {
-  a: 2
+  a: 1
 };
 var obj2 = {
-  a: 3
+  a: 2
 }
 var bar = function () {
   foo.call(obj1);
 };
-bar(); // 2
-// 硬绑定的 bar 不可能再修改它的 this
-bar.call(obj2) //2
+bar(); // 1
+// 硬绑定的 bar 不可能再修改它的 this，此处还在obj1上
+bar.call(obj2) //1
 
 function conthis(el) {
   console.log(el, this.id)
@@ -111,3 +111,42 @@ var bar = obj1.foo()
 var bar = foo()
 
 // 例外
+// 1.需要传入一个参数当作 this 的绑定对象。如果函数并不关心 this 的话，你仍然需要传入一个占位值，这时 null 可能是一个不错的选择，就像代码所示的那样。
+
+function foo(a, b) {
+  console.log("a:" + a + ", b:" + b);
+}
+// 把数组“展开”成参数
+foo.apply(null, [2, 3]); // a:2, b:3
+
+// ES6
+foo(...[2, 3])
+
+// 然而，总是使用 null 来忽略 this 绑定可能产生一些副作用。如果某个函数确实使用了this（比如第三方库中的一个函数），那默认绑定规则会把 this 绑定到全局对象（在浏览器中这个对象是 window），这将导致不可预计的后果（比如修改全局对象）。显而易见，这种方式可能会导致许多难以分析和追踪的 bug。
+
+// 更安全的this,传入一个特殊的对象，把 this 绑定到这个对象不会对你的程序产生任何副作用。
+function foo(a, b) {
+  console.log("a:" + a + ", b:" + b);
+}
+// Object.create(null) 和 {} 很 像， 但 是 并 不 会 创 建 Object.prototype 这个委托，所以它比 {}“更空”
+var ø = Object.create(null);
+
+// 把数组展开成参数
+foo.apply(ø, [2, 3]); // a:2, b:3
+
+// 2.间接引用
+function foo() {
+  console.log(this.a);
+}
+var a = 2;
+var o = { a: 3, foo: foo };
+var p = { a: 4 };
+o.foo(); // 3
+(p.foo = o.foo)(); // 2
+// 赋值表达式 p.foo = o.foo 的返回值是目标函数的引用，因此调用位置是 foo() 而不是p.foo() 或者 o.foo()。根据我们之前说过的，这里会应用默认绑定。
+//注意：对于默认绑定来说，决定 this 绑定对象的并不是调用位置是否处于严格模式，而是函数体是否处于严格模式。如果函数体处于严格模式，this 会被绑定到 undefined，否则this 会被绑定到全局对象。此处，若foo中使用 'use strict' ，则绑定到undefined
+
+// 3. 软绑定 ??源码没看，意思懂了 P98
+
+
+

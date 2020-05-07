@@ -35,5 +35,3 @@ console.log(test.count) // 0
 console.log(count) // count: NaN
 // ? this.count变成了全局
 
-
-
