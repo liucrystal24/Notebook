@@ -41,3 +41,19 @@ var bar2 = foo2.call(obj1);
 bar2(); // 12
 bar2.call(obj1); // 1
 bar2.call(obj2); // 2
+
+
+function foo() {
+  setTimeout(() => { // 这里的 this 在此法上继承自 foo()
+    console.log('-------')
+    console.log(this.a);
+  }, 100);
+}
+var obj = {
+  a: 2
+};
+var a = 3;
+{
+  let a = 4;
+  foo.call(obj);
+}
