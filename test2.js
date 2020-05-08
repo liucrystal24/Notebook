@@ -57,3 +57,4 @@ var a = 3;
   let a = 4;
   foo.call(obj);
 }
+

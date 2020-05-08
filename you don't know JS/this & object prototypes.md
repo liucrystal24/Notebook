@@ -35,8 +35,126 @@ function foo() {
 }
 baz(); // <-- baz 的调用位置
 ```
-:point_right: chrome 中 打开 F12 控制台，在 Sources 中,通过打断点的方式，查看调用栈，然后找到栈中的第二个元素就是真正调用的位置。  
+:point_right: chrome 中 打开 F12 控制台，在 Sources 中,通过打断点的方式，查看调用栈，然后找到栈中的<font color='red'>第二个元素</font>就是真正调用的位置。  
 ![Image text](https://raw.githubusercontent.com/liucrystal24/Notebook/master/you%20don't%20know%20JS/img/callstack.png)
+
+### 2.2 绑定规则
+&emsp;&emsp;绑定规则大致分为四种：1. 默认绑定  2. 隐式绑定 3. 显式绑定 4. new 绑定 。  
+1. 默认绑定  
+   this -> 全局对象,如果用严格模式， this -> undefined
+```javascript
+function foo() {
+  // 'use strict';
+  var a = 5;
+  console.log(this.a)
+}
+var a = 3;
+foo() // 3
+```
+2. 隐式绑定  
+   当函数引用有上下文对象时，隐式绑定规则会把函数调用中的this绑定到这个上下文对象。  
+   对象属性引用链中只有<font color='red'>最后一层</font>会影响调用位置。
+```javascript
+function foo() { 
+  console.log( this.a ); 
+}
+var obj2 = { 
+  a: 2, 
+  foo: foo
+};
+var obj1 = { 
+  a: 1, 
+  obj2: obj2
+};
+obj2.foo(); // 2
+obj1.obj2.foo() // 2
+```
+&emsp;&emsp;&emsp;:exclamation: 隐式丢失:  
+&emsp;&emsp;&emsp;被隐式绑定的函数会丢失绑定对象，应用默认绑定，从而把this绑定到全局对象或者undefined上，取决于是否是严格模式。  
+
+```javascript
+function foo() { 
+  console.log( this.a ); 
+}
+var obj = { 
+  a: 2, 
+  foo: foo
+};
+var bar = obj.foo; // 函数别名！ 
+var a = "oops, global"; // a 是全局对象的属性
+bar(); // "oops, global"
+// setTimeout 中也是同理
+setTimeout( obj.foo, 100 ); // "oops,global"
+```
+&emsp;&emsp;&emsp;:point_right: 虽然 bar 是 obj.foo 的一个引用，但是实际上，它引用的是 foo 函数本身，因此此时的 bar()其实是一个不带任何修饰的函数调用，因此应用了默认绑定。
+
+3. 显式绑定  
+   第一个参数是一个对象，它们会把这个对象绑定到this，接着在调用函数时指定这个 this。 
+```javascript
+function foo() {
+  console.log(this.a)
+}
+var obj = {
+  a: 6,
+}
+foo.call(obj) // 6
+```
+&emsp;&emsp;&emsp;:exclamation: 硬绑定:显式绑定的一个变种，可以解决丢失绑定问题。
+
+```javascript
+function foo() {
+  console.log(this.a);
+}
+var obj1 = {
+  a: 1
+};
+var obj2 = {
+  a: 2
+}
+var bar = function () {
+  foo.call(obj1);
+};
+bar(); // 1
+// 硬绑定的 bar 不可能再修改它的 this，此处还在obj1上
+bar.call(obj2) //1
+```
+&emsp;&emsp;&emsp;&emsp;:point_right: 型应用场景就是创建一个包裹函数，传入所有的参数并返回接收到的所有值
+
+```javascript
+function foo(addNum) {
+  console.log(this.a, addNum)
+  return this.a + addNum;
+}
+var obj = {
+  a: 2,
+}
+function add2() {
+  return foo.apply(obj, arguments)
+}
+var result = add2(3) // 2 3
+console.log(result); // 5
+```
+
+4. new 绑定  
+:exclamation: 在 JavaScript 中，构造函数只是一些使用new操作符时被调用的函数。它们并不会属于某个类，也不会实例化一个类。它们只是被new操作符调用的<font color='red'>普通函数</font>而已。  
+:point_right: 使用new来调用函数，或者说发生构造函数调用时，会自动执行下面的操作。  
+   1. 创建（或者说构造）一个全新的对象。
+   2. 这个新对象会被执行 [[ 原型 ]] 连接。
+   3. 这个新对象会<font color='red'>绑定到函数调用的 this</font>。
+   4. 如果函数没有返回其他对象，那么 new 表达式中的函数调用会自动返回这个新对象。
+
+```js
+function foo(a) { 
+  this.a = a;
+}
+var bar = new foo(2); 
+console.log( bar.a ); // 2
+```
+:point_right: 使用 new 来调用 foo(..) 时,构造一个新对象并把它绑定到 foo(..) 调用中的 this上。
+
+
+
+
 ## 3. 对象
 
 ## 4. 混合对象 "类"
