@@ -36,7 +36,7 @@ function foo() {
 baz(); // <-- baz 的调用位置
 ```
 :point_right: chrome 中 打开 F12 控制台，在 Sources 中,通过打断点的方式，查看调用栈，然后找到栈中的第二个元素就是真正调用的位置。  
-![Image text](https://raw.githubusercontent.com/)
+![Image text](https://raw.githubusercontent.com/liucrystal24/Notebook/master/you%20don't%20know%20JS/img/callstack.png)
 ## 3. 对象
 
 ## 4. 混合对象 "类"
