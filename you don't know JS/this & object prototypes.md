@@ -2,7 +2,7 @@
 
 ## 1. 关于 this
 
-1. this 的绑定和函数声明的位置没有任何关系，只取决于函数的<font color='ffoo'>调用方式</font>。  
+1. this 的绑定和函数声明的位置没有任何关系，只取决于函数的<font color='ffoo'>调用方式</font>。
 2. 当一个函数被调用时，会创建一个活动记录（有时候也称为执行上下文）。这个记录会包含函数<font color='ffoo'>在哪里被调用（调用栈）</font>、函数的调用方法、传入的参数等信息。this 就是记录的其中一个属性，会在函数执行的过程中用到。
 
 ## 2. this 全面解析
@@ -34,7 +34,7 @@ baz(); // <-- baz 的调用位置
 ```
 
 :point_right: chrome 中 打开 F12 控制台，在 Sources 中,通过打断点的方式，查看调用栈，然后找到栈中的<font color='red'>第二个元素</font>就是真正调用的位置。  
-![Image text](https://raw.githubusercontent.com/liucrystal24/Notebook/master/you%20don't%20know%20JS/img/callstack.png)
+![callstack.png](https://raw.githubusercontent.com/liucrystal24/Notebook/master/you%20don't%20know%20JS/img/callstack.png)
 
 ### 2.2 绑定规则
 
