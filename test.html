@@ -1,33 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
-</head>
-
-<body>
-  <script>
-    function baz() {
-      // 当前调用栈是：全局 -> baz
-      // 因此，当前调用位置是全局作用域
-      console.log("baz");
-      bar(); // <-- bar 的调用位置
-    }
-    function bar() {
-      // 当前调用栈是 baz -> bar
-      // 因此，当前调用位置在 baz 中
-      console.log("bar");
-      foo(); // <-- foo 的调用位置
-    }
-    function foo() {
-      // 当前调用栈是 baz -> bar -> foo
-      // 因此，当前调用位置在 bar 中
-      console.log("foo");
-    }
-    baz();
-  </script>
-</body>
-
+  <body>
+    <script>
+      var o = {
+        a: 10,
+        b: {
+          a: 12,
+          fn: function () {
+            console.log(this.a);
+            console.log(this);
+          },
+        },
+      };
+      var j = o.b.fn;
+      j();
+    </script>
+  </body>
 </html>

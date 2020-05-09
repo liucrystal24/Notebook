@@ -232,7 +232,7 @@ baz(); // <-- baz 的调用位置
 :exclamation: 箭头函数的绑定无法被修改。(new 也不行！)
 
 ```js
-// 对比箭头函数和普通函数
+// 对比返回箭头函数、返回普通函数、普通函数
 function foo1() {
   // 返回一个箭头函数
   return () => {
@@ -245,6 +245,9 @@ function foo2() {
     console.log(this.a);
   };
 }
+function foo3() {
+  console.log(this.a);
+}
 
 var obj1 = {
   a: 1,
@@ -255,24 +258,30 @@ var obj2 = {
 
 var a = 12;
 
-// bar1 继承全局的 a,this.a = 12,
+// foo1 this 绑定到全局,返回的函数继承了,且箭头函数绑定的不会再改变,全局 a = 12.
 var bar1 = foo1();
 bar1(); // 12
 bar1.call(obj1); // 12
 bar1.call(obj2); // 12
 
-// bar11 继承 obj1 的 a,a=1
+// foo1 this 绑定到 obj1,返回的函数继承了,且箭头函数绑定的不会再改变,obj 中 a = 1.
 var bar11 = foo1.call(obj1);
 bar11(); // 1
 bar11.call(obj1); // 1
 bar11.call(obj2); // 1
 
-// var bar2 = foo()
-// 无论是上面一种还是下面一种，bar2 始终是 function(){console.log(this.a)},然后遵循4个绑定规则
+// 无论 bar2 = foo2.call(obj1) 还是 bar2 = foo2(), 返回的函数没有继承 this, 都绑定到全局，且遵循四个绑定规则进行改变.
 var bar2 = foo2.call(obj1);
 bar2(); // 12
 bar2.call(obj1); // 1
 bar2.call(obj2); // 2
+
+// 硬绑定， bar3 已经绑定到 obj1 上,所以后面 bar3.call(obj2) ,this 仍然绑定到 obj1 上.
+var bar3 = function () {
+  foo3.call(obj1);
+};
+bar3(); //1
+bar3.call(obj2); // 1
 ```
 
 :point_right: 箭头函数最常用于回调函数中，例如事件处理器或者定时器
