@@ -1,4 +1,4 @@
-# this & object prototypes (this 和 对象原型)
+# this & object prototypes
 
 ## 1. 关于 this
 
@@ -168,17 +168,31 @@ baz(); // <-- baz 的调用位置
    1. 创建（或者说构造）一个全新的对象。
    2. 这个新对象会被执行 [[ 原型 ]] 连接。
    3. 这个新对象会<font color='red'>绑定到函数调用的 this</font>。
-   4. 如果函数没有返回其他对象，那么 new 表达式中的函数调用会自动返回这个新对象。
+   4. :collision: 如果函数没有<font color=red>_返回其他对象_</font>，那么 new 表达式中的函数调用会自动返回这个新对象。
+
+   :point_down: 返回值为简单的基本数据类型，而不是一个对象（包括基本类型的对象）的话，那么返回值仍然为新创建的对象。
 
    ```js
-   function foo(a) {
-     this.a = a;
-   }
-   var bar = new foo(2);
-   console.log(bar.a); // 2
-   ```
+   function User(name) {
+     this.name = name;
 
-   :point_right: 使用 new 来调用 foo(..) 时,构造一个新对象并把它绑定到 foo(..) 调用中的 this 上。
+     // return;                              // 返回 this
+     // return null;                         // 返回 this
+     // return undefined;                    // 返回 this
+     // return this;                         // 返回 this
+     // return false;                        // 返回 this
+     // return 'hello world';                // 返回 this
+     // return 2;                            // 返回 this
+
+     // return [];                            // 返回 新建的 []
+     // return function(){};                  // 返回 新建的 function，抛弃 this
+     // return new Boolean(false);           // 返回 新建的 boolean，抛弃 this
+     // return new String('hello world');    // 返回 新建的 string，抛弃 this
+     // return new Number(32);               // 返回新的 number，抛弃 this
+   }
+   var user = new User("chris");
+   console.log(user);
+   ```
 
 ### 2.3 优先级
 
@@ -297,18 +311,4 @@ var obj = {
   a: 2,
 };
 foo.call(obj); // 2
-```
-
-## 3. 对象
-
-## 4. 混合对象 "类"
-
-## 5. 原型
-
-## 6. 行为委托
-
-## 7. ES 中的 Class
-
-```
-
 ```
