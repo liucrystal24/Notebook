@@ -137,12 +137,11 @@ myObject.b; // undefined
 // 3.3.8 [[Put]]
 // 如果已经存在这个属性，[[Put]] 算法大致会检查下面这些内容。
 // 1. 属性是否是访问描述符（参见 3.3.9 节）？如果是并且存在 setter 就调用 setter。
-// 2. 属性的数据描述符中 writable 是否是 false ？如果是，在非严格模式下静默失败，在
-// 严格模式下抛出 TypeError 异常。
+// 2. 属性的数据描述符中 writable 是否是 false ？如果是，在非严格模式下静默失败，在严格模式下抛出 TypeError 异常。
 // 3. 如果都不是，将该值设置为属性的值。如果对象中不存在这个属性，[[Put]] 操作会更加复杂。我们会在第 5 章讨论 [[Prototype]]  时详细进行介绍。
 
 // 3.3.9 Getter和Setter
-// getter 和 setter (隐藏函数)，部分改写默认操作，只能应用到单个属性上
+// getter 和 setter (都是隐藏函数)，部分改写默认操作，只能应用到单个属性上
 // 当你给一个属性定义 getter、setter 或者两者都有时，这个属性会被定义为“访问描述符”（和“数据描述符”相对），忽略writable 和 value 属性，关心set,get, configurabel ,enumerable
 // 
 var myObject = {
@@ -177,5 +176,95 @@ var myObject = {
 };
 myObject.a = 2;
 myObject.a; // 4
+
+
+// 3.3.10 存在性
+var myObject = {
+  a: 2
+};
+("a" in myObject); // true
+("b" in myObject); // false
+myObject.hasOwnProperty("a"); // true
+myObject.hasOwnProperty("b"); // false
+
+// in 会检查对象及其[[Prototype]]原型链,hasOwnProperty(..) 只会检查是否存在对象中
+
+// 1. 枚举
+
+var myObject = {};
+Object.defineProperty(
+  myObject,
+  "a",
+  // 让 a 像普通属性一样可以枚举
+  { enumerable: true, value: 2 }
+);
+Object.defineProperty(
+  myObject,
+  "b",
+  // 让 b 不可枚举
+  { enumerable: false, value: 3 }
+);
+myObject.b; // 3
+("b" in myObject); // true
+myObject.hasOwnProperty("b"); // true
+// .......
+for (var k in myObject) {
+  console.log(k, myObject[k]);
+}
+// "a" 2
+console.log(myObject) // { a: 2 }
+
+// propertyIsEnumerable() 只检查给定对象
+myObject.propertyIsEnumerable("a"); // true, 
+myObject.propertyIsEnumerable("b"); // false
+
+// Object.keys()/getOwnPropertyNames 只检查对象
+// keys 可枚举/getOwnPropertyNames 所有属性
+Object.keys(myObject); // ["a"]
+Object.getOwnPropertyNames(myObject); // ["a", "b"]
+
+// 3.4遍历
+
+// 数组
+// forEach(..) 会遍历数组中的所有值并忽略回调函数的返回值
+let arr1 = [1, 2, 3, 4]
+
+arr1.forEach((val, index) => {
+  console.log(val) // 1 2 3 4
+})
+
+// ES6 for...of...
+for (var item of arr1) {
+  console.log(item); //1 2 3 4
+}
+
+// ES6 for...in...
+for (index in arr1) {
+  console.log(`${index} : ${arr1[index]}`)
+} // // 0:1 1:2 2:3 3:4
+
+// 对象
+let obj1 = {
+  a: 1,
+  b: 2,
+  c: 3
+}
+
+// 1.for...in...
+for (index in obj1) {
+  console.log(`${index} : ${obj1[index]}`)
+}// a:1 b:2 c:3
+
+// Object.keys(obj) 返回数组，可枚举属性名
+Object.keys(obj1).forEach((key) => {
+  console.log(key + ':' + obj1[key]);
+})// a:1 b:2 c:3
+// 或者 Object.values(obj)
+console.log(Object.values(obj1)); // [1,2,3]
+
+// Object.getOwnPropertyNames(obj) , 所有属性名
+Object.getOwnPropertyNames(obj1).forEach((key) => {
+  console.log(key + ':' + obj1[key]);
+});// a:1 b:2 c:3
 
 
