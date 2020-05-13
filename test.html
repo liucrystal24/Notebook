@@ -1,25 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-  </head>
 
-  <body>
-    <script>
-      var o = {
-        a: 10,
-        b: {
-          a: 12,
-          fn: function () {
-            console.log(this.a);
-            console.log(this);
-          },
-        },
-      };
-      var j = o.b.fn;
-      j();
-    </script>
-  </body>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    console.log(foo);
+
+    var a = 5;
+
+    function foo() {
+      console.log(1);
+    }
+
+    function foo() {
+      console.log(2);
+    }
+    console.log(a);
+  </script>
+</body>
+
 </html>
