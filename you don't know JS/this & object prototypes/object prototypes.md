@@ -35,7 +35,7 @@ console.log(typeof arr1); // object
 console.log(arr1 instanceof Array); // true
 ```
 
-:exclamation: "I am a string" 不是一个对象，如果对这个字符串进行操作，比如获取长度，JS 会自动转换成对象 => new String("I am a string").
+:point_right: "I am a string" 不是一个对象，如果对这个字符串进行操作，比如获取长度，JS 会自动转换成对象 => new String("I am a string").
 
 ### 3.3 内容
 
@@ -76,7 +76,7 @@ Object.defineProperty(myObject, "age", {
    delete myObject.a;
    console.log(myObject.a); // 18
    ```
-   ​:exclamation:​ 因为不可配置，所以不能删除，也不能重新 defineProperty,但是可以把 writable 由 true -> false,不能 false -> true.
+   ​:point_right:​ 因为不可配置，所以不能删除，也不能重新 defineProperty,但是可以把 writable 由 true -> false,不能 false -> true.
 3. enumerable
    如果 enumerable:false,属性不参与遍历，但是可以直接获取
    ```js

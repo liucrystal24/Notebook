@@ -1,0 +1,223 @@
+# Scope & Closures -- closures
+
+## 作用域闭包 :sparkles::sparkles::sparkles:
+
+:star: 当函数可以**记住并访问所在的词法作用域时**，就产生了闭包，即使函数是在**当前词法作用域之外执行**。
+
+```javascript
+function foo() {
+  var a = 2;
+  function bar() {
+    console.log(a);
+  }
+  return bar;
+}
+var baz = foo();
+baz(); //2
+```
+
+:point_right: bar( ) 在自己定义的 **<font color=ff0000>词法作用域以外的地方执行</font>**。
+
+:point_right: 由于 bar( )所声明的位置，**<font color=ff0000>它拥有涵盖 foo( )内部作用域的闭包</font>**，使得该作用域能够一直存活，以供 bar( )在之后任何时间进行引用。
+
+:point_right: bar( )依然持有对该作用域的引用，而这个引用就叫作闭包。
+
+#### 例 1:
+
+```javascript
+for (var i = 1; i <= 5; i++) {
+  setTimeout(function timer() {
+    console.log(i);
+  }, i * 1000);
+}
+// 希望每秒输出一次,分别为1~6
+// 实际每秒输出一次,都是6
+// (var i) 和 (..i*1000) 是一样的 i
+```
+
+:point_right: **<font color=ff0000>延迟函数的回调会在循环结束时才执行</font>**，尽管循环中的五个函数是在各个迭代中分别定义的，但是它们都被封闭在一个共享的全局作用域中，因此实际上只有一个 i。我们需要更多的闭包作用域，特别是在循环的过程中每个迭代都需要一个闭包作用域。
+
+#### 改进 1:
+
+```javascript
+for (var i = 1; i <= 5; i++) {
+  (function () {
+    var j = i; // 需要有自己的变量，用来在每个迭代中储存i的值
+    setTimeout(function timer() {
+      console.log(j);
+    }, j * 1000);
+  })();
+}
+```
+
+#### 改进 2:
+
+:point_right: let 将一个块转换成一个可以被关闭的作用域
+
+```javascript
+for (var i = 1; i <= 5; i++) {
+  let j = i; // 闭包的块作用域
+  setTimeout(function timer() {
+    console.log(j);
+  }, j * 1000);
+}
+```
+
+#### 改进 3:
+
+:star::star:for 循环头部的 let 声明,变量在循环过程中不止被声明一次，**每次迭代都会声明**。随后的每个迭代都会使用上一个迭代结束时的值来初始化这个变量。
+
+```javascript
+for (let i = 1; i <= 5; i++) {
+  setTimeout(function timer() {
+    console.log(i);
+  }, i * 1000);
+}
+```
+
+#### 例 2:
+
+```javascript
+function fun(n, x) {
+  console.log(x); // 输出第二位
+  return {
+    fun: function (m) {
+      return fun(m, n);
+    },
+  };
+}
+
+/* --- undefined 0 0 0 --- */
+var a = fun(0);
+// fun(0,x) => 输出: undefined
+//          => return { fun:function(m){return fun(m,0)} }
+a.fun(1);
+// 调用 return 的 fun 并传递 m = 1 ,function(1)
+// => return fun(1,0)
+// => 输出: console.log(0) return 的值未被调用
+a.fun(2);
+// 同上,传入 m = 2, fun(2,0)
+// => 输出: console.log(0)
+a.fun(3);
+// 同上,传入 m = 3, fun(3,0)
+// => 输出: console.log(0)
+
+/* --- undefined 0 1 2 --- */
+var b = fun(0).fun(1).fun(2).fun(3);
+// fun(0).fun(1) 同上过程 'var a = fun(0), a.fun(1)' 所以输出为 undefined 0
+// => 上方 return的值未被调用，但是此处被调用, m=1 传递给 fun 的 n,则下个 n = 1
+// xxx.fun(2)=> m=2, n=1, return fun(2,1)
+// => 输出: console.log(1) m=2 传递给 fun 的 n,则下个 n = 2
+// xxx.fun(3) => m=3 n=2, return fun(3,2)
+// => 输出: console.log(2)
+
+/* --- undefined 0 1 1 --- */
+var c = fun(0).fun(1);
+// fun(0).fun(1) 同上过程 'var a = fun(0), a.fun(1)' 所以输出为 undefined 0
+c.fun(2);
+// c.fun(2)  return fun(2,1),输出1
+c.fun(3);
+// c.fun(2)  return fun(3,1),输出1
+```
+
+:point_right: 输出 fun 传递的后一个值，把这个 fun 中的前一个值，当成下一个 fun 的后一个值输出。
+
+```js
+var a = fun(0); // fun(0,undefined)   => console.log(undefined) return fun(m,0)
+var b = a.fun(1); // fun(1,0)         => console.log(0)         return fun(m,1)
+var c = b.fun(2); // fun(2,1)         => console.log(1)         return fun(m,2)
+```
+
+:star: 无论通过何种手段将**内部函数**传递到**所在的词法作用域以外**，它都会持有对**原始定义作用域**的引用，无论在何处执行这个函数都会使用闭包。
+
+#### 例 3:
+
+```javascript
+var nAdd;
+var t = function () {
+  var n = 99;
+  // 将内部函数传递到所在的词法作用域以外
+  nAdd = function () {
+    n = n + 1;
+  };
+  var t2 = function () {
+    console.log(n);
+  };
+  return t2;
+};
+
+let a1 = t();
+
+let a2 = t();
+// a2() //99
+nAdd();
+
+let a3 = t();
+// ? 为什么 n+1 只影响到 a2
+// ! 因为 a3 中申明一个新的 n, nAdd()只影响到a2
+// ! 如果 a2() 在nAdd()前执行则输出 99
+
+a1(); // 99
+a2(); // 100
+a3(); // 99
+```
+
+:star: 模块模式需要具备两个必要条件。
+
+1. 必须有外部的封闭函数，该函数必须至少被调用一次（每次调用都会创建一个新的模块实例）。
+2. 封闭函数必须返回至少一个内部函数，这样内部函数才能在私有作用域中形成闭包，并且可以访问或者修改私有的状态。
+
+```javascript
+function Module() {
+  let arr = [1, 2, 3];
+  let task = " go shopping";
+  function todo() {
+    console.log("Let's" + task);
+  }
+  function atos() {
+    console.log(arr.join(""));
+  }
+  return {
+    todo: todo,
+    atos: atos,
+  };
+}
+let $ = Module();
+$.todo(); // Let's go shopping
+$.atos(); // 123
+```
+
+- **<font color=ff0000>import :</font>** 将一个模块中的一个或多个 API 导入到当前作用域中，并分别绑定在一个变量上。
+- **<font color=ff0000>module :</font>** 将整个模块的 API 导入并绑定到一个变量上。
+- **<font color=ff0000>export :</font>** 将当前模块的一个标识符（变量、函数）导出为公共 API。这些操作可以在模块定义中根据需要使用任意多次。
+
+bar.js :
+
+```javascript
+function hello(who) {
+  return "Let me introduce: " + who;
+}
+export hello;
+```
+
+foo.js :
+
+```javascript
+// 仅从 "bar" 模块导入 hello()
+import hello from "bar";
+var hungry = "hippo";
+function awesome() {
+  console.log( hello( hungry ).toUpperCase() );
+}
+export awesome;
+```
+
+baz.js :
+
+```javascript
+// 导入完整的 "foo" 和 "bar" 模块
+module foo from "foo";
+module bar from "bar";
+console.log( bar.hello( "rhino" ) ); // Let me introduce: rhino
+foo.awesome(); // LET ME INTRODUCE: HIPPO
+```
