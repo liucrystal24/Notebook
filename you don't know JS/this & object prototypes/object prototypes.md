@@ -64,20 +64,20 @@ Object.defineProperty(myObject, "age", {
 });
 ```
 
-1. writable
+1. **writable**
    如果 writable:false;
    ```js
    myObject.a = 20;
    console.log(myObject.a); //18
    ```
-2. configurable
+2. **configurable**
    如果 configurable:false;
    ```js
    delete myObject.a;
    console.log(myObject.a); // 18
    ```
    ​:point_right:​ 因为不可配置，所以不能删除，也不能重新 defineProperty,但是可以把 writable 由 true -> false,不能 false -> true.
-3. enumerable
+3. **enumerable**
    如果 enumerable:false,属性不参与遍历，但是可以直接获取
    ```js
    console.log(myObject); // {} a 不显示
@@ -285,6 +285,7 @@ Object.defineProperty(
   ```
 
 ## 4. 混合对象 "类"
+
 
 ## 5. 原型
 
