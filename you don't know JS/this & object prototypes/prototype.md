@@ -1,4 +1,4 @@
-# this & object prototypes -- this
+# this & object prototypes -- prototype
 
 ## 1. 关于 this
 

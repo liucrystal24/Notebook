@@ -1,4 +1,4 @@
-# this & object prototypes
+# this & object prototypes -- object
 
 ## 3. 对象
 
@@ -16,8 +16,9 @@ myobj.key = value;
 
 #### :star: 6 种主要类型('语言类型'):
 
-string | number | boolean | null | undefined | object  
-:point_right: 前五种不是对象,用 typeof 判断.
+string | number | boolean | null | undefined | object | symbol(ES2015)
+
+:point_right: 前五种(简单基本类型)不是对象,用 typeof 判断.
 
 ```js
 let str1 = "123";
@@ -26,7 +27,8 @@ console.log(typeof str1); // string
 
 #### :star: 9 种对象子类型(内置对象)
 
-String | Number | Boolean | Object | Function | Array | Date | RegExp | Error  
+String | Number | Boolean | Object | Function | Array | Date | RegExp | Error
+
 :point_right: 用 obj instanceof \*\* 判断,如果用 typeof 判断则都是 object.
 
 ```js
@@ -285,7 +287,6 @@ Object.defineProperty(
   ```
 
 ## 4. 混合对象 "类"
-
 
 ## 5. 原型
 
