@@ -1,11 +1,4 @@
-// 1.实例化 2.继承 3.多态
-
-// 4.1 类理论
-//类/继承 描述了一种代码的组织结构形式——一种在软件中对真实世界中问题领域的建模方法。
-
-// 4.2.2 构造函数 ?? 同名
-// 类实例是由一个特殊的类方法构造的，这个方法名通常和类名相同，被称为构造函数。这个方法的任务就是初始化实例需要的所有信息（状态）。
-// 类构造函数属于类，而且通常和类同名。此外，构造函数大多需要用new来调，这样语言 引擎才知道你想要构造一个新的类实例。
+// 面向对象特点: 1.实例化 2.继承 3.多态
 
 // 4.3 类的继承
 
@@ -106,10 +99,6 @@ Another.count; // 1（count 不是共享状态）
 
 
 // 原型
-
-// 5.1 [[Prototype]]
-// JavaScript 中的对象有一个特殊的 [[Prototype]] 内置属性，其实就是对于其他对象的引用。几乎所有的对象在创建时 [[Prototype]] 属性都会被赋予一个非空的值。
-// 对象的 [[Prototype]] 链接可以为空，虽然很少见。
 
 var myObject = {
   a: 2
@@ -302,3 +291,21 @@ Object.defineProperty(Object.prototype, "__proto__", {
 
 // 原型链和继承: MDN
 //https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Inheritance_and_the_prototype_chain
+
+
+Object.getPrototypeOf(new Foobar()) === Foobar.prototype
+// 对象的原型、构造函数的prototype属性
+// 每个实例上都有的属性,构造函数的属性
+
+
+
+// obj.__proto__(Object.getPrototypeOf(obj)) 上一层
+// obj.prototype 本层
+
+
+
+// 每个实例都有一个 constructor（构造函数）属性，该属性指向对象本身。
+f.constructor === Foo // true
+
+
+// https://juejin.im/post/5d629d7b5188252501776d3e#heading-14
