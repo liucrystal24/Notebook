@@ -290,8 +290,14 @@ Object.defineProperty(Object.prototype, "__proto__", {
 // 5. 相比之下，“委托”是一个更合适的术语，因为对象之间的关系不是复制而是委托。
 
 // 原型链和继承: MDN
-//https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Inheritance_and_the_prototype_chain
 
+// https://developer.mozilla.org/zh-CN/docs/Learn/JavaScript/Objects/Object_prototypes
+
+// https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Inheritance_and_the_prototype_chain
+
+
+
+// https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/proto
 
 Object.getPrototypeOf(new Foobar()) === Foobar.prototype
 // 对象的原型、构造函数的prototype属性
