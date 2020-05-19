@@ -285,11 +285,3 @@ Object.defineProperty(
     console.log(item[index]);
   }
   ```
-
-## 4. 混合对象 "类"
-
-## 5. 原型
-
-## 6. 行为委托
-
-## 7. ES 中的 Class
