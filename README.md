@@ -1,2 +1,9 @@
-# Notebook
-Record inspiration
+# :books: Chris 的博客
+
+## `JS 系列 :`
+
+1. [JS 深入理解 —— 作用域](https://github.com/liucrystal24/Notebook/issues/7)
+2. [JS 深入理解 —— 闭包](https://github.com/liucrystal24/Notebook/issues/8)
+3. [JS 深入理解 —— this](https://github.com/liucrystal24/Notebook/issues/6)
+4. [JS 深入理解 —— 对象](https://github.com/liucrystal24/Notebook/issues/9)
+5. [JS 深入理解 —— 原型 & 原型链](https://github.com/liucrystal24/Notebook/issues/10)
