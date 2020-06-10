@@ -60,3 +60,53 @@
     return res;
   }
   ```
+
+### 2. 正则表达式匹配
+>请实现一个函数用来匹配包括 ' . ' 和 ' * ' 的正则表达式。  
+>模式中的字符 ' . ' 表示任意一个字符，而 ' * ' 表示它前面的字符可以出现任意次（包含0次）。   
+>在本题中，匹配是指字符串的所有字符匹配整个模式。例如，字符串"aaa"与模式"a.a"和"ab*ac*a"匹配，但是与"aa.a"和"ab*a"均不匹配。
+
+- 思路:
+  看匹配字符的下一位是否是 ' * ', 利用递归思想，比较当前位置字符。
+
+  假设 `s` : 完整字符串, `p` : 匹配字符串 , `si` : s 当前位置, `pi` : p 当前位置。
+  
+  1. 如果 p 下一位是 ' * '
+     - 如果 s, p 当前位置字符相同 或 ( p 当前位置是 ' . ' 且 s 此时不是最后一位)
+      :point_right: `si + 1`, `pi + 1` (s 中 有多位和 p 中 * 前字符相同) 
+      :point_right: `si` 不变, `pi + 2` (s 中 已找完所有与 p 中 * 前相同字符)
+     - 否则 `si` 不变, `pi + 2` (s 中有 0 位 和 p 中 * 前字符相同)
+  2. 如果 p 下一位不是 ' * '
+     - 如果 s, p 当前位置字符相同 或 ( p 当前位置是 ' . ' 且 s 此时不是最后一位)
+      :point_right: `si + 1`, `pi + 1` ( 直接比较下一位 )
+     - 否则 返回 false;  
+
+  ```js
+  function match(s, p) {
+    if (s == null || p == null) return false;
+    return matchCore(s, p, 0, 0);
+  }
+
+  function matchCore(s, p, si, pi) {
+    // 比到最后一位都相同，返回 true
+    if (s.length == si && p.length == pi) return true;
+    // 比到 s后还有字符,p 已经空，则肯定不匹配，返回 false
+    if (s.length != si && p.length == pi) return false;
+    if (p[pi + 1] == "*") {
+      if ( p[pi] == s[si] || (p[pi] == "." && si != s.length) ) {
+        // 比完 * 前多位相同字符，则 p 中 pi + 2
+        return (
+          matchCore(s, p, si + 1, pi) ||
+          matchCore(s, p, si, pi + 2)
+        );
+      } else {
+        // * 前为 0 位相同是，直接 pi + 2
+        return matchCore(s, p, si, pi + 2);
+      }
+    }
+    if ( s[si] == p[pi] || (p[pi] == "." && si != s.length) )
+      //相同直接 各进一位
+      return matchCore(s, p, si + 1, pi + 1);
+    return false;
+  }
+  ```
