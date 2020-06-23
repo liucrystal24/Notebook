@@ -11,3 +11,4 @@
 ## `CSS 系列 :`
 
 1. [CSS 样式经典 —— flex](https://github.com/liucrystal24/Notebook/issues/11)
+1. [CSS 文本末尾处理 —— text-overflow](https://github.com/liucrystal24/Notebook/issues/12)
