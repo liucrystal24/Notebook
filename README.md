@@ -12,3 +12,7 @@
 
 1. [CSS 样式经典 —— flex](https://github.com/liucrystal24/Notebook/issues/11)
 1. [CSS 文本末尾处理 —— text-overflow](https://github.com/liucrystal24/Notebook/issues/12)
+
+## `Git 系列 :`
+
+1. [Github —— Github actions 自动化部署](https://github.com/liucrystal24/Notebook/issues/13)
