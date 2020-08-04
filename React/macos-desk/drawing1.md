@@ -5,7 +5,7 @@
 
 - ### 效果图
 
-  ![canvasModal](../gif/write & earaser.gif)
+  ![canvasModal](img/write&earaser.gif)
 
 - ### 画板初始化
 
@@ -32,7 +32,7 @@
   };
   ```
 
-- ### 画板状态管理（绘画和擦除）
+- ### 画板工具栏状态管理
 
   - 添加 **`是否在画`**，**`是否擦除`**，**`鼠标位置`** 的状态。
 
@@ -50,6 +50,31 @@
   const [mousePosition, setMousePosition] = useState<Coordinate | undefined>(
     undefined
   );
+
+  // tools 画笔/橡皮 选择
+  const [toolsMap] = useState<string[]>(["pen", "eraser"]);
+
+  <div className="tools">
+    {toolsMap.map((tool, index) => {
+      return (
+        <Iconfont
+          key={index + tool}
+          className={
+            tool === "eraser"
+              ? eraserEnabled
+                ? "active"
+                : ""
+              : !eraserEnabled
+              ? "active"
+              : ""
+          }
+          type={"icon-" + tool}
+          style={{ fontSize: 50 }}
+          clickEvent={(e) => onToolsClick([e, tool])}
+        />
+      );
+    })}
+  </div>;
   ```
 
 - ### 鼠标事件逻辑
@@ -164,7 +189,7 @@
   ```
 
   - exitPaint
-    :link: [saveFragment 说明](http://www.baidu.com)
+    :link: [saveFragment 说明](https://github.com/liucrystal24/Notebook/issues/17)
 
   ```tsx
   // 修改作画状态
@@ -191,7 +216,7 @@
 
   - 实现原理
 
-    ![clearArc](../img/clearArc.png)
+    ![clearArc](img/clearArc.png)
 
     将圆形分割成若干个矩形，用 Canvas 自带的清除路径 api（矩形清除）递归清除。
     **`（ x,y ）`** : 鼠标点击坐标

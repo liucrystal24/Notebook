@@ -5,7 +5,7 @@
 
 - ### 效果图
 
-  ![docker](../gif/docker.gif)
+  ![docker](img/docker.gif)
 
 - ### Dock 动效原理
 
@@ -57,7 +57,7 @@
 
   - ##### dock 栏结构示意图
 
-  ![footer 结构示意图](../img/footer.png)
+  ![footer 结构示意图](img/footer.png)
 
   - ##### mousemove 事件
 
