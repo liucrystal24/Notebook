@@ -1,5 +1,12 @@
 # TypeScript
 
+:link: https://ts.xcatliu.com/advanced/
+:link: https://www.bilibili.com/video/BV1qV41167VD
+:link: https://www.tslang.cn/docs/home.html
+
+? as :
+? extends implements
+
 ## 1. 准备
 
 - 安装
@@ -135,6 +142,73 @@
   ```ts
   const student: [string, number, string] = ["chris", 18, "basketball"];
   ```
+
+## 3. interface 接口
+
+```ts
+interface Student {
+  name: string;
+  age: number;
+  gender: string;
+  // hobby 可有可无
+  hobby?: string;
+  // 可以添加其他任何类型的字段
+  [propname: string]: any;
+  say(): string;
+}
+
+const chris = {
+  name: "chris",
+  age: 15,
+  gender: "male",
+  hobby: "basketball",
+  height: 183,
+  say: () => {
+    return "这就是我";
+  },
+};
+
+const introduce: (params: Student) => void = (student) => {
+  console.log("姓名: " + student.name);
+  console.log("年龄: " + student.age);
+  console.log("性别: " + student.gender);
+
+  student.hobby && console.log("爱好: " + student.hobby);
+  student.height && console.log("身高: " + student.height);
+  console.log(student.say());
+};
+
+introduce(chris);
+```
+
+## 4. class 类
+
+```ts
+class Person {
+  content = "你好";
+  sayHello() {
+    return this.content;
+  }
+}
+
+// 继承
+class Teacher extends Person {
+  // 重写
+  sayHello() {
+    // super 调用父类的方法
+    return super.sayHello() + "!";
+  }
+
+  sayWeather() {
+    return "今天天气不错";
+  }
+}
+
+const crystal = new Teacher();
+
+console.log(crystal.sayHello()); // 你好!
+console.log(crystal.sayWeather()); // 今天天气不错;
+```
 
 ## tips
 
