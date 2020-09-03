@@ -82,7 +82,7 @@
   console.log(mobile); // { ID: 1, name: 'mobile1' }
   ```
 
-## 3. 函数参数和返回类型注解
+### 2.1 函数参数和返回类型注解
 
 - 普通形参
 
@@ -100,4 +100,101 @@
     return a + b;
   }
   const resultAdd = add({ a: 1, b: 2 });
+  ```
+
+### 2.2 数组类型注解
+
+- 直接注解
+
+  ```ts
+  const stringArr: string[] = ["1", "2", "3"];
+  const numberArr: number[] = [1, 2, 3];
+  const numberArr: (string | number)[] = [1, "2", 3];
+  ```
+
+- 类型别名
+
+  ```ts
+  // 这里用 type,class 都行，区别见后面
+  type student = { name: string; age: number };
+  class teacher {
+    name: string;
+    age: number;
+  }
+  const class1: student[] = [
+    { name: "chris", age: 18 },
+    { name: "crystal", age: 20 },
+  ];
+  const class2: teacher[] = [
+    { name: "chris", age: 18 },
+    { name: "crystal", age: 20 },
+  ];
+  ```
+
+- 元组的使用和类的约束（具体定义数组每个位置的类型）
+  ```ts
+  const student: [string, number, string] = ["chris", 18, "basketball"];
+  ```
+
+## tips
+
+### :books: `class` , `type` , `interface` 用法区别
+
+- `type` , `interface` 在运行时是被消除的，但是 `class` 经过编译后仍然存在
+- `interface` 只能声明对象类型、函数类型，`type` 可以声明基本类型，联合类型，元组等类型
+
+  ```ts
+  // 基本
+  type Name = string;
+
+  // 对象
+  type PartialPointX = { x: number };
+  type PartialPointY = { y: number };
+
+  // 联合
+  type PartialPoint = PartialPointX | PartialPointY;
+
+  // 元组
+  type Data = [number, string];
+  ```
+
+- `interface` 可以声明合并，`type` 不行
+
+  ```ts
+  interface Point {
+    x: number;
+  }
+  interface Point {
+    y: number;
+  }
+
+  const point: Point = { x: 1, y: 2 };
+  ```
+
+- `interface` ，`type` 可以互相继承
+
+  ```ts
+  // interface 继承 interface
+  interface PartialPointX {
+    x: number;
+  }
+  interface Point extends PartialPointX {
+    y: number;
+  }
+
+  // type 继承 interface
+  type PartialPointX = { x: number };
+  type Point = PartialPointX & { y: number };
+
+  // interface 继承 type
+  type PartialPointX = { x: number };
+  interface Point extends PartialPointX {
+    y: number;
+  }
+
+  // type 继承 type
+  interface PartialPointX {
+    x: number;
+  }
+  type Point = PartialPointX & { y: number };
   ```
