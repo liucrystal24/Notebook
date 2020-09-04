@@ -4,8 +4,9 @@
 :link: https://www.bilibili.com/video/BV1qV41167VD
 :link: https://www.tslang.cn/docs/home.html
 
-? as :
-? extends implements
+? 类型访问 as / :
+? 继承 extends / implements
+? 继承 super / this
 
 ## 1. 准备
 
@@ -209,6 +210,143 @@ const crystal = new Teacher();
 console.log(crystal.sayHello()); // 你好!
 console.log(crystal.sayWeather()); // 今天天气不错;
 ```
+
+### 4.1 类的访问方式( `public` / `private` / `protected` )
+
+- `public`
+
+  当类中的参数定义时，默认为 public 访问方式，public 可以在类的**内部、外部**调用，且**可以继承**。
+
+  ```ts
+  class Person {
+    /* ---- 类的内部 ---- */
+    // public name:string = "chris";
+    name: string = "chris";
+    sayHello() {
+      console.log("hello " + this.name);
+    }
+    /* ---------------- */
+  }
+  const chris = new Person();
+  class Teacher extends Person {
+    sayBye() {
+      console.log("bye " + this.name);
+    }
+  }
+  const crystal = new Teacher();
+  /* ---- 类的外部调用 ---- */
+  console.log(chris.name); // chris
+  chris.sayHello(); // hello chris
+  crystal.sayBye(); // bye chris
+  ```
+
+- `private`
+
+  private 只能在类的**内部调用，不可以继承**。
+
+  ```ts
+  class Person {
+    private name: string = "chris";
+    sayHello() {
+      console.log("hello " + this.name);
+    }
+  }
+  const chris = new Person();
+  class Teacher extends Person {
+    sayBye() {
+      console.log("bye " + this.name);
+    }
+  }
+  const crystal = new Teacher();
+  console.log(chris.name); // 报错，不可以在类的外部调用
+  chris.sayHello(); // hello chris
+  crystal.sayBye(); // 报错，不可以继承
+  ```
+
+- `protected`
+
+  protected 只能在类的**内部调用，可以继承**。
+
+  ```ts
+  class Person {
+    protected name: string = "chris";
+    sayHello() {
+      console.log("hello " + this.name);
+    }
+  }
+  const chris = new Person();
+  class Teacher extends Person {
+    sayBye() {
+      console.log("bye " + this.name);
+    }
+  }
+  const crystal = new Teacher();
+  console.log(chris.name); // 报错，不可以在类的外部调用
+  chris.sayHello(); // hello chris
+  crystal.sayBye(); // bye chris
+  ```
+
+### 4.2 类的构造函数
+
+```ts
+class Person {
+  name: string;
+  constructor(name: string) {
+    this.name = name;
+  }
+}
+```
+
+:point_right: 较为繁琐，可以简化：
+:warning: constructor 中的注解一定要添加类的访问方式，如 `public`
+
+```ts
+class Person {
+  constructor(public name: string) {}
+}
+```
+
+:warning: 只要继承的子类中有构造函数，constructor 中一定要添加 `super()`
+
+```ts
+class Teacher extends Person {
+  constructor(public age: number) {
+    super("chris");
+  }
+}
+
+const chris = new Teacher(18);
+console.log(chris.name); // chris
+console.log(chris.age); // 18
+```
+
+### 4.3 类的 Getter , Setter , static
+
+- Getter / Setter
+
+  :point_right: 结合类的访问方式 `private`，可以实现在类的外部访问不到 `_age`，只能通过 **age()** 方法访问到处理过的 `_age`
+
+  ```ts
+  class Student {
+    constructor(private _age: number) {}
+    get age() {
+      return this._age + 3;
+    }
+    set age(age: number) {
+      this._age = age;
+    }
+  }
+  const chris = new Student(25);
+  console.log(chris.age); // 28
+  chris.age = 15;
+  console.log(chris.age); // 18
+  ```
+
+- static
+
+  ```ts
+
+  ```
 
 ## tips
 
