@@ -2,7 +2,7 @@
  * @Author: ChrisLiu
  * @Date: 2020-09-03 21:44:26
  * @LastEditors: ChrisLiu
- * @LastEditTime: 2020-09-05 23:27:30
+ * @LastEditTime: 2020-09-06 00:24:49
  * @Description: file content
  */
 // const arr1 = [1, { a: 1 }, 3];
@@ -136,7 +136,7 @@
 // console.log(chris.age); // 18
 
 // class Student {
-//   constructor(private _age: number) {}
+//   constructor(public readonly _age: number) {}
 //   get age() {
 //     return this._age + 3;
 //   }
@@ -146,11 +146,33 @@
 // }
 // const chris = new Student(28);
 // chris.age = 15;
-// console.log(chris.age);
+// console.log(chris._age);
 
-class Student {
-  static sayHello() {
-    console.log("hello");
+// class Student {
+//   static sayHello() {
+//     console.log("hello");
+//   }
+// }
+// Student.sayHello();
+
+abstract class Person {
+  abstract skill();
+}
+
+class Student extends Person {
+  skill() {
+    console.log("学习");
   }
 }
-Student.sayHello();
+
+class Teacher extends Person {
+  skill() {
+    console.log("教育");
+  }
+}
+
+class Police extends Person {
+  skill() {
+    console.log("正义");
+  }
+}

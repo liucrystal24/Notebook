@@ -342,6 +342,20 @@ console.log(chris.age); // 18
   console.log(chris.age); // 18
   ```
 
+  :warning: 如果不希望方法改动 `_age`，防止误操作，可以将 `_age` 定义为只读
+
+  ```ts
+  class Student {
+    constructor(private readonly _age: number) {}
+    get age() {
+      return this._age + 3;
+    }
+    set age(age: number) {
+      this._age = age; // 报错，_age 不能被修改
+    }
+  }
+  ```
+
 - static (静态类)
 
   :point_right: 静态类 `static`，可以不用实例化，就能调用里面的方法
@@ -357,8 +371,30 @@ console.log(chris.age); // 18
 
 ### 4.4 抽象类
 
-```ts
+:point_right: 抽象类中申明一个方法（抽象），子类继承时，可以根据情况，在这个方法里有自己的业务逻辑，不冲突
 
+```ts
+abstract class Person {
+  abstract skill();
+}
+
+class Student extends Person {
+  skill() {
+    console.log("学习");
+  }
+}
+
+class Teacher extends Person {
+  skill() {
+    console.log("教育");
+  }
+}
+
+class Police extends Person {
+  skill() {
+    console.log("正义");
+  }
+}
 ```
 
 ## tips
