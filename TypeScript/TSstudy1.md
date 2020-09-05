@@ -342,11 +342,24 @@ console.log(chris.age); // 18
   console.log(chris.age); // 18
   ```
 
-- static
+- static (静态类)
+
+  :point_right: 静态类 `static`，可以不用实例化，就能调用里面的方法
 
   ```ts
-
+  class Student {
+    static sayHello() {
+      console.log("hello");
+    }
+  }
+  Student.sayHello();
   ```
+
+### 4.4 抽象类
+
+```ts
+
+```
 
 ## tips
 
