@@ -2,7 +2,7 @@
  * @Author: ChrisLiu
  * @Date: 2020-09-03 21:44:26
  * @LastEditors: ChrisLiu
- * @LastEditTime: 2020-09-06 00:24:49
+ * @LastEditTime: 2020-09-06 23:36:51
  * @Description: file content
  */
 // const arr1 = [1, { a: 1 }, 3];
@@ -155,24 +155,30 @@
 // }
 // Student.sayHello();
 
-abstract class Person {
-  abstract skill();
-}
+// abstract class Person {
+//   abstract skill();
+// }
 
-class Student extends Person {
-  skill() {
-    console.log("学习");
-  }
-}
+// class Student extends Person {
+//   skill() {
+//     console.log("学习");
+//   }
+// }
 
-class Teacher extends Person {
-  skill() {
-    console.log("教育");
-  }
-}
+// class Teacher extends Person {
+//   skill() {
+//     console.log("教育");
+//   }
+// }
 
-class Police extends Person {
-  skill() {
-    console.log("正义");
-  }
+// class Police extends Person {
+//   skill() {
+//     console.log("正义");
+//   }
+// }
+
+function welcome(person: string) {
+  console.log("hello " + person);
 }
+let user = "chris";
+welcome(user); // hello chris

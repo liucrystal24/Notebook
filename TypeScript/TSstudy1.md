@@ -1,14 +1,14 @@
 # TypeScript
 
-:link: https://ts.xcatliu.com/advanced/
-:link: https://www.bilibili.com/video/BV1qV41167VD
-:link: https://www.tslang.cn/docs/home.html
+- [ ] :link: https://ts.xcatliu.com/advanced/
+- [x] :link: https://www.bilibili.com/video/BV1qV41167VD (1-14)
+- [ ] :link: https://www.tslang.cn/docs/home.html
 
 ? 类型访问 as / :
 ? 继承 extends / implements
 ? 继承 super / this
 
-## 1. 准备
+## 1. Hello TypeScript
 
 - 安装
 
@@ -20,12 +20,14 @@
 - 编辑
 
   ```ts
-  function welcome() {
-    let hello: string = "hello world";
-    console.log(hello);
+  function welcome(person: string) {
+    console.log("hello " + person);
   }
+  let user1 = "chris";
+  welcome(user1); // hello chris
 
-  welcome();
+  let user2 = [1, 2, 3];
+  welcome(user2); // 报错，user2 的类型应为 string
   ```
 
 - 运行
@@ -34,18 +36,23 @@
   ts-node demo1.ts
   ```
 
-  :point_right: 输出 ：hello world
+  :point_right: `ts-node` 可以直接运行 `.ts`（实现原理还是先编译成 `.js`，然后运行 js 文件）,省略了 `$ tsc demo.ts`
 
-## 2. 静态类型
+  :warning: **TypeScript 只会在编译时对类型进行静态检查，如果发现有错误，编译的时候就会报错**。而在运行时，与普通的 `JavaScript` 文件一样，不会对类型进行检查。
 
-- 基础静态类型
+## 2. 数据类型
+
+- 原始数据类型
+
+  :dart: 原始数据类型包括：**布尔值、数值、字符串、null、undefined** 以及 ES6 中的新类型 **Symbol**
 
   ```ts
-  // id 可以继承 number 的方法，如 toFixed
-  const id: number = 1;
+  let isDone: boolean = false;
+  let id: number = 1;
+  let myName: string = "chris";
   ```
 
-- 对象静态类型
+- 对象类型
 
   ```ts
   // 对象
@@ -68,7 +75,7 @@
   const startClass: () => string = () => {
     return "go to school";
   };
-  // void 指 没有返回值
+  // void 表示没有任何返回值的函数
   function sayHello(): void {
     console.log("hello");
   }
@@ -124,16 +131,16 @@
 
   ```ts
   // 这里用 type,class 都行，区别见后面
-  type student = { name: string; age: number };
-  class teacher {
+  type Student = { name: string; age: number };
+  class Teacher {
     name: string;
     age: number;
   }
-  const class1: student[] = [
+  const class1: Student[] = [
     { name: "chris", age: 18 },
     { name: "crystal", age: 20 },
   ];
-  const class2: teacher[] = [
+  const class2: Teacher[] = [
     { name: "chris", age: 18 },
     { name: "crystal", age: 20 },
   ];
