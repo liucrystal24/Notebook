@@ -42,7 +42,7 @@
 
 ## 2. 数据类型
 
-- 原始数据类型
+- ### 原始数据类型
 
   :dart: 原始数据类型包括：**布尔值、数值、字符串、null、undefined** 以及 ES6 中的新类型 **Symbol**
 
@@ -50,9 +50,58 @@
   let isDone: boolean = false;
   let id: number = 1;
   let myName: string = "chris";
+  // null 和 undefined
+  let u: undefined = undefined;
+  let n: null = null;
+  // void 表示没有任何返回值的函数
+  function sayHello(): void {
+    console.log("hello");
+  }
   ```
 
-- 对象类型
+  :question: **void** 和 **null、undefined**区别：
+
+  `undefined` 和 `null` 是所有类型的子类型。也就是说 `undefined` 类型的变量，可以赋值给 `number` 类型的变量，而 `void` 类型的变量不能赋值给 `number` 类型的变量
+
+  ```ts
+  // 1. 不会报错
+  let num: number = undefined;
+  // 2. 不会报错
+  let u: undefined;
+  let num: number = u;
+  // 3. 报错
+  let u: void;
+  let num: number = u;
+  ```
+
+- ### 任意类型
+
+  :books: 一个普通类型，在赋值过程中是不允许改变类型的,但是 **any** 类型可以
+
+  ```ts
+  let myFavoriteNumber: string = "seven";
+  myFavoriteNumber = 7; // 报错
+
+  let myFavoriteNumber: any = "seven";
+  myFavoriteNumber = 7; // 允许
+  ```
+
+  :warning: 变量如果在声明的时候，未指定其类型，且**未赋值**，那么它会被识别为 **any** 类型，如果声明时**赋值**，TS 会进行类型推断：
+
+  ```ts
+  // 1. 未指定类型，未赋值
+  let something;
+  // 等价于 let something: any
+  something = "seven";
+  something = 7;
+
+  // 2. 未指定类型，已赋值
+  let something = "seven";
+  // 等价于 let something: string = 'seven'
+  something = 7; // 报错，因为类型推断为 string
+  ```
+
+- ### 对象类型
 
   ```ts
   // 对象
@@ -75,10 +124,6 @@
   const startClass: () => string = () => {
     return "go to school";
   };
-  // void 表示没有任何返回值的函数
-  function sayHello(): void {
-    console.log("hello");
-  }
   ```
 
 - 自定义类型

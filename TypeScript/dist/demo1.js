@@ -19,9 +19,7 @@
 //   { name: "chris", age: 18 },
 //   { name: "crystal", age: 20 },
 // ];
-
 // console.log(class1, class2);
-
 // interface Student {
 //   name: string;
 //   age: number;
@@ -30,7 +28,6 @@
 //   // [propname: string]: any;
 //   say(): string;
 // }
-
 // const chris = {
 //   name: "chris",
 //   age: 15,
@@ -41,7 +38,6 @@
 //     return "这就是我";
 //   },
 // };
-
 // const introduce: (params: Student) => void = (student) => {
 //   console.log("姓名: " + student.name);
 //   console.log("年龄: " + student.age);
@@ -57,14 +53,12 @@
 //   console.log("爱好: " + params.hobby);
 // }
 // introduce(chris);
-
 // class Person {
 //   content = "你好";
 //   sayHello() {
 //     return this.content;
 //   }
 // }
-
 // // 继承
 // class Teacher extends Person {
 //   // 重写
@@ -72,17 +66,13 @@
 //     // super 调用父类的方法
 //     return super.sayHello() + "!";
 //   }
-
 //   sayWeather() {
 //     return "今天天气不错";
 //   }
 // }
-
 // const crystal = new Teacher();
-
 // console.log(crystal.sayHello()); // 你好!
 // console.log(crystal.sayWeather()); // 今天天气不错;
-
 // class Person {
 //   protected name: string = "chris";
 //   sayHello() {
@@ -99,28 +89,23 @@
 // console.log(chris.name); // 报错，不可以在类的外部调用
 // chris.sayHello(); // hello chris
 // crystal.sayBye(); // bye chris
-
 // class Person {
 //   constructor(public name: string) {}
 // }
-
 // class Person {
 //   name: string;
 //   constructor(name: string) {
 //     this.name = name;
 //   }
 // }
-
 // class Teacher extends Person {
 //   constructor(public age: number) {
 //     super("chris");
 //   }
 // }
-
 // const chris = new Teacher(18);
 // console.log(chris.name);
 // console.log(chris.age);
-
 // class Student {
 //   constructor(private _age: number) {}
 //   get age() {
@@ -134,7 +119,6 @@
 // console.log(chris.age); // 28
 // chris.age = 15;
 // console.log(chris.age); // 18
-
 // class Student {
 //   constructor(public readonly _age: number) {}
 //   get age() {
@@ -147,42 +131,35 @@
 // const chris = new Student(28);
 // chris.age = 15;
 // console.log(chris._age);
-
 // class Student {
 //   static sayHello() {
 //     console.log("hello");
 //   }
 // }
 // Student.sayHello();
-
 // abstract class Person {
 //   abstract skill();
 // }
-
 // class Student extends Person {
 //   skill() {
 //     console.log("学习");
 //   }
 // }
-
 // class Teacher extends Person {
 //   skill() {
 //     console.log("教育");
 //   }
 // }
-
 // class Police extends Person {
 //   skill() {
 //     console.log("正义");
 //   }
 // }
-
 // function welcome(person: string) {
 //   console.log("hello " + person);
 // }
 // let user = "chris";
 // welcome(user); // hello chris
-
-let something = "seven";
+var something = "seven";
 // 等价于 let something: string = 'seven'
 something = 7; // 报错，因为类型推断为 string
