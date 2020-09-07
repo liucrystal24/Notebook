@@ -233,16 +233,54 @@
 
 - ### 函数类型
 
-- 普通形参
+  - #### 函数声明 / 函数表达式
+
+  :warning: TS 中的 `=>` 和 ES6 的 `=>` 不是一个意义，在 **TypeScript** 的类型定义中，`=>` 用来表示函数的定义，左边是 **输入类型** ，需要用括号括起来，右边是 **输出类型** 。
 
   ```ts
+  // 函数声明
   function add(a: number, b: number): number {
     return a + b;
   }
-  const resultAdd = add(1, 2);
+
+  // 函数表达式
+  let add: (a: number, b: number) => number = (
+    a: number,
+    b: number
+  ): number => {
+    return a + b;
+  };
   ```
 
-- 对象形参
+  - #### 接口定义函数形状
+
+  ```ts
+  interface Student {
+    (name: string, age: string): string;
+  }
+
+  let sayHello: Student = (name: string, age: string): string => {
+    return `hello,I'm ${name},I'm ${age}.`;
+  };
+  ```
+
+  - #### 可选参数
+
+  :warning: 可选参数后面不允许再出现必需参数
+
+  ```ts
+  let sayHello: Student = (
+    name: string,
+    age: string,
+    hobby?: string
+  ): string => {
+    return `hello,I'm ${name},I'm ${age},I like ${hobby}`;
+  };
+  ```
+
+  - #### 对象参数
+
+  :warning: 对象参数要单独类型定义，不能在对象内类型定义。
 
   ```ts
   function add({ a, b }: { a: number; b: number }): number {
@@ -250,6 +288,42 @@
   }
   const resultAdd = add({ a: 1, b: 2 });
   ```
+
+  - #### 重载
+
+  :books: 重载允许一个函数接受不同数量或类型的参数时，作出不同的处理。
+
+  :point_right: 多次定义 `reverse`，前两次是函数定义，最后一次是函数实现，TypeScript 会 **优先从最前面的函数定义开始匹配** ，所以多个函数定义如果有包含关系，需要优先 **把精确的定义写在前面** 。
+
+  ```ts
+  function reverse(x: number): number;
+  function reverse(x: string): string;
+  function reverse(x: number | string): number | string {
+    if (typeof x === "number") {
+      return Number(x.toString().split("").reverse().join(""));
+    } else if (typeof x === "string") {
+      return x.split("").reverse().join("");
+    }
+  }
+  ```
+
+## 3. 类型断言
+
+:books: 类型断言：用来手动指定一个值的类型
+
+:dart: 使用场景
+
+:point_right: 总结
+
+- 联合类型可以被断言为其中一个类型
+- 父类可以被断言为子类
+- 任何类型都可以被断言为 any
+- any 可以被断言为任何类型
+- 要使得 A 能够被断言为 B，只需要 A 兼容 B 或 B 兼容 A 即可
+
+~~双重断言~~
+
+:books: 类型比较
 
 ## 4. class 类
 

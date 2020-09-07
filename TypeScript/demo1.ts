@@ -2,7 +2,7 @@
  * @Author: ChrisLiu
  * @Date: 2020-09-03 21:44:26
  * @LastEditors: ChrisLiu
- * @LastEditTime: 2020-09-07 00:19:44
+ * @LastEditTime: 2020-09-07 23:18:33
  * @Description: file content
  */
 // const arr1 = [1, { a: 1 }, 3];
@@ -201,9 +201,63 @@
 
 // let fibonacci: Array<number | string> = [1, 1, 2, 3, 5];
 
-const student: [string, number, string] = ["chris", 18, "basketball"];
+// const student: [string, number, string] = ["chris", 18, "basketball"];
 
-student.push("crystal");
-student.push(20);
-console.log(student);
-// student.push(true);
+// student.push("crystal");
+// student.push(20);
+// console.log(student);
+// // student.push(true);
+
+// function buildName(firstName: string = "Tom", lastName: string) {
+//   return firstName + " " + lastName;
+// }
+// let tomcat = buildName("Tom", "Cat");
+// let cat = buildName(undefined, "Cat");
+// console.log(tomcat, cat);
+
+// function reverse(x: number): number;
+// function reverse(x: string): string;
+// function reverse(x: number | string): number | string {
+//   if (typeof x === "number") {
+//     return Number(x.toString().split("").reverse().join(""));
+//   } else if (typeof x === "string") {
+//     return x.split("").reverse().join("");
+//   }
+// }
+
+// let add: (a: number, b: number) => number = (a: number, b: number): number => {
+//   return a + b;
+// };
+
+// interface Student {
+//   (name: string, age: string): string;
+// }
+
+// let sayHello: Student = (name: string, age: string): string => {
+//   return `hello,I'm ${name},I'm ${age}`;
+// };
+
+// console.log(sayHello("chris", "18"));
+
+// function add1({ a, b }: { a: number; b: number }): number {
+//   return a + b;
+// }
+// const resultAdd = add1({ a: 1, b: 2 });
+
+interface Person {
+  name: string;
+  // age: number;
+}
+
+interface Student {
+  name: string;
+  age: number;
+}
+
+let Crystal: Student = { name: "chris", age: 156 };
+
+let Tony: Person = { name: "chris", age: 156 };
+let Nancy: Person = { name: "chris", age: 156 } as Student;
+let Chris: Person = Crystal;
+
+console.log(Chris);
