@@ -183,6 +183,27 @@
 // let user = "chris";
 // welcome(user); // hello chris
 
-let something = "seven";
-// 等价于 let something: string = 'seven'
-something = 7; // 报错，因为类型推断为 string
+// let something = "seven";
+// // 等价于 let something: string = 'seven'
+// something = 7; // 报错，因为类型推断为 string
+
+// let myNumber: string;
+// console.log(myNumber.length);
+
+// interface NumberArray {
+//   [index: number]: number;
+// }
+// // let fibonacci: NumberArray = [1, 1, 2, 3, 5];
+// // console.log(fibonacci);
+
+// type Student = { [name: number]: string };
+// const class1: Student = ["1", "2"];
+
+// let fibonacci: Array<number | string> = [1, 1, 2, 3, 5];
+
+const student: [string, number, string] = ["chris", 18, "basketball"];
+
+student.push("crystal");
+student.push(20);
+console.log(student);
+// student.push(true);

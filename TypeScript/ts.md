@@ -23,3 +23,7 @@
 ### 2020-9-6
 
 - [x] :link: https://ts.xcatliu.com/advanced/ (联合类型)
+
+### 2020-9-7
+
+- [x] :link: https://ts.xcatliu.com/advanced/ (联合类型)

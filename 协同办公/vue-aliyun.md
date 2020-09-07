@@ -8,17 +8,17 @@
 npm run build
 ```
 
-:point_right: ​补充和 api 端口不一样时的 vue 设置
+:point_right: ​ 补充和 api 端口不一样时的 vue 设置
 
 ## 2. 阿里云（windows server 2018R）
 
 ### 1. 添加安全组 端口号（阿里云后台管理）
 
-:point_right: ​添加截图
+:point_right: ​ 添加截图
 
 ### 2. 添加入站规则 TCP 端口号 （server）
 
-:point_right: ​添加截图
+:point_right: ​ 添加截图
 
 ## 3. nginx
 
@@ -32,7 +32,7 @@ npm run build
 
 ### 2. nginx 启动
 
-:point_right: ​添加启动:
+:point_right: ​ 添加启动:
 
 ```shell
 -c

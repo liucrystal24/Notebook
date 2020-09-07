@@ -44,7 +44,7 @@
 
 - ### 原始数据类型
 
-  :dart: 原始数据类型包括：**布尔值、数值、字符串、null、undefined** 以及 ES6 中的新类型 **Symbol**
+  :books: 原始数据类型包括：**布尔值、数值、字符串、null、undefined** 以及 ES6 中的新类型 **Symbol**
 
   ```ts
   let isDone: boolean = false;
@@ -101,48 +101,137 @@
   something = 7; // 报错，因为类型推断为 string
   ```
 
-- ### 对象类型
+- ### 联合类型
+
+  :books: 联合类型（Union Types）表示取值可以为多种类型中的一种
+
+  :warning: 当 TypeScript 不确定一个联合类型的变量到底是哪个类型的时候，我们只能访问此联合类型的所有类型里**共有的属性或方法**
 
   ```ts
-  // 对象
-  const student: {
-    sname: string;
-    sage: number;
-  } = {
-    sname: "chris",
-    sage: 18,
-  };
+  let myNumber: string | number;
+  function getLength(something: string | number): number {
+    return something.length; // 报错，number 没有 length
+  }
+  function getString(something: string | number): string {
+    return something.toString(); // √
+  }
+  ```
 
-  // 数组
-  const students: string[] = ["chris", "crystal"];
+- ### 对象类型 - interface 接口
 
-  // 类
-  class Person {}
-  const chris: Person = new Person();
+  :books: interface 用来定义对象的类型，除了可用于对类的一部分行为进行抽象以外，也常用于对「**对象的形状（Shape）**」进行描述。
 
-  // 函数 (返回值为字符串)
-  const startClass: () => string = () => {
-    return "go to school";
+  - :warning: 变量的属性与必须接口一致（ **chris** 的 **形状** 必须和 **Student** 一致 ），**多 / 少** 属性都会报错。
+
+  ```ts
+  interface Student {
+    name: string;
+    age: number;
+  }
+
+  let chris = {
+    name: "chris",
+    age: 18,
   };
   ```
 
-- 自定义类型
+  - #### 可选属性
 
   ```ts
-  interface device {
-    ID: number;
+  interface Student {
+    name: string;
+    age?: number;
+  }
+
+  let chris = {
+    name: "chris",
+  };
+  ```
+
+  - #### 任意属性
+
+  ```ts
+  interface Student {
+    name: string;
+    [propname: string]: string;
+  }
+
+  let chris = {
+    name: "chris",
+    gender: "male",
+  };
+  ```
+
+  :warning: 一旦定义了任意属性，那么 **确定属性** 和 **可选属性** 的类型都必须是它的类型的 **子集**，如果出现冲突，应对 **任意属性** 定义 **联合类型**。
+
+  ```ts
+  interface Student {
+    name: string;
+    age: number;
+    [propname: string]: string; // 报错，因为age是number类型，不属于string的子集
+    // [propname: string]: string | number;
+  }
+  ```
+
+  - #### 只读属性
+
+  ```ts
+  interface Person {
+    readonly id: number;
     name: string;
   }
 
-  const mobile: device = {
-    ID: 1,
-    name: "mobile1",
+  let chris = {
+    id: 24,
+    name: "chris",
   };
-
-  console.log(mobile); // { ID: 1, name: 'mobile1' }
+  chris.id = 5; // 报错，只读属性初始化后不能再赋值
   ```
 
-### 2.1 函数参数和返回类型注解
+- ### 数组类型
+
+  - #### 「类型 + 方括号」表示法
+
+  ```ts
+  const stringArr: string[] = ["1", "2", "3"];
+  const numberArr: (string | number)[] = [1, "2", 3];
+  ```
+
+  - #### 数组泛型
+
+  ```ts
+  let fibonacci: Array<number> = [1, 1, 2, 3, 5];
+  ```
+
+  - #### 类型别名
+
+  ```ts
+  interface Student {
+    name: string;
+    age: number;
+  }
+
+  const class1: Student[] = [
+    { name: "chris", age: 18 },
+    { name: "crystal", age: 20 },
+  ];
+  ```
+
+  - #### 元组的使用和类的约束
+
+  :books: 具体定义数组每个位置的类型
+
+  :warning: 当添加越界的元素时，它的类型会被限制为元组中每个类型的 **联合类型**
+
+  ```ts
+  let student: [string, number, string] = ["chris", 18, "basketball"];
+
+  student.push("crystal"); // 满足 string | number
+  student.push(20); // 满足 string | number
+  student.push(true); // 报错，不满足联合类型
+  ```
+
+- ### 函数类型
 
 - 普通形参
 
@@ -161,78 +250,6 @@
   }
   const resultAdd = add({ a: 1, b: 2 });
   ```
-
-### 2.2 数组类型注解
-
-- 直接注解
-
-  ```ts
-  const stringArr: string[] = ["1", "2", "3"];
-  const numberArr: number[] = [1, 2, 3];
-  const numberArr: (string | number)[] = [1, "2", 3];
-  ```
-
-- 类型别名
-
-  ```ts
-  // 这里用 type,class 都行，区别见后面
-  type Student = { name: string; age: number };
-  class Teacher {
-    name: string;
-    age: number;
-  }
-  const class1: Student[] = [
-    { name: "chris", age: 18 },
-    { name: "crystal", age: 20 },
-  ];
-  const class2: Teacher[] = [
-    { name: "chris", age: 18 },
-    { name: "crystal", age: 20 },
-  ];
-  ```
-
-- 元组的使用和类的约束（具体定义数组每个位置的类型）
-  ```ts
-  const student: [string, number, string] = ["chris", 18, "basketball"];
-  ```
-
-## 3. interface 接口
-
-```ts
-interface Student {
-  name: string;
-  age: number;
-  gender: string;
-  // hobby 可有可无
-  hobby?: string;
-  // 可以添加其他任何类型的字段
-  [propname: string]: any;
-  say(): string;
-}
-
-const chris = {
-  name: "chris",
-  age: 15,
-  gender: "male",
-  hobby: "basketball",
-  height: 183,
-  say: () => {
-    return "这就是我";
-  },
-};
-
-const introduce: (params: Student) => void = (student) => {
-  console.log("姓名: " + student.name);
-  console.log("年龄: " + student.age);
-  console.log("性别: " + student.gender);
-
-  student.hobby && console.log("爱好: " + student.hobby);
-  student.height && console.log("身高: " + student.height);
-  console.log(student.say());
-};
-
-introduce(chris);
-```
 
 ## 4. class 类
 
