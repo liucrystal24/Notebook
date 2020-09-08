@@ -453,6 +453,29 @@
   toBoolean(1); // true
   ```
 
+  - #### 类型断言 vs 类型声明
+
+  类型断言 ( A as B ) 条件： `A` 兼容 `B`，或 `B` 兼容 `A`
+
+  类型声明 ( A = B ) 条件： `A` 兼容(包含) `B`
+
+  ```ts
+  interface Animal {
+    name: string;
+  }
+  interface Cat {
+    name: string;
+    run(): void;
+  }
+
+  const animal: Animal = {
+    name: "tom",
+  };
+
+  let tom = animal as Cat; // Cat、Animal 互相兼容，可以使用 as
+  let tom: Cat = animal; // 报错：animal 中没有 run(),Cat 不兼容 Animal
+  ```
+
 ## 4. class 类
 
 ```ts

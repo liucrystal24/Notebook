@@ -2,7 +2,7 @@
  * @Author: ChrisLiu
  * @Date: 2020-09-03 21:44:26
  * @LastEditors: ChrisLiu
- * @LastEditTime: 2020-09-08 23:41:47
+ * @LastEditTime: 2020-09-09 00:35:42
  * @Description: file content
  */
 // const arr1 = [1, { a: 1 }, 3];
@@ -19,31 +19,9 @@
 //   { name: "chris", age: 18 },
 //   { name: "crystal", age: 20 },
 // ];
-var Crystal = { name: "chris", age: 156 };
-// let Tony: Person = { name: "chris", age: 156 };
-var Nancy = { name: "chris", age: 156 };
-var Chris = Crystal;
-console.log(Chris);
-// interface Animal {
-//   name: string;
-// }
-// interface Cat extends Animal {
-//   run(): void;
-// }
-// interface Fish extends Animal {
-//   swim(): void;
-// }
-// function getSkill(animal: Animal) {
-//   // type of animal.swim 会报错，swim 不属于 Cat,Fish 共有的方法
-//   if (typeof (animal as Cat).run === "function") {
-//     return true;
-//   }
-//   return false;
-// }
-// let nancy: Cat = {
-//   name: "nancy",
-//   run() {
-//     console.log(1);
-//   },
-// };
-// console.log(getSkill(nancy));
+var tom = { name: "tom", age: { age1: 1, age2: 2 } };
+function getCacheData(foo, key) {
+    return foo[key];
+}
+var tomAge = getCacheData(tom, "age");
+console.log(tomAge);

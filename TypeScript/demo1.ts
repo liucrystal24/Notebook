@@ -2,7 +2,7 @@
  * @Author: ChrisLiu
  * @Date: 2020-09-03 21:44:26
  * @LastEditors: ChrisLiu
- * @LastEditTime: 2020-09-08 23:41:47
+ * @LastEditTime: 2020-09-09 00:35:42
  * @Description: file content
  */
 // const arr1 = [1, { a: 1 }, 3];
@@ -245,23 +245,23 @@
 // const resultAdd = add1({ a: 1, b: 2 });
 
 // -----
-interface Person {
-  name: string;
-  // age: number;
-}
+// interface Person {
+//   name: string;
+//   // age: number;
+// }
 
-interface Student {
-  name: string;
-  age: number;
-}
+// interface Student {
+//   name: string;
+//   age: number;
+// }
 
-let Crystal: Student = { name: "chris", age: 156 };
+// let Crystal: Student = { name: "chris", age: 156 };
 
-// let Tony: Person = { name: "chris", age: 156 };
-let Nancy: Person = { name: "chris", age: 156 } as Student;
-let Chris: Person = Crystal;
+// // let Tony: Person = { name: "chris", age: 156 };
+// let Nancy: Person = { name: "chris", age: 156 } as Student;
+// let Chris: Person = Crystal;
 
-console.log(Chris);
+// console.log(Chris);
 // interface Animal {
 //   name: string;
 // }
@@ -287,3 +287,20 @@ console.log(Chris);
 //   },
 // };
 // console.log(getSkill(nancy));
+
+interface Student {
+  name: string;
+  age: object;
+  hobbt?: string;
+}
+interface Age {
+  age1: number;
+  age2: number;
+}
+let tom: Student = { name: "tom", age: { age1: 1, age2: 2 } };
+function getCacheData<T>(foo: Student, key: string): T {
+  return foo[key];
+}
+
+const tomAge = getCacheData<Student>(tom, "age");
+console.log(tomAge);
