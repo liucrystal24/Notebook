@@ -309,21 +309,149 @@
 
 ## 3. 类型断言
 
-:books: 类型断言：用来手动指定一个值的类型
+:books: **类型断言**：用来手动指定一个值的类型
 
-:dart: 使用场景
+- ### 语法
 
-:point_right: 总结
+```ts
+值 as 类型；
+```
 
-- 联合类型可以被断言为其中一个类型
-- 父类可以被断言为子类
-- 任何类型都可以被断言为 any
-- any 可以被断言为任何类型
-- 要使得 A 能够被断言为 B，只需要 A 兼容 B 或 B 兼容 A 即可
+:warning: 不推荐使用 `<类型>值` 的用法，在 React 的 tsx 语法中表示一个 `ReactNode`，在 ts 中可以能表达一个泛型，有歧义。
 
-~~双重断言~~
+- ### 使用场景
 
-:books: 类型比较
+1. #### 将一个联合类型断言为其中一个类型
+
+   :books: ts 只能访问联合类型的所有类型中**共有的属性或方法**,当我们不确定类型时，访问其中一个类型的属性或方法时，需要使用类型断言：
+
+   ```ts
+   interface Cat {
+     name: string;
+     run(): void;
+   }
+   interface Fish {
+     name: string;
+     swim(): void;
+   }
+
+   function getName(animal: Cat | Fish) {
+     // type of animal.swim 会报错，swim 不属于 Cat,Fish 共有的方法
+     if (typeof (animal as Fish).swim === "function") {
+       return true;
+     }
+     return false;
+   }
+   ```
+
+2. #### 将一个父类断言为更加具体的子类
+
+   :books: ts 当类之间有继承关系时，可以使用类型断言：
+
+   ```ts
+   interface Cat extends Animal {
+     run(): void;
+   }
+   interface Fish extends Animal {
+     swim(): void;
+   }
+
+   function getSkill(animal: Animal) {
+     // type of animal.swim 会报错，swim 不属于 Cat,Fish 共有的方法
+     if (typeof (animal as Cat).run === "function") {
+       return true;
+     }
+     return false;
+   }
+   ```
+
+3. #### 将任何一个类型断言为 any
+
+   :books: 我们可以将某对象临时断言为 any 类型，因为在 any 类型的变量上，访问任何属性都是允许的
+
+   ```ts
+   window.foo = 1; // 报错。window 上没有 foo
+   (window as any).foo = 1;
+   ```
+
+   :warning: 将一个变量断言为 any 有可能掩盖了真正的类型错误，所以如果不是非常确定，就不要使用 as any。
+
+4. #### 将 any 断言为一个具体的类型
+
+   :books: 在日常的开发中，我们不可避免的需要处理 any 类型的变量，我们可以通过类型断言及时的把 any 断言为精确的类型，使我们的代码拥有更高的可维护性
+
+   ```ts
+   // getCacheData 本来是返回值是 any
+   function getCacheData(key: string): any {
+     return (window as any).cache[key];
+   }
+
+   interface Cat {
+     name: string;
+     run(): void;
+   }
+   // 调用完 getCacheData 之后，将它断言为 Cat 类型，后续对 tom 的访问时就有了代码补全
+   const tom = getCacheData("tom") as Cat;
+   tom.run();
+   ```
+
+- ### 类型断言的限制
+
+  :books: 要使得 A 能够被断言为 B，只需要 A 兼容 B 或 B 兼容 A
+
+  ```ts
+  interface Animal {
+    name: string;
+  }
+  interface Cat {
+    name: string;
+    run(): void;
+  }
+
+  let tom: Cat = {
+    name: "Tom",
+    run: () => {
+      console.log("run");
+    },
+  };
+  let animal: Animal = tom;
+  ```
+
+  :point_right: `Cat` 包含了 `Animal` 中的所有属性，等价于 `Cat extends Animal`
+
+  ```ts
+  interface Animal {
+    name: string;
+  }
+  interface Cat extends Animal {
+    run(): void;
+  }
+  ```
+
+  :point_right: 就像面向对象编程中我们可以将子类的实例赋值给类型为父类的变量, `Cat` 类型的 tom 可以赋值给 `Animal` 类型的 animal，即 `Animal` 兼容 `Cat`
+
+  :dart: 上述的四种类型断言的使用场景都符合互相兼容
+
+- ### 类型断言比较
+
+  - #### 类型断言 vs 类型转换
+
+  ```ts
+  function toBoolean(something: any): boolean {
+    return something as boolean;
+  }
+  toBoolean(1); // 1
+  ```
+
+  :warning: 类型断言只会影响 TypeScript 编译时的类型，**类型断言语句在编译结果中会被删除**,所以它不会真的影响到变量的类型，若要进行类型转换，需要直接调用类型转换的方法：
+
+  ```ts
+  function toBoolean(something: any): boolean {
+    return Boolean(something);
+  }
+
+  toBoolean(1); // true
+  ```
 
 ## 4. class 类
 
