@@ -288,19 +288,48 @@
 // };
 // console.log(getSkill(nancy));
 
-interface Student {
-  name: string;
-  age: object;
-  hobbt?: string;
-}
-interface Age {
-  age1: number;
-  age2: number;
-}
-let tom: Student = { name: "tom", age: { age1: 1, age2: 2 } };
-function getCacheData<T>(foo: Student, key: string): T {
-  return foo[key];
+// interface Student {
+//   name: string;
+//   age: object;
+//   hobbt?: string;
+// }
+// interface Age {
+//   age1: number;
+//   age2: number;
+// }
+// let tom: Student = { name: "tom", age: { age1: 1, age2: 2 } };
+// function getCacheData<T>(foo: Student, key: string): T {
+//   return foo[key];
+// }
+
+// const tomAge = getCacheData<Student>(tom, "age");
+// console.log(tomAge);
+
+enum Days {
+  Sun = 7,
+  Mon = 1,
+  Tue,
+  Wed,
+  Thu = 4.5,
+  Fri,
+  Sat,
 }
 
-const tomAge = getCacheData<Student>(tom, "age");
-console.log(tomAge);
+console.log(Days["Sun"] === 7); // true
+console.log(Days["Mon"] === 1); // true
+console.log(Days["Tue"] === 2); // true
+console.log(Days["Fri"]); // 5.5
+console.log(Days["Sat"]); // 6.5
+
+enum Color1 {
+  Red,
+  Green,
+  Blue = "blue".length,
+}
+console.log(Color1);
+
+/* enum Color2 {
+  Red = "red".length,
+  Green, // 枚举成员必须具有初始化表达式。
+  Blue,
+} */

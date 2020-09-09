@@ -497,16 +497,14 @@ enum Days {
 
 console.log(Days["Sun"] === 0); // true
 console.log(Days["Mon"] === 1); // true
-console.log(Days["Tue"] === 2); // true
-console.log(Days["Sat"] === 6); // true
 
 console.log(Days[0] === "Sun"); // true
 console.log(Days[1] === "Mon"); // true
-console.log(Days[2] === "Tue"); // true
-console.log(Days[6] === "Sat"); // true
 ```
 
 - ### 手动赋值
+
+  :books: 未手动赋值的枚举项会接着上一个枚举项递增 **1** ,即使手动赋值的枚举项是小数或负数。
 
   ```ts
   enum Days {
@@ -514,7 +512,7 @@ console.log(Days[6] === "Sat"); // true
     Mon = 1,
     Tue,
     Wed,
-    Thu,
+    Thu = 4.5,
     Fri,
     Sat,
   }
@@ -522,7 +520,91 @@ console.log(Days[6] === "Sat"); // true
   console.log(Days["Sun"] === 7); // true
   console.log(Days["Mon"] === 1); // true
   console.log(Days["Tue"] === 2); // true
-  console.log(Days["Sat"] === 6); // true
+  console.log(Days["Fri"]); // 5.5
+  console.log(Days["Sat"]); // 6.5
+  ```
+
+- ### 常数项和计算所得项
+
+  :books: 枚举项有两种类型：**常数项** 和 **计算所得项**。
+
+  :warning: **如果紧接在计算所得项后面的是未手动赋值的项，那么它就会因为无法获得初始值而报错**
+
+  ```ts
+  enum Color1 {
+    Red,
+    Green,
+    Blue = "blue".length,
+  }
+
+  console.log(Color1); // { '0': 'Red', '1': 'Green', '4': 'Blue', Red: 0, Green: 1, Blue: 4 }
+
+  enum Color2 {
+    Red = "red".length,
+    Green, // 报错，枚举成员必须具有初始化表达式。
+    Blue,
+  }
+  ```
+
+- ### 常数枚举
+
+  :books: 常数枚举是使用 `const enum` 定义的枚举类型：
+
+  :warning: 常数枚举与普通枚举的区别是，它会在**编译阶段被删除**，并且**不能包含计算成员**
+
+  ```ts
+  const enum Directions {
+    Up,
+    Down,
+    Left,
+    Right,
+  }
+
+  let directions = [
+    Directions.Up,
+    Directions.Down,
+    Directions.Left,
+    Directions.Right,
+  ];
+  ```
+
+  :point_right: 编译结果:
+
+  ```ts
+  var directions = [0 /* Up */, 1 /* Down */, 2 /* Left */, 3 /* Right */];
+  ```
+
+- ### 外部枚举
+
+  :books: 外部枚举是使用 `declare enum` 定义的枚举类型：
+
+  :warning: `declare` 定义的类型只会用于编译时的检查，编译结果中会被删除
+
+  ```ts
+  declare enum Directions {
+    Up,
+    Down,
+    Left,
+    Right,
+  }
+
+  let directions = [
+    Directions.Up,
+    Directions.Down,
+    Directions.Left,
+    Directions.Right,
+  ];
+  ```
+
+  :point_right: 编译结果:
+
+  ```ts
+  var directions = [
+    Directions.Up,
+    Directions.Down,
+    Directions.Left,
+    Directions.Right,
+  ];
   ```
 
 ## 4. class 类
