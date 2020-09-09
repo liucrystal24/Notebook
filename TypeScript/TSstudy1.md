@@ -8,6 +8,8 @@
 ? 继承 extends / implements
 ? 继承 super / this
 
+## 一、基础
+
 ## 1. Hello TypeScript
 
 - 安装
@@ -474,6 +476,53 @@
 
   let tom = animal as Cat; // Cat、Animal 互相兼容，可以使用 as
   let tom: Cat = animal; // 报错：animal 中没有 run(),Cat 不兼容 Animal
+  ```
+
+## 二、进阶
+
+## 1. 枚举
+
+:books:枚举成员会被赋值为从 0 开始递增的数字，同时也会对枚举值到枚举名进行反向映射
+
+```ts
+enum Days {
+  Sun,
+  Mon,
+  Tue,
+  Wed,
+  Thu,
+  Fri,
+  Sat,
+}
+
+console.log(Days["Sun"] === 0); // true
+console.log(Days["Mon"] === 1); // true
+console.log(Days["Tue"] === 2); // true
+console.log(Days["Sat"] === 6); // true
+
+console.log(Days[0] === "Sun"); // true
+console.log(Days[1] === "Mon"); // true
+console.log(Days[2] === "Tue"); // true
+console.log(Days[6] === "Sat"); // true
+```
+
+- ### 手动赋值
+
+  ```ts
+  enum Days {
+    Sun = 7,
+    Mon = 1,
+    Tue,
+    Wed,
+    Thu,
+    Fri,
+    Sat,
+  }
+
+  console.log(Days["Sun"] === 7); // true
+  console.log(Days["Mon"] === 1); // true
+  console.log(Days["Tue"] === 2); // true
+  console.log(Days["Sat"] === 6); // true
   ```
 
 ## 4. class 类
