@@ -2,7 +2,7 @@
  * @Author: ChrisLiu
  * @Date: 2020-09-03 21:44:26
  * @LastEditors: ChrisLiu
- * @LastEditTime: 2020-09-09 00:35:42
+ * @LastEditTime: 2020-09-11 00:13:47
  * @Description: file content
  */
 // const arr1 = [1, { a: 1 }, 3];
@@ -303,41 +303,79 @@
 // }
 
 // const tomAge = getCacheData<Student>(tom, "age");
-// console.log(tomAge);
+// // console.log(tomAge);
 
-enum Days {
-  Sun = 7,
-  Mon = 1,
-  Tue,
-  Wed,
-  Thu = 4.5,
-  Fri,
-  Sat,
+// enum Days {
+//   Sun = 7,
+//   Mon = 1,
+//   Tue,
+//   Wed,
+//   Thu = 4.5,
+//   Fri,
+//   Sat,
+// }
+
+// console.log(Days["Sun"] === 7); // true
+// console.log(Days["Mon"] === 1); // true
+// console.log(Days["Tue"] === 2); // true
+// console.log(Days["Fri"]); // 5.5
+// console.log(Days["Sat"]); // 6.5
+
+// enum Color1 {
+//   Red,
+//   Green,
+//   Blue = "blue".length,
+// }
+// console.log(Color1);
+
+// /* enum Color2 {
+//   Red = "red".length,
+//   Green, // 枚举成员必须具有初始化表达式。
+//   Blue,
+// } */
+
+// type Name = string | number;
+// let chris: Name = "chris";
+// console.log(chris);
+
+// type Fruit = "apple" | "banana" | "orange";
+// let fruit1: Fruit = "apple";
+// let fruit2: Fruit = "peach"; // 报错，不能将类型“"peach"”分配给类型“Fruit”
+
+// class Animal {
+//   static isAnimal(a) {
+//     return a instanceof Animal;
+//   }
+//   static say() {
+//     console.log("hi");
+//   }
+// }
+
+// let a = new Animal();
+// console.log(Animal.isAnimal(a)); // true
+// // a.isAnimal(a); // 报错: a.isAnimal is not a function
+// Animal.say(); // hi
+
+// class Animal {
+//   public constructor(readonly name) {}
+// }
+
+// let a = new Animal("Jack");
+// console.log(a.name); // Jack
+// a.name = "Tom";
+
+class Person {
+  _name: string = "chris";
+  get name() {
+    // console.log(this._name);
+    return this._name;
+  }
+  set name(name: string) {
+    this._name = name;
+  }
 }
 
-console.log(Days["Sun"] === 7); // true
-console.log(Days["Mon"] === 1); // true
-console.log(Days["Tue"] === 2); // true
-console.log(Days["Fri"]); // 5.5
-console.log(Days["Sat"]); // 6.5
-
-enum Color1 {
-  Red,
-  Green,
-  Blue = "blue".length,
-}
-console.log(Color1);
-
-/* enum Color2 {
-  Red = "red".length,
-  Green, // 枚举成员必须具有初始化表达式。
-  Blue,
-} */
-
-type Name = string | number;
-let chris: Name = "chris";
-console.log(chris);
-
-type Fruit = "apple" | "banana" | "orange";
-let fruit1: Fruit = "apple";
-let fruit2: Fruit = "peach"; // 报错，不能将类型“"peach"”分配给类型“Fruit”
+let chris = new Person();
+console.log(chris.name);
+chris.name = "tom";
+console.log(chris.name);

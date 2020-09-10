@@ -628,48 +628,136 @@ console.log(Days[1] === "Mon"); // true
 
 ## 3. 类
 
-```ts
-class Person {
-  content = "你好";
-  sayHello() {
-    return this.content;
+### ES6 中类的用法
+
+- #### 属性和方法
+
+  :books: 使用 `class` 定义类，使用 `constructor` 定义构造函数。通过 `new` 生成新实例的时候，会自动调用构造函数。
+
+  ```ts
+  class Animal {
+    public name;
+    constructor(name) {
+      this.name = name;
+    }
+    sayHi() {
+      return `My name is ${this.name}`;
+    }
   }
-}
 
-// 继承
-class Teacher extends Person {
-  // 重写
-  sayHello() {
-    // super 调用父类的方法
-    return super.sayHello() + "!";
+  let a = new Animal("Jack");
+  console.log(a.sayHi()); // My name is Jack
+  ```
+
+- #### 类的继承
+
+  :books: 使用 `extends` 关键字实现继承，子类中使用 `super` 关键字来调用父类的构造函数和方法。
+
+  ```ts
+  class Cat extends Animal {
+    constructor(name) {
+      super(name); // 调用父类的 constructor(name)
+      console.log(this.name);
+    }
+    sayHi() {
+      return "Meow, " + super.sayHi(); // 调用父类的 sayHi()
+    }
   }
 
-  sayWeather() {
-    return "今天天气不错";
+  let c = new Cat("Tom"); // Tom
+  console.log(c.sayHi()); // Meow, My name is Tom
+  ```
+
+- #### 存取器
+
+  :books: 使用 `getter` 和 `setter` 可以改变属性的赋值和读取行为
+
+  ```ts
+  class Animal {
+    constructor(name) {
+      this.name = name;
+    }
+    get name() {
+      return "Jack";
+    }
+    set name(value) {
+      console.log("setter: " + value);
+    }
   }
-}
 
-const crystal = new Teacher();
+  let a = new Animal("Kitty"); // setter: Kitty
+  a.name = "Tom"; // setter: Tom
+  console.log(a.name); // Jack
+  ```
 
-console.log(crystal.sayHello()); // 你好!
-console.log(crystal.sayWeather()); // 今天天气不错;
-```
+- #### 静态方法
 
-### 4.1 类的访问方式( `public` / `private` / `protected` )
+  :books: 使用 `static` 修饰符修饰的方法称为静态方法，它们不需要实例化，而是直接通过类来调用:
 
-- `public`
+  ```ts
+  class Animal {
+    static isAnimal(a) {
+      return a instanceof Animal;
+    }
+    static say() {
+      console.log("hi");
+    }
+  }
 
-  当类中的参数定义时，默认为 public 访问方式，public 可以在类的**内部、外部**调用，且**可以继承**。
+  let a = new Animal();
+  console.log(Animal.isAnimal(a)); // true
+  a.isAnimal(a); // 报错,isAnimal 是静态方法
+  Animal.say(); // hi
+  ```
+
+### ES7 中类的用法
+
+- #### 实例属性
+
+  :books:ES6 中实例的属性只能通过构造函数中的 this.xxx 来定义，ES7 提案中可以直接在类里面定义：
+
+  ```ts
+  class Animal {
+    name = "Jack";
+
+    constructor() {
+      // ...
+    }
+  }
+
+  let a = new Animal();
+  console.log(a.name); // Jack
+  ```
+
+- #### 静态属性
+
+  :books: ES7 提案中，可以使用 `static` 定义一个静态属性：
+
+  ```ts
+  class Animal {
+    static num = 42;
+
+    constructor() {
+      // ...
+    }
+  }
+
+  console.log(Animal.num); // 42
+  ```
+
+### TypeScript 中类的用法
+
+- #### 访问修饰符( `public` / `private` / `protected` )
+
+  :dart: **public** ：当类中的参数定义时，默认为 public 访问方式，public 可以在类的**内部、外部**调用，且**可以继承**。
 
   ```ts
   class Person {
-    /* ---- 类的内部 ---- */
-    // public name:string = "chris";
     name: string = "chris";
+    // 相当于 public name:string = "chris";
     sayHello() {
       console.log("hello " + this.name);
     }
-    /* ---------------- */
   }
   const chris = new Person();
   class Teacher extends Person {
@@ -684,9 +772,7 @@ console.log(crystal.sayWeather()); // 今天天气不错;
   crystal.sayBye(); // bye chris
   ```
 
-- `private`
-
-  private 只能在类的**内部调用，不可以继承**。
+  :dart: **private** ：只能在类的**内部调用，不可以继承**。
 
   ```ts
   class Person {
@@ -707,9 +793,7 @@ console.log(crystal.sayWeather()); // 今天天气不错;
   crystal.sayBye(); // 报错，不可以继承
   ```
 
-- `protected`
-
-  protected 只能在类的**内部调用，可以继承**。
+  :dart: **protected** ：只能在类的**内部调用，可以继承**。
 
   ```ts
   class Person {
@@ -730,116 +814,82 @@ console.log(crystal.sayWeather()); // 今天天气不错;
   crystal.sayBye(); // bye chris
   ```
 
-### 4.2 类的构造函数
+- #### 参数属性
 
-```ts
-class Person {
-  name: string;
-  constructor(name: string) {
-    this.name = name;
-  }
-}
-```
-
-:point_right: 较为繁琐，可以简化：
-:warning: constructor 中的注解一定要添加类的访问方式，如 `public`
-
-```ts
-class Person {
-  constructor(public name: string) {}
-}
-```
-
-:warning: 只要继承的子类中有构造函数，constructor 中一定要添加 `super()`
-
-```ts
-class Teacher extends Person {
-  constructor(public age: number) {
-    super("chris");
-  }
-}
-
-const chris = new Teacher(18);
-console.log(chris.name); // chris
-console.log(chris.age); // 18
-```
-
-### 4.3 类的 Getter , Setter , static
-
-- Getter / Setter
-
-  :point_right: 结合类的访问方式 `private`，可以实现在类的外部访问不到 `_age`，只能通过 **age()** 方法访问到处理过的 `_age`
+  :books: `修饰符` 和 `readonly` 还可以使用在构造函数参数中，等同于类中定义该属性同时给该属性赋值，使代码更简洁:
 
   ```ts
-  class Student {
-    constructor(private _age: number) {}
-    get age() {
-      return this._age + 3;
-    }
-    set age(age: number) {
-      this._age = age;
-    }
-  }
-  const chris = new Student(25);
-  console.log(chris.age); // 28
-  chris.age = 15;
-  console.log(chris.age); // 18
-  ```
-
-  :warning: 如果不希望方法改动 `_age`，防止误操作，可以将 `_age` 定义为只读
-
-  ```ts
-  class Student {
-    constructor(private readonly _age: number) {}
-    get age() {
-      return this._age + 3;
-    }
-    set age(age: number) {
-      this._age = age; // 报错，_age 不能被修改
+  class Person {
+    name: string;
+    constructor(name: string) {
+      this.name = name;
     }
   }
   ```
 
-- static (静态类)
-
-  :point_right: 静态类 `static`，可以不用实例化，就能调用里面的方法
+  :point_right: 较为繁琐，可以简化：
 
   ```ts
-  class Student {
-    static sayHello() {
-      console.log("hello");
-    }
+  class Person {
+    public constructor(public name: string) {}
   }
-  Student.sayHello();
   ```
 
-### 4.4 抽象类
+- #### readonly
 
-:point_right: 抽象类中申明一个方法（抽象），子类继承时，可以根据情况，在这个方法里有自己的业务逻辑，不冲突
+  :books: 只读属性关键字，只允许出现在 **属性声明** 或 **索引签名** 或 **构造函数**
 
-```ts
-abstract class Person {
-  abstract skill();
-}
+  :warning: 如果 `readonly` 和其他访问 **修饰符** 同时存在的话，需要写在其 **后面**
 
-class Student extends Person {
-  skill() {
-    console.log("学习");
+  ```ts
+  class Animal {
+    public constructor(readonly name) {}
   }
-}
 
-class Teacher extends Person {
-  skill() {
-    console.log("教育");
-  }
-}
+  let a = new Animal("Jack");
+  console.log(a.name); // Jack
+  a.name = "Tom"; // 报错，name 只读
+  ```
 
-class Police extends Person {
-  skill() {
-    console.log("正义");
+- #### 抽象类
+
+  :books: `abstract` 用于定义 **抽象类** 和其中的 **抽象方法** 。
+
+  :warning: 抽象类是不允许被实例化
+
+  ```ts
+  abstract class Animal {
+    public name;
+    public constructor(name) {
+      this.name = name;
+    }
+    public abstract sayHi();
   }
-}
-```
+
+  let a = new Animal("Jack"); // 报错，不允许实例化
+  ```
+
+  :warning: 抽象类中的抽象方法 **不给出具体实现**，继承抽象类的 **子类** 必须 **实现抽象类中的抽象方法**
+
+  ```ts
+  abstract class Animal {
+    public name;
+    public constructor(name) {
+      this.name = name;
+    }
+    // 1. 抽象方法不给出具体实现
+    public abstract sayHi();
+  }
+
+  class Cat extends Animal {
+    // 2. 继承子类必须实现抽象中的抽象方法
+    public sayHi() {
+      console.log(`Meow, My name is ${this.name}`);
+    }
+  }
+
+  let cat = new Cat("Tom");
+  ```
 
 ## tips
 
