@@ -480,7 +480,26 @@
 
 ## 二、进阶
 
-## 1. 枚举
+## 1. 类型别名 / 字符串字面量类型
+
+:books: 类型别名用来给一个类型起个新名字，常用于联合类型
+
+```ts
+type Name = string | number;
+let chris: Name = "chris";
+```
+
+:books:字符串字面量类型用来约束取值只能是某 **几个字符串中的一个**
+
+```ts
+type Fruit = "apple" | "banana" | "orange";
+let fruit1: Fruit = "apple";
+let fruit1: Fruit = "peach"; // 报错，不能将类型“"peach"”分配给类型“Fruit”
+```
+
+:warning: 类型别名与字符串字面量类型都是使用 `type` 进行定义
+
+## 2. 枚举
 
 :books:枚举成员会被赋值为从 0 开始递增的数字，同时也会对枚举值到枚举名进行反向映射
 
@@ -607,7 +626,7 @@ console.log(Days[1] === "Mon"); // true
   ];
   ```
 
-## 4. class 类
+## 3. 类
 
 ```ts
 class Person {

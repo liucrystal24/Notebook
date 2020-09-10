@@ -333,3 +333,11 @@ console.log(Color1);
   Green, // 枚举成员必须具有初始化表达式。
   Blue,
 } */
+
+type Name = string | number;
+let chris: Name = "chris";
+console.log(chris);
+
+type Fruit = "apple" | "banana" | "orange";
+let fruit1: Fruit = "apple";
+let fruit2: Fruit = "peach"; // 报错，不能将类型“"peach"”分配给类型“Fruit”

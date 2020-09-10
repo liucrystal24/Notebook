@@ -26,4 +26,12 @@
 
 ### 2020-9-7
 
-- [x] :link: https://ts.xcatliu.com/advanced/ (联合类型)
+- [x] :link: https://ts.xcatliu.com/advanced/ (函数类型)
+
+### 2020-9-8
+
+- [x] :link: https://ts.xcatliu.com/advanced/ (类型断言)
+
+### 2020-9-9
+
+- [ ] :link: https://ts.xcatliu.com/advanced/ ()
