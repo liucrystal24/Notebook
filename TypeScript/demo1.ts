@@ -2,7 +2,7 @@
  * @Author: ChrisLiu
  * @Date: 2020-09-03 21:44:26
  * @LastEditors: ChrisLiu
- * @LastEditTime: 2020-09-11 00:13:47
+ * @LastEditTime: 2020-09-12 00:13:58
  * @Description: file content
  */
 // const arr1 = [1, { a: 1 }, 3];
@@ -364,18 +364,83 @@
 // console.log(a.name); // Jack
 // a.name = "Tom";
 
-class Person {
-  _name: string = "chris";
-  get name() {
-    // console.log(this._name);
-    return this._name;
-  }
-  set name(name: string) {
-    this._name = name;
+// class Person {
+//   _name: string = "chris";
+//   get name() {
+//     // console.log(this._name);
+//     return this._name;
+//   }
+//   set name(name: string) {
+//     this._name = name;
+//   }
+// }
+
+// let chris = new Person();
+// console.log(chris.name);
+// chris.name = "tom";
+// console.log(chris.name);
+
+// interface Parent1 {
+//   inter: number;
+// }
+
+// type Parent2 = {
+//   ty: number;
+// };
+
+// class Parent3 {
+//   cla: number;
+// }
+
+// // 1. i-c
+
+// interface Sonic extends Parent3 {
+//   sonic: number;
+// }
+// let soni: Sonic = { cla: 3, sonic: 5 };
+// // 2. c-i xx
+// // class Sonci extends Parent1 {
+// //   sonci: number;
+// // }
+// // 3. t-c
+// type Sontc = Parent3 & { sontc: number };
+// let sontc: Sontc = { cla: 3, sontc: 5 };
+
+// 4. c-t xx
+
+// class Sonct extends Parent2 {
+//   sonct: number;
+// }
+
+// let sonct: Sonct = {
+//   ty: 3,
+//   sconct: 5,
+// };
+
+interface Shout {
+  shout();
+}
+class Cat implements Shout {
+  shout() {
+    console.log("cat shout");
   }
 }
+class Person implements Shout {
+  shout() {
+    console.log("person shout");
+  }
+}
+let cat: Cat = new Cat();
+let chris: Person = new Person();
 
-let chris = new Person();
-console.log(chris.name);
-chris.name = "tom";
-console.log(chris.name);
+cat.shout();
+chris.shout();
+
+// class Student {
+//   hi() {
+//     console.log("hi");
+//   }
+// }
+
+// let xiaoming: Student = new Student();
+// console.log(xiaoming.hi());

@@ -891,12 +891,67 @@ console.log(Days[1] === "Mon"); // true
   let cat = new Cat("Tom");
   ```
 
-## tips
+## 4. 类与接口
 
-### :books: `class` , `type` , `interface` 用法区别
+- ### 类实现接口
 
-- `type` , `interface` 在运行时是被消除的，但是 `class` 经过编译后仍然存在
-- `interface` 只能声明对象类型、函数类型，`type` 可以声明基本类型，联合类型，元组等类型
+  :books: 接口除了可以用于对「对象的形状（Shape）」进行描述，还可以对类的一部分行为进行**抽象**。
+
+  :books: **实现（implements）** 是面向对象中的一个重要概念。一般来讲，一个类只能继承自另一个类，有时候不同类之间可以有一些共有的特性，这时候就可以把特性提取成接口 **（interfaces）**，用 **implements** 关键字来实现。这个特性大大提高了面向对象的灵活性。
+
+  :point_right: 举例：动物类中，猫有大叫的方法。人这个类也有大叫的方法，这时就可以把大叫这个方法提取出来，作为一个接口，猫和人都去实现它：
+
+  ```ts
+  interface Shout {
+    shout();
+  }
+  class Cat extends Animal implements Shout {
+    shout() {
+      console.log("cat shout");
+    }
+  }
+  class Person implements Shout {
+    shout() {
+      console.log("person shout");
+    }
+  }
+
+  let cat: Cat = new Cat();
+  let chris: Person = new Person();
+
+  cat.shout(); // cat shout
+  chris.shout(); // person shout
+  ```
+
+  :point_right: 一个类可以实现多个接口:
+
+  ```ts
+  interface Shout {
+    shout();
+  }
+
+  interface Say {
+    sayhi();
+    saybye();
+  }
+
+  class Person implements Shout, Say {
+    shout() {
+      console.log("person shout");
+    }
+    sayhi() {
+      console.log("person sayhi");
+    }
+    saybye() {
+      console.log("person saybye");
+    }
+  }
+  ```
+
+- ### `class` , `type` , `interface` 用法区别
+
+  :books: `type` , `interface` 在运行时是被消除的，但是 `class` 经过编译后仍然存在
+  :books: `interface` 只能声明对象类型、函数类型，`type` 可以声明基本类型，联合类型，元组等类型
 
   ```ts
   // 基本
@@ -913,7 +968,7 @@ console.log(Days[1] === "Mon"); // true
   type Data = [number, string];
   ```
 
-- `interface` 可以声明合并，`type` 不行
+  :books: `interface` 可以声明合并，`type` 不行
 
   ```ts
   interface Point {
@@ -926,30 +981,28 @@ console.log(Days[1] === "Mon"); // true
   const point: Point = { x: 1, y: 2 };
   ```
 
-- `interface` ，`type` 可以互相继承
+  :books: `interface` ，`type` 可以互相继承，且都可以继承 `class`
 
   ```ts
-  // interface 继承 interface
-  interface PartialPointX {
-    x: number;
-  }
-  interface Point extends PartialPointX {
+  // interface 继承 type
+  type PointX = { x: number };
+  interface Point2d extends PointX {
     y: number;
   }
 
   // type 继承 interface
-  type PartialPointX = { x: number };
-  type Point = PartialPointX & { y: number };
-
-  // interface 继承 type
-  type PartialPointX = { x: number };
-  interface Point extends PartialPointX {
-    y: number;
-  }
-
-  // type 继承 type
-  interface PartialPointX {
+  interface PointX {
     x: number;
   }
-  type Point = PartialPointX & { y: number };
+  type Point2d = PointX & { y: number };
+
+  // type / interface 继承 class
+  class PointX {
+    x: number;
+  }
+  type Point2d = PointX & { y: number };
+  interface Point3d {
+    y: number;
+    z: number;
+  }
   ```
