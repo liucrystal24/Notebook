@@ -1113,3 +1113,85 @@ console.log(Days[1] === "Mon"); // true
     return result;
   }
   ```
+
+## 6. 声明合并
+
+:books: 如果定义了两个相同名字的函数、接口或类，那么它们会合并成一个类型
+
+- ### 函数合并
+
+  :point_right: 之前说明的 **重载** 定义多个函数类型：
+
+  ```ts
+  function reverse(x: number): number;
+  function reverse(x: string): string;
+  function reverse(x: number | string): number | string {
+    if (typeof x === "number") {
+      return Number(x.toString().split("").reverse().join(""));
+    } else if (typeof x === "string") {
+      return x.split("").reverse().join("");
+    }
+  }
+  ```
+
+- ### 接口合并
+
+  :point_right: 接口中的属性在合并时会简单的合并到一个接口中：
+
+  ```ts
+  interface Alarm {
+    price: number;
+  }
+  interface Alarm {
+    weight: number;
+  }
+  ```
+
+  :point_right: 合并成:
+
+  ```ts
+  interface Alarm {
+    price: number;
+    weight: number;
+  }
+  ```
+
+  :warning: 合并的 **属性的类型必须是唯一** 的
+
+  ```ts
+  interface Alarm {
+    price: number;
+  }
+  interface Alarm {
+    price: string; // 类型不一致，会报错
+    weight: number;
+  }
+  ```
+
+  :books: 接口中方法的合并，与函数的合并一样
+
+  ```ts
+  interface Alarm {
+    price: number;
+    alert(s: string): string;
+  }
+  interface Alarm {
+    weight: number;
+    alert(s: string, n: number): string;
+  }
+  ```
+
+  :point_right: 合并成:
+
+  ```ts
+  interface Alarm {
+    price: number;
+    weight: number;
+    alert(s: string): string;
+    alert(s: string, n: number): string;
+  }
+  ```
+
+- ### 类的合并
+
+  :books: 类的合并与接口的合并规则一致
