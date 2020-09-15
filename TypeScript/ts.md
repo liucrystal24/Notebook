@@ -2,7 +2,7 @@
  * @Author: ChrisLiu
  * @Date: 2020-09-02 23:56:29
  * @LastEditors: ChrisLiu
- * @LastEditTime: 2020-09-07 00:20:22
+ * @LastEditTime: 2020-09-15 23:55:54
  * @Description: file content
 -->
 
@@ -32,6 +32,10 @@
 
 - [x] :link: https://ts.xcatliu.com/advanced/ (类型断言)
 
-### 2020-9-9
+### 2020-9-9 ~ 2020-9-14
 
-- [ ] :link: https://ts.xcatliu.com/advanced/ ()
+- [x] :link: https://ts.xcatliu.com/advanced/ (进阶)
+
+### 2020-9-15
+
+- [ ] :link: https://ts.xcatliu.com/advanced/ (声明文件整理)
