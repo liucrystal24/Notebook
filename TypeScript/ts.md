@@ -2,7 +2,7 @@
  * @Author: ChrisLiu
  * @Date: 2020-09-02 23:56:29
  * @LastEditors: ChrisLiu
- * @LastEditTime: 2020-09-15 23:55:54
+ * @LastEditTime: 2020-09-17 23:58:03
  * @Description: file content
 -->
 
@@ -39,3 +39,7 @@
 ### 2020-9-15
 
 - [ ] :link: https://ts.xcatliu.com/advanced/ (声明文件整理)
+
+### 2020-9-16-17
+
+- [x] add taiTime& taiArea
