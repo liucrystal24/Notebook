@@ -2,7 +2,7 @@
  * @Author: ChrisLiu
  * @Date: 2020-09-02 23:56:29
  * @LastEditors: ChrisLiu
- * @LastEditTime: 2020-09-17 23:58:03
+ * @LastEditTime: 2020-09-19 23:55:05
  * @Description: file content
 -->
 
@@ -43,3 +43,7 @@
 ### 2020-9-16-17
 
 - [x] add taiTime& taiArea
+
+### 2020-9-18-19
+
+- [x] add areaLegend& areadisPic
