@@ -1305,4 +1305,212 @@ npm install @types/jquery --save-dev
   jQuery.ajax("/api/post_something", settings);
   ```
 
-  :warning: 为了防止命名冲突，尽量减少全局变量或全局类型的数量，放到 `namespace` 下
+  :warning: 为了防止命名冲突，尽量减少全局变量或全局类型的数量，放到 `namespace` 下。
+
+- #### npm 包
+
+  :books: 一般我们通过 `import foo from 'foo'` 导入一个 npm 包。
+
+  在我们尝试给一个 npm 包创建声明文件之前，需要先看看它的声明文件是否已经存在。一般来说，npm 包的声明文件可能存在于两个地方：
+
+  1. 与该 npm 包绑定在一起。判断依据是 `package.json` 中有 `types` 字段，或者有一个 `index.d.ts` 声明文件。这种模式不需要额外安装其他包。
+
+  2. 发布到 `@types` 里。我们只需要尝试安装一下对应的 `@types` 包就知道是否存在该声明文件，安装命令是 `npm install @types/foo --save-dev` 。这种模式一般是由于 npm 包的维护者没有提供声明文件，所以只能由其他人将声明文件发布到 `@types` 里了。
+
+  假如以上两种方式都没有找到对应的声明文件，那么我们就需要自己为它写声明文件了:
+
+  :point_right: 创建一个 `types` 目录，专门用来管理自己写的声明文件，将 foo 的声明文件放到 `types/foo/index.d.ts` 中。这种方式需要配置下 `tsconfig.json` 中的 `paths` 和 `baseUrl` 字段。
+
+  目录结构：
+
+  ```
+  /path/to/project
+  ├── src
+  |  └── index.ts
+  ├── types
+  |  └── foo
+  |     └── index.d.ts
+  └── tsconfig.json
+  ```
+
+  `tsconfig.json`:
+
+  ```json
+  {
+    "compilerOptions": {
+      "module": "commonjs",
+      "baseUrl": "./",
+      "paths": {
+        "*": ["types/*"]
+      }
+    }
+  }
+  ```
+
+  :books: 声明语法
+
+  - `export` 导出变量
+  - `export namespace` 导出（含有子属性的）对象
+  - `export default` ES6 默认导出
+  - `export =` commonjs 导出模块
+
+  :warning: npm 包的声明文件与全局变量的声明文件有很大区别。在 npm 包的声明文件中，使用 `declare` 不再会声明一个全局变量，而只会在**当前文件中声明一个局部变量**。只有在声明文件中使用 `export` 导出，然后在使用方 `import` 导入后，才会应用到这些类型声明。
+
+  #### `export`
+
+  导出：
+
+  ```ts
+  // types/foo/index.d.ts
+
+  export const name: string;
+  export function getName(): string;
+  export class Animal {
+    constructor(name: string);
+    sayHi(): string;
+  }
+  export enum Directions {
+    Up,
+    Down,
+    Left,
+    Right,
+  }
+  export interface Options {
+    data: any;
+  }
+  ```
+
+  对应的导入和使用模块：
+
+  ```ts
+  // src/index.ts
+
+  import { name, getName, Animal, Directions, Options } from "foo";
+
+  console.log(name);
+  let myName = getName();
+  let cat = new Animal("Tom");
+  let directions = [
+    Directions.Up,
+    Directions.Down,
+    Directions.Left,
+    Directions.Right,
+  ];
+  let options: Options = {
+    data: {
+      name: "foo",
+    },
+  };
+  ```
+
+  也可以使用 `declare` 先声明多个变量，然后在 `export` 一次性导出，上例声明文件可以改写为：
+
+  ```ts
+  // types/foo/index.d.ts
+
+  declare const name: string;
+  declare function getName(): string;
+  declare class Animal {
+    constructor(name: string);
+    sayHi(): string;
+  }
+  declare enum Directions {
+    Up,
+    Down,
+    Left,
+    Right,
+  }
+  interface Options {
+    data: any;
+  }
+
+  export { name, getName, Animal, Directions, Options };
+  ```
+
+  :warning: 与全局变量的声明文件类似，`interface` 前是不需要 `declare` 的。
+
+  #### `export default`
+
+  :books: 在 ES6 模块系统中，使用 `export default` 可以导出一个默认值，使用方可以用 `import foo from 'foo'` 而不是 `import { foo } from 'foo'` 来导入这个默认值。
+
+  ```ts
+  // types/foo/index.d.ts
+
+  export default function foo(): string;
+  ```
+
+  ```ts
+  // src/index.ts
+
+  import foo from "foo";
+
+  foo();
+  ```
+
+  :warning: 只有 **function、class** 和 **interface** 可以直接默认导出，其他的变量需要先 `declare` 定义出来，再默认导出。
+
+### 声明文件中的依赖
+
+:books: 一个声明文件有时会依赖另一个声明文件中的类型，比如我们在声明文件中导入了 moment，并且使用了 moment.CalendarKey 这个类型。
+
+```ts
+// types/moment-plugin/index.d.ts
+
+import * as moment from "moment";
+
+declare module "moment" {
+  export function foo(): moment.CalendarKey;
+}
+```
+
+除了可以在声明文件中通过 `import` 导入另一个声明文件中的类型之外，还有一个语法也可以用来导入另一个声明文件，那就是**三斜线指令**。
+
+#### 三斜线指令
+
+:books: 类似于声明文件中的 `import`，它可以用来导入另一个声明文件。与 import 的区别是，当且仅当在以下几个场景下，我们才需要使用三斜线指令替代 import。
+
+- 当我们在**书写**一个全局变量的声明文件时
+
+- 当我们需要**依赖**一个全局变量的声明文件时
+
+#### :dart: 书写一个全局变量的声明文件
+
+在全局变量的声明文件中，是不允许出现 `import`, `export` 关键字的。一旦出现了，那么他就会被视为一个 npm 包或 UMD 库，就不再是全局变量的声明文件了。当我们在书写一个全局变量的声明文件时，如果需要引用另一个库的类型，那么就 **必须用三斜线指令** 。
+
+:books: `///` 后面使用 xml 的格式添加了对 `jquery` 类型的依赖，这样就可以在声明文件中使用 `JQuery.AjaxSettings` 类型了。
+
+```ts
+// types/jquery-plugin/index.d.ts
+
+/// <reference types="jquery" />
+
+declare function foo(options: JQuery.AjaxSettings): string;
+```
+
+```ts
+// src/index.ts
+
+foo({});
+```
+
+:warning: 三斜线指令必须放在文件的**最顶端**，三斜线指令的前面只允许出现单行或多行注释。
+
+#### :dart: 依赖一个全局变量的声明文件
+
+当我们需要依赖一个全局变量的声明文件时，由于全局变量不支持通过 `import` 导入，当然也就必须使用三斜线指令引入。
+
+```ts
+// types/node-plugin/index.d.ts
+
+/// <reference types="node" />
+
+export function foo(p: NodeJS.Process): string;
+```
+
+```ts
+// src/index.ts
+
+import { foo } from "node-plugin";
+
+foo(global.process);
+```
