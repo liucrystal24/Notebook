@@ -1198,6 +1198,111 @@ console.log(Days[1] === "Mon"); // true
 
 ## 7.声明文件
 
-什么是声明文件
+:books: 通常我们会把声明语句放到一个单独的文件 `（xxx.d.ts）` 中，这就是声明文件。
 
-通常我们会把声明语句放到一个单独的文件中，这就是声明文件。
+:warning: 声明文件必需以 `.d.ts` 为后缀。如果没有解析，可以检查下 `tsconfig.json` 中 `files` 、 `include` 和 `exclude` 配置。
+
+```tree
+/path/to/project
+├── src
+|  ├── index.ts
+|  └── jQuery.d.ts
+└── tsconfig.json
+```
+
+### 第三方声明文件
+
+有些第三方库的声明文件，可以使用 `@types` 统一管理，直接使用 npm 安装对应的声明模块，以 `JQuery` 举例：
+
+```bash
+npm install @types/jquery --save-dev
+```
+
+可以在[这个页面](https://www.typescriptlang.org/dt/search)搜索你需要的声明文件。
+
+### 书写声明文件
+
+当一个第三方库没有提供声明文件时，我们就需要自己书写声明文件
+
+- #### 全局变量
+
+  :books: 声明语法
+
+  - `declare var` 声明全局变量
+  - `declare function` 声明全局方法
+  - `declare class` 声明全局类
+  - `declare enum` 声明全局枚举类型
+  - `declare namespace` 声明（含有子属性的）全局对象
+  - `interface 、type` 声明全局类型
+
+  #### `declare var`
+
+  ```ts
+  // src/jQuery.d.ts
+
+  declare var jQuery: (selector: string) => any;
+  ```
+
+  ```ts
+  // src/index.ts
+
+  jQuery("#foo");
+  ```
+
+  :warning: 声明语句中只能定义类型（`.d.ts 文件中`），切**勿在声明语句中定义具体的实现**。
+
+  #### `declare namespace`
+
+  ```ts
+  // src/jQuery.d.ts
+
+  declare namespace jQuery {
+    function ajax(url: string, settings?: any): void;
+    const version: number;
+    class Event {
+      blur(eventType: EventType): void;
+    }
+    enum EventType {
+      CustomClick,
+    }
+  }
+  ```
+
+  ```ts
+  // src/index.ts
+
+  jQuery.ajax("/api/get_something");
+  console.log(jQuery.version);
+  const e = new jQuery.Event();
+  e.blur(jQuery.EventType.CustomClick);
+  ```
+
+  :warning: 在 `declare namespace` 内部，我们直接使用 `function ajax` 来声明函数，而不是使用 `declare function ajax`。类似的，也可以使用 `const` , `class` , `enum` 等语句。
+
+  #### `interface 和 type`
+
+  ```ts
+  // src/jQuery.d.ts
+
+  declare namespace jQuery {
+    interface ajaxSettings {
+      method?: "GET" | "POST";
+      data?: any;
+    }
+    function ajax(url: string, settings?: ajaxSettings): void;
+  }
+  ```
+
+  ```ts
+  // src/index.ts
+
+  let settings: jQuery.AjaxSettings = {
+    method: "POST",
+    data: {
+      name: "foo",
+    },
+  };
+  jQuery.ajax("/api/post_something", settings);
+  ```
+
+  :warning: 为了防止命名冲突，尽量减少全局变量或全局类型的数量，放到 `namespace` 下
