@@ -4,9 +4,9 @@
 
 - W3C 盒子模型
 
-  width：content_width
+  width : content_width
 
-  height：content_height
+  height : content_height
 
   ```css
   box-sizing: content-box;
@@ -14,9 +14,9 @@
 
 - IE 盒子模型
 
-  width：content_width + padding_width + border_width
+  width : content_width + padding_width + border_width
 
-  height：content_height + padding_height + border_height
+  height : content_height + padding_height + border_height
 
   ```css
   box-sizing: border-box;
@@ -24,9 +24,7 @@
 
 ## 2. 如何垂直居中?
 
-### :dart: parent 定高：
-
-**html:**
+**HTML:**
 
 ```html
 <div class="parent">
@@ -39,7 +37,44 @@
 </div>
 ```
 
-#### 1. transform: translate(-50%,-50%)
+### (1) parent 不定高：
+
+上下加一个 padding 就可以把父元素撑起来
+
+```css
+.parent {
+  border: 3px solid red;
+  padding: 10px 0;
+}
+.child {
+  border: 3px solid green;
+}
+```
+
+### (2) parent 定高：
+
+:star: 推荐程度递减
+
+#### 1. flex;
+
+align-items:center; 垂直居中
+justify-content:center; 水平居中
+
+```css
+.parent {
+  height: 600px;
+  border: 3px solid red;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.child {
+  border: 3px solid green;
+  width: 300px;
+}
+```
+
+#### 2. transform: translate(-50%,-50%)
 
 child 不定宽高
 
@@ -58,7 +93,7 @@ child 不定宽高
 }
 ```
 
-#### 2. margin-top: -（50% child_height）px;
+#### 3. margin-top: -（50% child_height）px;
 
 child 定高(垂直居中)，定宽(水平居中)
 
@@ -80,7 +115,7 @@ child 定高(垂直居中)，定宽(水平居中)
 }
 ```
 
-#### 3. margin:auto;
+#### 4. margin:auto;
 
 child 定高(垂直居中)，定宽(水平居中)
 
@@ -100,25 +135,6 @@ child 定高(垂直居中)，定宽(水平居中)
   bottom: 0;
   left: 0;
   right: 0;
-}
-```
-
-#### 4. display:flex; align-items:center;
-
-align-items:center; 垂直居中
-justify-content:center; 水平居中
-
-```css
-.parent {
-  height: 600px;
-  border: 3px solid red;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.child {
-  border: 3px solid green;
-  width: 300px;
 }
 ```
 
