@@ -1,6 +1,6 @@
 # TypeScript
 
-- [ ] :link: https://ts.xcatliu.com/advanced/
+- [x] :link: https://ts.xcatliu.com/advanced/
 - [x] :link: https://www.bilibili.com/video/BV1qV41167VD (1-14)
 - [ ] :link: https://www.tslang.cn/docs/home.html
 

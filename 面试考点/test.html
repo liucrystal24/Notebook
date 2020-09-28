@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+  </head>
+  <body>
+    <mark>123</mark>
+
+    <input id="myCar" list="cars" />
+    <datalist id="cars">
+      <option value="BMW"></option>
+      <option value="Ford"></option>
+      <option value="Volvo"></option>
+    </datalist>
+
+    <meter value="60" min="0" max="100" low="20" high="80"></meter>
+
+    <progress id="file" max="100" value="20"></progress>
+
+    <form oninput="result.value=parseInt(a.value)+parseInt(b.value)">
+      <input type="range" name="b" value="50" /> +
+      <input type="number" name="a" value="10" /> =
+      <output name="result"></output>
+    </form>
+
+    <video
+      controls="controls"
+      width="400"
+      autoplay="autoplay"
+      height="300"
+      loop="loop"
+    >
+      <source src="./test.mp4" type="video/mp4" />
+      Sorry, your browser doesn't support embedded videos.
+    </video>
+
+    <audio controls src="./test.mp3">
+      Your browser does not support the
+      <code>audio</code> element.
+    </audio>
+  </body>
+</html>
