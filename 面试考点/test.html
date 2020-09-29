@@ -1,3 +1,10 @@
+<!--
+ * @Author: ChrisLiu
+ * @Date: 2020-09-28 22:22:04
+ * @LastEditors: ChrisLiu
+ * @LastEditTime: 2020-09-30 00:33:47
+ * @Description: file content
+-->
 <!DOCTYPE html>
 <html lang="en">
 
@@ -7,6 +14,10 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge" />
   <title>Document</title>
   <style>
+    /* body {
+      overflow: hidden;
+    } */
+
     .parent {
       width: 100px;
       height: 200px;
@@ -21,10 +32,33 @@
       margin-top: 100px;
       border: 1px solid blue;
     }
+
+    #a {
+      height: 100px;
+      width: 100px;
+      border: 1px solid red;
+      float: left;
+    }
+
+    #b {
+      height: 100px;
+      width: 100px;
+      border: 1px solid red;
+      float: right;
+    }
+
+    #c {
+      height: 50px;
+      border: 1px solid green;
+      clear: both;
+    }
   </style>
 </head>
 
 <body>
+  <div id='a'>a</div>
+  <div id='b'>b</div>
+  <div id='c'>c</div>
 
   <div class="parent">
     <div class="child">我是儿子</div>

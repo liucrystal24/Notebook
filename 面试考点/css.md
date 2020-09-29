@@ -210,6 +210,135 @@ child 定高(垂直居中)，定宽(水平居中)
 - overflow 除了 visible 以外的值 ( hidden、auto、scroll )
 - 弹性元素：display ( flex 或 inline-flex 元素的直接子元素 )
 
+### 解决外边距合并
+
+将两个外边距重合的元素放在不同的 BFC 容器中
+
+- 兄弟元素
+
+  **html:**
+
+  ```html
+  <div class="up">我在上面</div>
+  <div class="down">我在下面</div>
+  ```
+
+  **css:**
+
+  ```css
+  .up {
+    width: 100px;
+    height: 100px;
+    border: 1px solid blue;
+    margin: 100px;
+  }
+  .down {
+    width: 100px;
+    height: 100px;
+    border: 1px solid red;
+    margin: 100px;
+    display: inline-block; /* 行内块元素，触发BFC */
+  }
+  ```
+
+- 父子元素
+
+  **html:**
+
+  ```html
+  <div class="parent">
+    <div class="child">我是儿子</div>
+  </div>
+  ```
+
+  **css:**
+
+  ```css
+  .parent {
+    width: 100px;
+    height: 200px;
+    background: red;
+    margin-top: 50px;
+    overflow: hidden; /* 触发父元素BFC,取消上边距合并 */
+  }
+  .child {
+    width: 50px;
+    height: 50px;
+    margin-top: 100px;
+    border: 1px solid blue;
+  }
+  ```
+
 ## 5. CSS 选择器优先级?
 
+- 选择器都有一个权值（内联: 1000，id:100，class:10，html 标签: 1），权值越大越优先
+
+- 当权值相等时，写在后面的覆盖前面的
+
+- !important 优先级最高，但是要少用
+
 ## 6. 如何清除浮动?
+
+- 兄弟元素前有浮动元素
+
+  兄弟元素后元素添加样式
+
+  ```css
+  .son2 {
+    clear: both;
+  ```
+
+- 父元素内有浮动元素
+
+  父元素添加样式
+
+  ```css
+  .parent:after {
+    display: block;
+    content: "";
+    clear: both;
+  }
+  ```
+
+**html:**
+
+```html
+<div class="parent">
+  <div id="a">a</div>
+  <div id="b">b</div>
+  <div id="c">c</div>
+</div>
+```
+
+**css:**
+
+```css
+#a {
+  height: 100px;
+  width: 100px;
+  border: 1px solid red;
+  float: left;
+}
+
+#b {
+  height: 100px;
+  width: 100px;
+  border: 1px solid red;
+  float: right;
+}
+
+#c {
+  height: 50px;
+  border: 1px solid green;
+  clear: both; /* 兄弟元素 clear:both; */
+}
+.parent {
+  border: 1px solid blue;
+}
+/* 父元素 :after */
+.parent:after {
+  display: block;
+  content: "";
+  clear: both;
+}
+```
