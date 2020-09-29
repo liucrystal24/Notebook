@@ -146,5 +146,5 @@
 
 6. #### `flex-flow`
 
-   :books: .box { flex-flow: `< flex-directio >` || `< flex-wrap >`; }
+   :books: .box { flex-flow: `< flex-direction >` || `< flex-wrap >`; }
    :star: flex-flow 属性是 `flex-direction` 属性和 `flex-wrap` 属性的简写形式，默认值为 `row nowrap`。
