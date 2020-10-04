@@ -4,6 +4,28 @@
 
 ## 2. Promise、Promise.all、Promise.race 分别怎么用?
 
+**Promise :**
+
+```js
+function fn() {
+  return new Promise((resolve, reject) => {
+    // 成功时调用
+    resolve("data");
+    // 失败时调用
+    reject("error");
+  });
+}
+fn().then(success, fail).then(success2, fail2);
+```
+
+**Promise.all :**
+
+**promise1** 和 **promise2** 都成功才会调用 **success1**
+
+```js
+Promise.all([promise1, promise2]).then(success1, fail1);
+```
+
 ## 3. 手写函数防抖和函数节流
 
 ## 4. 手写 AJAX
