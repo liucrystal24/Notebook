@@ -2,7 +2,7 @@
  * @Author: ChrisLiu
  * @Date: 2020-09-28 22:22:04
  * @LastEditors: ChrisLiu
- * @LastEditTime: 2020-09-30 00:33:47
+ * @LastEditTime: 2020-10-05 00:53:23
  * @Description: file content
 -->
 <!DOCTYPE html>
@@ -93,7 +93,27 @@
     <code>audio</code> element.
   </audio>
 
-
+  <button onclick="handleClick()">节流</button>
 </body>
+<script>
+  let jieliu = function (fn, delay) {
+    let canuse = true;
+    return function () {
+      if (!canuse) return;
+      canuse = false;
+      setTimeout(() => {
+        fn.apply(this, arguments);
+        console.log(arguments);
+        canuse = true;
+      }, delay);
+    }
+  }
+  // let printClick = function () {
+  //   console.log('click')
+  // }
+  let handleClick = jieliu(() => {
+    console.log(1);
+  }, 2000);
+</script>
 
 </html>
