@@ -68,7 +68,7 @@ Promise.race([promise1, promise2]).then(success1, fail1);
       }, delay);
     };
   }
-  
+
   const throttled = throttle(() => console.log("hi"), 2000);
   throttled(); // 2s后打印 'hi'
   throttled(); // 直接打印 '正在节流，不执行'
@@ -97,6 +97,17 @@ Promise.race([promise1, promise2]).then(success1, fail1);
   ```
 
 ## 4. 手写 AJAX
+
+```js
+var request = new XMLHttpRequest();
+request.open("GET", "/a/b/c?name=ff", true);
+request.onreadystatechange = function () {
+  if (request.readyState === 4 && request.status === 200) {
+    console.log(request.responseText);
+  }
+};
+request.send();
+```
 
 ## 5. this
 
