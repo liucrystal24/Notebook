@@ -4,9 +4,94 @@
 
 :link: [ES6](https://fangyinghang.com/es-6-tutorials/)
 
-- let
-- const
-- 箭头函数
+- ### let
+
+  `let` 不会声明提前，在变量初始化前访问该变量会导致 `ReferenceError`。该变量处在一个自块顶部到初始化处理的“暂存死区”中
+
+  ```js
+  function do_something() {
+    console.log(bar); // undefined
+    console.log(foo); // ReferenceError
+    var bar = 1;
+    let foo = 2;
+  }
+  ```
+
+  `let` 不会在全局声明时（在最顶部的范围）创建 window 对象的属性
+
+  ```js
+  var a = "global";
+  let a = "global";
+  console.log(this.x); // "global"
+  console.log(this.y); // undefined
+  ```
+
+  用在块级作用域中时, `let` 将变量的作用域限制在块内, 而 `var` 声明的变量的作用域是在函数内
+
+  ```js
+  var a = 1;
+  var b = 2;
+
+  if (a === 1) {
+    var a = 11; // the scope is global
+    let b = 22; // the scope is inside the if-block
+
+    console.log(a); // 11
+    console.log(b); // 22
+  }
+
+  console.log(a); // 11
+  console.log(b); // 2
+  ```
+
+- ### const
+
+  `const` 不仅拥有 `let` 的特性，还拥有其他特性。
+
+  `const` 声明创建一个值的只读引用。不能和它所在作用域内的其他变量或函数拥有相同的名称。
+
+  ```js
+  const MY_NUM = 7;
+  MY_NUM = 10; // 报错， 不能重新赋值常量
+
+  const MY_OBJ = { key: "val" };
+  const MY_OBJ = { key: "val2" }; // 报错，不能重写对象
+  MY_OBJ.key = "val3"; // 可以修改，对象属性并不在保护的范围内
+
+  const MY_ARR = [1, 2];
+  const MY_ARR = [1, 2, 3]; // 报错，不能重写数组
+  MY_ARR.push(3); // 可以向数组填充数据
+  ```
+
+- ### 箭头函数
+
+  箭头函数表达式的语法比函数表达式更简洁，并且没有自己的 `this`，`arguments`，`super` 或 `new.target`
+
+  箭头函数表达式更适用于那些本来需要 **匿名函数** 的地方，并且它 **不能用作构造函数**
+
+  ### 语法
+
+  ```js
+  (param1, param2, …, paramN) => expression
+  //相当于：(param1, param2, …, paramN) =>{ return expression; }
+
+  // 当只有一个参数时，圆括号是可选的：
+  (singleParam) => { statements }
+  singleParam => { statements }
+
+  // 没有参数的函数应该写成一对圆括号。
+  () => { statements }
+
+  //加括号的函数体返回对象字面量表达式：
+  params => ({foo: bar})
+  ```
+
+  ### 语法
+
+  ```js
+  
+  ```
+
 - Promise
 - 展开操作符
 - 默认参数
