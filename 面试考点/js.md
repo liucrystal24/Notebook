@@ -73,7 +73,7 @@
 
   ```js
   (param1, param2, …, paramN) => expression
-  //相当于：(param1, param2, …, paramN) =>{ return expression; }
+  // 相当于：(param1, param2, …, paramN) =>{ return expression; }
 
   // 当只有一个参数时，圆括号是可选的：
   (singleParam) => { statements }
@@ -82,14 +82,93 @@
   // 没有参数的函数应该写成一对圆括号。
   () => { statements }
 
-  //加括号的函数体返回对象字面量表达式：
+  // 加括号的函数体返回对象字面量表达式：
   params => ({foo: bar})
+
+  //箭头函数在参数和箭头之间不能换行。
+  var func = ()
+            => 1;
+
+  // 空的箭头函数返回 undefined
+  let empty = () => {};
+
   ```
 
-  ### 语法
+  ### 更简洁的写法
 
   ```js
-  
+  var elements = ["Hydrogen", "Helium", "Lithium", "Beryllium"];
+  // 普通写法
+  elements.map(function (element) {
+    return element.length;
+  });
+  // 箭头函数写法
+  elements.map((element) => element.length);
+  ```
+
+  ### 没有单独的 this
+
+  箭头函数不会创建自己的 this,它只会从自己的 **作用域链的上一层继承** this。
+
+  ```js
+  function Person() {
+    this.age = 0;
+
+    setInterval(() => {
+      this.age++; // |this| 正确地指向 p 实例
+    }, 1000);
+  }
+  var p = new Person();
+  ```
+
+  ### 不绑定 arguments
+
+  箭头函数不绑定 Arguments 对象
+
+  ```js
+  var foo = function () {
+    console.log(arguments[0]);
+  };
+  foo(1); // 1
+
+  var arr = () => {
+    console.log(arguments[0]);
+  };
+  arr(1); // ReferenceError: arguments is not defined
+  ```
+
+  在大多数情况下，使用剩余参数是相较使用 arguments 对象的更好选择。
+
+  ```js
+  function foo(arg1, arg2) {
+    var f = (...args) => args[1];
+    return f(arg1, arg2);
+  }
+  foo(1, 2); //2
+  ```
+
+  ### 使用 new 操作符
+
+  箭头函数不能用作构造器，和 new 一起用会抛出错误。
+
+  ```js
+  var Foo = () => {};
+  var foo = new Foo(); // TypeError: Foo is not a constructor
+  ```
+
+  ### 箭头函数的闭包
+
+  ```js
+  // 标准闭包
+  function A() {
+    var a = 1;
+    return function () {
+      return ++a;
+    };
+  }
+  var v = A();
+  v();
+  v();
   ```
 
 - Promise
