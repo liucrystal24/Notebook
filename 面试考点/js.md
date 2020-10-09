@@ -285,6 +285,16 @@ request.send();
 
 ## 10. 如何用正则实现 trim()？
 
+```js
+String.prototype.trim = function () {
+  return this.replace(/^\s+|\s+$/g, "");
+};
+//或者
+function trim(string) {
+  return string.replace(/^\s+|\s+$/g, "");
+}
+```
+
 ## 11. 不用 class 如何实现继承？用 class 又如何实现？
 
 ## 12. 如何实现数组去重？
