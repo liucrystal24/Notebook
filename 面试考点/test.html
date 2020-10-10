@@ -7,113 +7,131 @@
 -->
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-  <title>Document</title>
-  <style>
-    /* body {
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <style>
+      /* body {
       overflow: hidden;
     } */
 
-    .parent {
-      width: 100px;
-      height: 200px;
-      background: red;
-      margin-top: 50px;
-      border: 1px solid blue;
+      .parent {
+        width: 100px;
+        height: 200px;
+        background: red;
+        margin-top: 50px;
+        border: 1px solid blue;
+      }
+
+      .child {
+        width: 50px;
+        height: 50px;
+        margin-top: 100px;
+        border: 1px solid blue;
+      }
+
+      #a {
+        height: 100px;
+        width: 100px;
+        border: 1px solid red;
+        float: left;
+      }
+
+      #b {
+        height: 100px;
+        width: 100px;
+        border: 1px solid red;
+        float: right;
+      }
+
+      #c {
+        height: 50px;
+        border: 1px solid green;
+        clear: both;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="a">a</div>
+    <div id="b">b</div>
+    <div id="c">c</div>
+
+    <div class="parent">
+      <div class="child">我是儿子</div>
+    </div>
+
+    <mark>123</mark>
+
+    <input id="myCar" list="cars" />
+    <datalist id="cars">
+      <option value="BMW"></option>
+      <option value="Ford"></option>
+      <option value="Volvo"></option>
+    </datalist>
+
+    <meter value="60" min="0" max="100" low="20" high="80"></meter>
+
+    <progress id="file" max="100" value="20"></progress>
+
+    <form oninput="result.value=parseInt(a.value)+parseInt(b.value)">
+      <input type="range" name="b" value="50" /> +
+      <input type="number" name="a" value="10" /> =
+      <output name="result"></output>
+    </form>
+
+    <video
+      controls="controls"
+      width="400"
+      autoplay="autoplay"
+      height="300"
+      loop="loop"
+    >
+      <source src="./test.mp4" type="video/mp4" />
+      Sorry, your browser doesn't support embedded videos.
+    </video>
+
+    <audio controls src="./test.mp3">
+      Your browser does not support the
+      <code>audio</code> element.
+    </audio>
+
+    <button onclick="handleClick()">节流</button>
+    <button onclick="debounced()">防抖</button>
+  </body>
+  <script>
+    let jieliu = function (fn, delay) {
+      let canuse = true;
+      return function () {
+        if (!canuse) return;
+        canuse = false;
+        setTimeout(() => {
+          fn.apply(this, arguments);
+          canuse = true;
+        }, delay);
+      };
+    };
+
+    function debounce(fn, delay) {
+      let timerequest = null;
+      return function () {
+        if (timerequest) {
+          clearTimeout(timerequest);
+        }
+        let callnow = !timerequest;
+        timerequest = setTimeout(() => {
+          timerequest = null;
+        }, delay);
+        if (callnow) {
+          fn.apply(this, arguments);
+        }
+      };
     }
 
-    .child {
-      width: 50px;
-      height: 50px;
-      margin-top: 100px;
-      border: 1px solid blue;
-    }
+    const debounced = debounce(() => console.log("hi"), 1000);
 
-    #a {
-      height: 100px;
-      width: 100px;
-      border: 1px solid red;
-      float: left;
-    }
-
-    #b {
-      height: 100px;
-      width: 100px;
-      border: 1px solid red;
-      float: right;
-    }
-
-    #c {
-      height: 50px;
-      border: 1px solid green;
-      clear: both;
-    }
-  </style>
-</head>
-
-<body>
-  <div id='a'>a</div>
-  <div id='b'>b</div>
-  <div id='c'>c</div>
-
-  <div class="parent">
-    <div class="child">我是儿子</div>
-  </div>
-
-  <mark>123</mark>
-
-  <input id="myCar" list="cars" />
-  <datalist id="cars">
-    <option value="BMW"></option>
-    <option value="Ford"></option>
-    <option value="Volvo"></option>
-  </datalist>
-
-  <meter value="60" min="0" max="100" low="20" high="80"></meter>
-
-  <progress id="file" max="100" value="20"></progress>
-
-  <form oninput="result.value=parseInt(a.value)+parseInt(b.value)">
-    <input type="range" name="b" value="50" /> +
-    <input type="number" name="a" value="10" /> =
-    <output name="result"></output>
-  </form>
-
-  <video controls="controls" width="400" autoplay="autoplay" height="300" loop="loop">
-    <source src="./test.mp4" type="video/mp4" />
-    Sorry, your browser doesn't support embedded videos.
-  </video>
-
-  <audio controls src="./test.mp3">
-    Your browser does not support the
-    <code>audio</code> element.
-  </audio>
-
-  <button onclick="handleClick()">节流</button>
-</body>
-<script>
-  let jieliu = function (fn, delay) {
-    let canuse = true;
-    return function () {
-      if (!canuse) return;
-      canuse = false;
-      setTimeout(() => {
-        fn.apply(this, arguments);
-        console.log(arguments);
-        canuse = true;
-      }, delay);
-    }
-  }
-  // let printClick = function () {
-  //   console.log('click')
-  // }
-  let handleClick = jieliu(() => {
-    console.log(1);
-  }, 2000);
-</script>
-
+    let handleClick = jieliu(() => console.log(1), 2000);
+  </script>
 </html>

@@ -171,56 +171,173 @@
   v();
   ```
 
-- Promise
-- 展开操作符
-- 默认参数
-- import
-- export
+- ### Promise
+
+  Promise 对象用于表示一个异步操作的最终完成 (或失败), 及其结果值
+
+  ```js
+  const promise1 = new Promise((resolve, reject) => {
+    setTimeout(() => {
+      resolve("foo");
+    }, 3000);
+  });
+
+  promise1.then((value) => {
+    console.log(value);
+  });
+
+  // 3秒后打印 foo
+  ```
+
+- ### 展开操作符
+
+  在函数调用/数组构造时, 将数组表达式或者 `string` 在语法层面展开;
+
+  在构造字面量对象时, 将对象表达式按 `key-value` 的方式展开
+
+  ### 等价于 apply 的方式
+
+  ```js
+  function sum(x, y, z) {
+    return x + y + z;
+  }
+
+  const numbers = [1, 2, 3];
+
+  console.log(sum(...numbers)); // 6
+
+  console.log(sum.apply(null, numbers)); // 6
+  ```
+
+  ### 数组拷贝(copy)
+
+  ```js
+  var arr = [1, 2, 3];
+  var arr2 = [...arr]; // like arr.slice()
+  arr2.push(4);
+
+  // arr2 此时变成 [1, 2, 3, 4]
+  // arr 不受影响
+  ```
+
+  :warning: 展开语法和 `Object.assign()` 行为一致, 执行的都是 **浅拷贝** (只遍历一层)
+
+  ### 连接多个数组
+
+  ```js
+  var arr1 = [0, 1, 2];
+  var arr2 = [3, 4, 5];
+  var arr3 = [...arr1, ...arr2];
+  ```
+
+  ### 构造字面量对象时使用展开语法
+
+  **浅拷贝** 和 **对象合并** , 可以使用更简短的展开语法。而不必再使用 `Object.assign()` 方式
+
+  ```js
+  var obj1 = { foo: "bar", x: 42 };
+  var obj2 = { foo: "baz", y: 13 };
+
+  var clonedObj = { ...obj1 };
+  // 克隆后的对象: { foo: "bar", x: 42 }
+
+  var mergedObj = { ...obj1, ...obj2 };
+  // 合并后的对象: { foo: "baz", x: 42, y: 13 }
+  ```
+
+- ### 默认参数
+
+  JavaScript 中函数的参数默认是 `undefined`。然而，在某些情况下可能需要设置一个不同的默认值。这是默认参数可以帮助的地方。
+
+  ```js
+  function multiply(a, b = 1) {
+    return a * b;
+  }
+
+  console.log(multiply(5, 2)); // 10
+
+  console.log(multiply(5)); // 5
+  ```
+
+- 解构赋值
+
+  解构赋值语法是一种 `Javascript 表达式`可以将**属性 / 值**从 **对象 / 数组** 中取出,赋值给其他变量
+
+  ### 解构数组
+
+  ```js
+  let a, b, rest;
+
+  [a, b, ...rest] = [10, 20, 30, 40, 50];
+
+  console.log(a, b, rest); // 10 20 [30,40,50]
+  ```
+
+  ### 解构对象
+
+  ```js
+  var o = { p: 42, q: true };
+  var { p, q } = o;
+
+  console.log(p); // 42
+  console.log(q); // true
+  ```
+
+  ### 交换变量
+
+  ```js
+  var a = 1;
+  var b = 3;
+
+  [a, b] = [b, a];
+  console.log(a); // 3
+  console.log(b); // 1
+  ```
 
 ## 2. Promise、Promise.all、Promise.race 分别怎么用?
 
-**Promise :**
+- ### Promise :
 
-```js
-function fn() {
-  return new Promise((resolve, reject) => {
-    // 成功时调用
-    resolve("data");
-    // 失败时调用
-    reject("error");
-  });
-}
-fn().then(success, fail).then(success2, fail2);
-```
+  ```js
+  function fn() {
+    return new Promise((resolve, reject) => {
+      // 成功时调用
+      resolve("data");
+      // 失败时调用
+      reject("error");
+    });
+  }
+  fn().then(success, fail).then(success2, fail2);
+  ```
 
-**Promise.all :**
+- ### Promise.all :
 
-```js
-Promise.all([promise1, promise2]).then(success1, fail1);
-```
+  ```js
+  Promise.all([promise1, promise2]).then(success1, fail1);
+  ```
 
-:point_right: **promise1** 和 **promise2** 都成功才会调用 **success1**
+  :point_right: **promise1** 和 **promise2** 都成功才会调用 **success1**
 
-**Promise.race :**
+- ### Promise.race :
 
-```js
-Promise.race([promise1, promise2]).then(success1, fail1);
-```
+  ```js
+  Promise.race([promise1, promise2]).then(success1, fail1);
+  ```
 
-- **promise1** 和 **promise2** 只要有一个成功就会调用 **success1**；
-- **promise1** 和 **promise2** 只要有一个失败就会调用 **fail1**；
-- 总之，谁第一个成功或失败，就认为是 race 的成功或失败。
+  :point_right: **promise1** , **promise2** 中第一个成功或失败，就认为结果成功或失败。
 
 ## 3. 手写函数节流和函数防抖
 
-- ### 函数节流
+- ### 函数节流 （控制频率）
+
+  连续触发事件但是在 n 秒中只执行一次函数
 
   ```js
-  // 节流（一段时间执行一次之后，就不执行第二次）
   function throttle(fn, delay) {
     let canuse = true;
     return function () {
       if (!canuse) {
+        // 为了方便理解，这里打印，实际不需要，可以直接 return;
         console.log("正在节流，不执行");
         return;
       }
@@ -238,42 +355,83 @@ Promise.race([promise1, promise2]).then(success1, fail1);
   throttled(); // 直接打印 '正在节流，不执行'
   ```
 
-- ### 函数防抖
+- ### 函数防抖 （控制次数）
+
+  触发事件后在 n 秒内函数只能执行一次，如果在 n 秒内又触发了事件，则会重新计算函数执行时间
+
+  - 延迟执行
 
   ```js
-  // 防抖（一段时间会等，然后带着一起做了）
   function debounce(fn, delay) {
     let timerId = null;
     return function () {
-      const context = this;
-      if (timerId) {
-        window.clearTimeout(timerId);
-      }
+      if (timerId) clearTimeout(timerId);
+
       timerId = setTimeout(() => {
-        fn.apply(context, arguments);
+        fn.apply(this, arguments);
         timerId = null;
       }, delay);
     };
   }
-  const debounced = debounce(() => console.log("hi"));
-  debounced();
-  debounced();
+
+  const debounced = debounce(() => console.log("hi"), 1000);
+  debounced(); // 不打印
+  debounced(); // 1秒后打印 hi
+  ```
+
+  - 立即执行
+
+  ```js
+  function debounce(fn, delay) {
+    let timerId = null;
+    return function () {
+      if (timerId) clearTimeout(timerId);
+
+      let callNow = !timerId;
+
+      timerId = setTimeout(() => {
+        timerId = null;
+      }, delay);
+
+      if (callNow) fn.apply(this, arguments);
+    };
+  }
+
+  const debounced = debounce(() => console.log("hi"), 1000);
+  debounced(); // 立即打印 hi
+  debounced(); // 不打印（ 需要在 1s后执行才打印 ）
   ```
 
 ## 4. 手写 AJAX
 
 ```js
-var request = new XMLHttpRequest();
-request.open("GET", "/a/b/c?name=ff", true);
+const request = new XMLHttpRequest();
+request.open("GET", "a/b/c?id=1", true);
 request.onreadystatechange = function () {
   if (request.readyState === 4 && request.status === 200) {
     console.log(request.responseText);
   }
 };
+// post 方法需要在 send() 中传参
 request.send();
 ```
 
 ## 5. this
+
+- fn()
+  this => **window / global**
+
+- obj.fn()
+  this => **obj**
+
+- fn.call(xx) / fn.call(xx) / fn.bind(xx)
+  this => **xx**
+
+- new Fn()
+  this => **新的对象**
+
+- fn = () => {}
+  this => **外面的 this**
 
 ## 6. 闭包/立即执行函数是什么?
 
