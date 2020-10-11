@@ -435,6 +435,13 @@ request.send();
 
 ## 6. 闭包/立即执行函数是什么?
 
+- # 闭包
+
+  https://zhuanlan.zhihu.com/p/22486908
+
+- # 立刻执行
+  https://zhuanlan.zhihu.com/p/22465092
+
 ## 7. 什么是 JSONP，什么是 CORS，什么是跨域？
 
 ## 8. async/await 怎么用，如何捕获异常？
