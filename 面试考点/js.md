@@ -437,7 +437,7 @@ request.send();
 
 - # 闭包
 
-  https://zhuanlan.zhihu.com/p/22486908
+  https://zhuanlan.zhihu.com/p/224869081
 
 - # 立刻执行
   https://zhuanlan.zhihu.com/p/22465092
