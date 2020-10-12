@@ -2,8 +2,6 @@
 
 ## 1. ES 6 语法知道哪些，分别怎么用?
 
-:link: [ES6](https://fangyinghang.com/es-6-tutorials/)
-
 - ### let
 
   `let` 不会声明提前，在变量初始化前访问该变量会导致 `ReferenceError`。该变量处在一个自块顶部到初始化处理的“暂存死区”中
@@ -437,7 +435,6 @@ request.send();
 
 - ### 闭包
 
-<<<<<<< HEAD
   当函数可以 **记住并访问所在的词法作用域时**，就产生了闭包，即使函数是在 **当前词法作用域之外执行**
 
   ```js
@@ -559,15 +556,53 @@ request.send();
 
 ## 8. async/await 怎么用，如何捕获异常？
 
-https://xiedaimala.com/tasks/b6cf0652-8f5d-434b-900c-517269747366/video_tutorials/3c827109-3fce-4dc6-abdb-c15bfccb0316
+> 一个异步函数由 `async` 关键字定义，`async` 和 `await` 关键字可以使得对有等待时间的（异步），以 Promise 为基础的函数的定义更加简洁优雅，减少特意配置对于 promise 的链式调用。
 
-使用了 promise ,更像是同步函数
+`async 函数` 返回的是 **Promise 对象** , `async / await` 是 Promise 的语法糖。用 `try/catch` 捕获异常，**try** 对应 **resolve** ，**catch** 对应 **reject**
 
-await 要放在 async 里。
+### foo 返回一个 Promise
 
-### 为什么需要 await
+```js
+function foo() {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      let n = parseInt(Math.random() * 5 + 1, 10);
+      if (n <= 3) {
+        resolve("小：" + n);
+      } else {
+        reject("大：" + n);
+      }
+    }, 2000);
+  });
+}
+```
 
-因为更像同步函数，对代码理解的负担小
+### Promise 链式处理
+
+```js
+foo().then(
+  (data) => {
+    console.log("success " + data);
+  },
+  (error) => {
+    console.log("fail " + error);
+  }
+);
+```
+
+### async / await 函数处理
+
+```js
+async function bar() {
+  let result = await foo();
+  try {
+    console.log("success " + result);
+  } catch (error) {
+    console.log("fail " + error);
+  }
+}
+bar();
+```
 
 ## 9. 如何实现深拷贝？
 
