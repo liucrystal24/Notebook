@@ -424,7 +424,7 @@ request.send();
 - obj.fn()
   this => **obj**
 
-- fn.call(xx) / fn.call(xx) / fn.bind(xx)
+- fn.call(xx) / fn.apply(xx) / fn.bind(xx)
   this => **xx**
 
 - new Fn()
@@ -435,16 +435,138 @@ request.send();
 
 ## 6. 闭包/立即执行函数是什么?
 
-- # 闭包
+- ### 闭包
 
-  https://zhuanlan.zhihu.com/p/22486908
+  当函数可以 **记住并访问所在的词法作用域时**，就产生了闭包，即使函数是在 **当前词法作用域之外执行**
 
-- # 立刻执行
-  https://zhuanlan.zhihu.com/p/22465092
+  ```js
+  function foo() {
+    var a = 2;
+    function bar() {
+      console.log(a);
+    }
+    return bar;
+  }
+  var baz = foo();
+  baz(); //2
+  ```
+
+  - `bar( )` 在自己定义的 **词法作用域以外的地方执行**
+
+  - 由于 `bar( )` 所声明的位置，它拥有涵盖 `foo( )` 内部作用域的闭包，使得该作用域能够一直存活，以供 `bar( )` 在之后任何时间进行引用
+
+  - `bar( )` 依然持有对该作用域的引用，而这个引用就叫作闭包
+
+  ### 经典问题
+
+  希望每秒输出一次,分别为 1~5，实际每秒输出一次,都是 6
+
+  ```js
+  for (var i = 1; i <= 5; i++) {
+    setTimeout(function timer() {
+      console.log(i);
+    }, i * 1000);
+  }
+  ```
+
+  :point_right: **延迟函数的回调会在循环结束时才执行** ，尽管循环中的五个函数是在各个迭代中分别定义的，但是它们都被 **封闭在一个共享的全局作用域中** ，因此实际上只有一个 i。我们需要更多的闭包作用域，特别是在循环的过程中**每个迭代都需要一个闭包作用域**
+
+  改进 1：
+
+  ```js
+  for (var i = 1; i <= 5; i++) {
+    (function () {
+      var j = i; // 需要有自己的变量，用来在每个迭代中储存i的值
+      setTimeout(function timer() {
+        console.log(j);
+      }, j * 1000);
+    })();
+  }
+  ```
+
+  改进 2：
+
+  :point_right: for 循环头部的 **let** 声明 , 变量在循环过程中不止被声明一次，每次迭代都会声明。随后的每个迭代都会使用上一个迭代结束时的值来初始化这个变量
+
+  ```js
+  for (let i = 1; i <= 5; i++) {
+    setTimeout(function timer() {
+      console.log(i);
+    }, i * 1000);
+  }
+  ```
+
+- ### 立刻执行函数
+
+  概念：声明一个匿名函数，马上调用这个匿名函数
+
+  作用：创建一个独立的作用域，避免「变量污染」
 
 ## 7. 什么是 JSONP，什么是 CORS，什么是跨域？
 
+- ### JSONP ( JSON with padding )
+
+  ### 原理
+
+  利用 < script > 标签 **没有跨域限制** , 达到与第三方通讯。
+
+  ### 实现
+
+  1.本站脚本创建一个 < script > 元素，地址指向第三方的 API 网址，API **提供一个回调函数 ( 给前端接收数据 )**
+
+  2.浏览器调动 **callback 函数** ，并传递解析后 **json 对象** 作为参数。本站脚本可在 callback 函数里处理所传入的数据
+
+  ### 简单封装 JSONP
+
+  ```js
+  function jsonp(setting) {
+    setting.data = setting.data || {};
+    setting.key = setting.key || "callback";
+    setting.callback = setting.callback || function () {};
+    setting.data[setting.key] = "__onGetData__";
+
+    window.__onGetData__ = function (data) {
+      setting.callback(data);
+    };
+
+    var script = document.createElement("script");
+    var query = [];
+    for (var key in setting.data) {
+      query.push(key + "=" + encodeURIComponent(setting.data[key]));
+    }
+    script.src = setting.url + "?" + query.join("&");
+    document.head.appendChild(script);
+    document.head.removeChild(script);
+  }
+
+  jsonp({
+    url: "http://photo.sina.cn/aj/index",
+    key: "jsoncallback",
+    data: {
+      page: 1,
+      cate: "recommend",
+    },
+    callback: function (ret) {
+      console.log(ret);
+    },
+  });
+  ```
+
+- ### CORS
+
+  跨源资源共享 (CORS) 是一种机制，该机制使用附加的 HTTP 头来告诉浏览器，准许运行在一个源上的 Web 应用访问位于另一不同源选定的资源。
+
 ## 8. async/await 怎么用，如何捕获异常？
+
+https://xiedaimala.com/tasks/b6cf0652-8f5d-434b-900c-517269747366/video_tutorials/3c827109-3fce-4dc6-abdb-c15bfccb0316
+
+使用了 promise ,更像是同步函数
+
+await 要放在 async 里。
+
+### 为什么需要 await
+
+因为更像同步函数，对代码理解的负担小
 
 ## 9. 如何实现深拷贝？
 

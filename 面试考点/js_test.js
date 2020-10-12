@@ -1,29 +1,24 @@
-var arr1 = [1, 2];
-
-[a, b] = arr1;
-
-[b, a] = [a, b];
-
-console.log(a, b);
-
-var elements = ["Hydrogen", "Helium", "Lithium", "Beryllium"];
-
-elements.map(({ length: lengthFooBArX }) => {
-  console.log(lengthFooBArX);
-}); // [8, 6, 7, 9]
-
-var arr = function () {
-  console.log(arguments[0]);
+var nAdd;
+var t = function () {
+  var n = 99;
+  nAdd = function () {
+    n = n + 1;
+  };
+  var t2 = function () {
+    console.log(n);
+  };
+  return t2;
 };
 
-arr();
+let a1 = t(); // console.log(n)
 
-function A() {
-  var a = 1;
-  return function () {
-    return ++a;
-  };
-}
-var v = A();
-console.log(v());
-console.log(v());
+let a2 = t();
+a2();
+nAdd(); // n+1
+nAdd(); // n+1
+a2();
+let a3 = t();
+
+// a1(); // 99
+a2(); // 100
+// a3(); // 99
