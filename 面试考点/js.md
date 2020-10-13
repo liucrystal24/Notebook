@@ -560,7 +560,7 @@ request.send();
 
 `async 函数` 返回的是 **Promise 对象** , `async / await` 是 Promise 的语法糖。用 `try/catch` 捕获异常，**try** 对应 **resolve** ，**catch** 对应 **reject**
 
-### foo 返回一个 Promise
+### 定义一个返回 Promise 的 foo
 
 ```js
 function foo() {
@@ -605,6 +605,15 @@ bar();
 ```
 
 ## 9. 如何实现深拷贝？
+
+https://juejin.im/post/6844903929705136141 + video
+
+### 要点
+
+- 递归
+- 判断类型
+- 检查环（ 循环引用 ）
+- 需要忽略原型
 
 ## 10. 如何用正则实现 trim()？
 
