@@ -606,7 +606,7 @@ bar();
 
 ## 9. 如何实现深拷贝？
 
-https://juejin.im/post/6844903929705136141 + video
+:books: https://juejin.im/post/6844903929705136141 + video
 
 ### 要点
 
@@ -617,17 +617,48 @@ https://juejin.im/post/6844903929705136141 + video
 
 ## 10. 如何用正则实现 trim()？
 
+:books: https://www.bilibili.com/video/BV1ef4y1U7V4?from=search&seid=3176001865319661104
+
 ```js
-String.prototype.trim = function () {
-  return this.replace(/^\s+|\s+$/g, "");
-};
-//或者
 function trim(string) {
   return string.replace(/^\s+|\s+$/g, "");
 }
 ```
 
 ## 11. 不用 class 如何实现继承？用 class 又如何实现？
+
+### 不用 class
+
+? 查一下
+
+```js
+
+```
+
+### class 实现继承
+
+```js
+class Animal {
+  constructor(name) {
+    this.name = name;
+  }
+  shout() {
+    console.log("miao");
+  }
+}
+
+class Cat extends Animal {
+  constructor(name, color) {
+    super(name);
+    this.color = color;
+  }
+  move() {
+    console.log("run");
+  }
+}
+
+let tom = new Cat("tom", "yellow");
+```
 
 ## 12. 如何实现数组去重？
 

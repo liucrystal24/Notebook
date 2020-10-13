@@ -22,3 +22,27 @@ let a3 = t();
 // a1(); // 99
 a2(); // 100
 // a3(); // 99
+
+class Animal {
+  constructor(name) {
+    this.name = name;
+  }
+  shout() {
+    console.log("miao");
+  }
+}
+
+class Cat extends Animal {
+  constructor(name, color) {
+    super(name);
+    this.color = color;
+  }
+  move() {
+    console.log("run");
+  }
+}
+
+let tom = new Cat("tom", "yellow");
+
+console.dir(tom);
+tom.move();
