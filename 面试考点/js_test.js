@@ -1,48 +1,76 @@
-var nAdd;
-var t = function () {
-  var n = 99;
-  nAdd = function () {
-    n = n + 1;
-  };
-  var t2 = function () {
-    console.log(n);
-  };
-  return t2;
-};
+// class Animal {
+//   constructor(name) {
+//     this.name = name;
+//   }
+//   shout() {
+//     console.log("miao");
+//   }
+// }
 
-let a1 = t(); // console.log(n)
+// class Cat extends Animal {
+//   constructor(name, color) {
+//     super(name);
+//     this.color = color;
+//   }
+//   move() {
+//     console.log("run");
+//   }
+// }
 
-let a2 = t();
-a2();
-nAdd(); // n+1
-nAdd(); // n+1
-a2();
-let a3 = t();
+// let tom = new Cat("tom", "yellow");
 
-// a1(); // 99
-a2(); // 100
-// a3(); // 99
+// console.dir(tom);
+// tom.move();
 
-class Animal {
-  constructor(name) {
-    this.name = name;
-  }
-  shout() {
-    console.log("miao");
-  }
-}
+// function Animal(name, color) {
+//   this.name = name;
+//   this.color = color;
+// }
 
-class Cat extends Animal {
-  constructor(name, color) {
-    super(name);
-    this.color = color;
-  }
-  move() {
-    console.log("run");
-  }
-}
+// Animal.prototype.say = function () {
+//   console.log("hi");
+// };
 
-let tom = new Cat("tom", "yellow");
+// function Cat(name, color, age) {
+//   // 若不指定，this 会指向 windows
+//   Animal.call(this, arguments);
+//   this.age = age;
+// }
 
-console.dir(tom);
-tom.move();
+// // 让子类 Cat 的显式原型成为父类 Animal 的实例对象, 同时将构造器(校正)指向子类构造函数本身
+// Cat.prototype = new Animal();
+// Cat.prototype.constructor = Cat;
+// let tom = new Cat("tom", "yellow", "18");
+
+// tom.say(); // hi
+
+// // let arr = [1, 2, 3, 3, 5, 7, 9, 2, 6, 5, 4, 6, 8, 1, 5, 7, 9, 5];
+// let arr = [
+//   { x: 1 },
+//   { x: 2 },
+//   { x: 3 },
+//   { y: 1 },
+//   { y: 2 },
+//   { y: 3 },
+//   { x: 1 },
+// ];
+
+// function arrcheck(array) {
+//   let result = [];
+//   let arrHash = {};
+//   let index = 0;
+//   array.forEach((element) => {
+//     if (arrHash[element] === void 0) {
+//       arrHash[element] = index;
+//       result.push(element);
+//       index += 1;
+//     }
+//   });
+//   return result;
+// }
+// console.log(arrcheck(arr));
+// // let arr1 = [...new Set(arr)];
+// // console.log(arr1);
+
+setTimeout(() => console.log("fn1"), 0);
+setImmediate(() => console.log("fn2"));

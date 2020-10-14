@@ -612,8 +612,8 @@ bar();
 
 - 递归
 - 判断类型
-- 检查环（ 循环引用 ）
-- 需要忽略原型
+- 检查环（ 循环引用 ） 对象引用自己，可能死循环
+- 需要忽略原型，不考虑 `__proto__` ,浪费内存
 
 ## 10. 如何用正则实现 trim()？
 
@@ -629,10 +629,36 @@ function trim(string) {
 
 ### 不用 class
 
-? 查一下
-
 ```js
+// 父类 Animal
+function Animal(name, color) {
+  this.name = name;
+  this.color = color;
+}
 
+Animal.prototype.say = function () {
+  console.log("hi");
+};
+
+// 子类
+function Cat(name, color, age) {
+  // 若不指定，this 会指向 windows
+  Animal.call(this, arguments);
+  this.age = age;
+}
+
+// 让子类 Cat 的显式原型成为父类 Animal 的实例对象, 同时将构造器(校正)指向子类构造函数本身
+/**
+ * let fn = function(){}
+ * fn.prototype = Animal.prototype
+ * Cat.prototype = new fn();
+ * 为什么不能直接 Cat.prototype = new Animal()?
+ */
+Cat.prototype = new Animal();
+Cat.prototype.constructor = Cat;
+let tom = new Cat("tom", "yellow", "18");
+
+tom.say(); // hi
 ```
 
 ### class 实现继承
@@ -658,10 +684,48 @@ class Cat extends Animal {
 }
 
 let tom = new Cat("tom", "yellow");
+tom.shout(); // miao
 ```
 
 ## 12. 如何实现数组去重？
 
-## 13. == 相关问题
+假设有数组：
 
-## 14. 手写一个 Promise
+```js
+let arr = [1, 2, 3, 3, 5, 7, 9, 2, 6, 5, 4, 6, 8, 1, 5, 7, 9, 5];
+```
+
+### hash
+
+```js
+function arrcheck(array) {
+  let result = [];
+  let arrHash = {};
+  let index = 0;
+  array.forEach((element) => {
+    if (arrHash[element] === void 0) {
+      arrHash[element] = index;
+      result.push(element);
+      index += 1;
+    }
+  });
+  return result;
+}
+console.log(arrcheck(arr));
+```
+
+### set
+
+```js
+let arr1 = [...new Set(array)];
+```
+
+### Lodash / \_.uniq
+
+```js
+_.uniq(array);
+```
+
+## 13. 手写一个 Promise
+
+:books: https://juejin.im/post/6844903577828196365
