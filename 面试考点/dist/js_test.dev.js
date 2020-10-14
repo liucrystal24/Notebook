@@ -4,7 +4,7 @@
  * @Author: ChrisLiu
  * @Date: 2020-10-11 23:56:41
  * @LastEditors: ChrisLiu
- * @LastEditTime: 2020-10-15 00:55:14
+ * @LastEditTime: 2020-10-15 01:20:31
  * @Description: file content
  */
 // class Animal {
@@ -72,17 +72,31 @@
 // // console.log(arr1);
 // setTimeout(() => console.log("fn1"), 0);
 // setImmediate(() => console.log("fn2"));
+// setTimeout(() => {
+//   setImmediate(() => {
+//     console.log("SI1");
+//     setTimeout(() => {
+//       console.log("ST1");
+//     }, 0);
+//   });
+//   setTimeout(() => {
+//     console.log("ST2");
+//     setImmediate(() => {
+//       console.log("SI2");
+//     });
+//   }, 0);
+// }, 1000)
 setTimeout(function () {
-  setImmediate(function () {
-    console.log("SI1");
-    setTimeout(function () {
-      console.log("ST1");
-    }, 0);
-  });
   setTimeout(function () {
-    console.log("ST2");
-    setImmediate(function () {
-      console.log("SI2");
+    console.log("f1");
+    process.nextTick(function () {
+      console.log("f2");
     });
   }, 0);
+  setImmediate(function () {
+    console.log("f3");
+  });
+  process.nextTick(function () {
+    console.log("f4");
+  });
 }, 1000);

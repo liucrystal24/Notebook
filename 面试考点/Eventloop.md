@@ -14,7 +14,7 @@
 6. close callback
 7. （再回到 **timers** ）
 
-我们主要需要专注 **timers、poll、check** 三个阶段。
+我们主要需要专注 **`timers、poll、check`** 三个阶段，且一般解决问题都是从 `poll` 阶段开始等待处理。
 
 ### 1、setTimout() 和 setImmediate()
 
@@ -31,15 +31,23 @@ setImmediate(() => {
 
 #### 执行顺序
 
-1、将 `"f1"` 放入 `timers` 队列中，等待执行（虽然 `delay` 为 0，但是仍然只是放入队列，不立刻执行）
+**一、timers 阶段：**
 
-2、进入 `poll` 阶段进行等待
+1、将 `setTimeout` 放入 `timers` 队列中，不立即执行( 即使 delay 为 0，仍然需要先进入 `poll` 阶段再循环)
 
-3、将 `"f2"` 放入 `check` 队列中
+2、将 `setImmediate` 放入 `check` 队列中，不执行（ 因为在 `timers` 阶段 ）
 
-4、由于 `setImmediate` 为立刻执行，所以直接进入 `check` 阶段，先输出 `"f2"`
+**二、poll 阶段：**
 
-5、回到 `timers` 阶段，输出 `"f1"`
+1、 发现 `check` 队列有任务需要执行，进入 `check` 队列
+
+**三、check 阶段：**
+
+1、执行 `setImmediate` 为立刻执行，输出 `"f2"`
+
+**四、timers 阶段：**
+
+1、执行 `setTimeout`，输出 `"f1"`
 
 #### 不定因素
 
@@ -53,7 +61,9 @@ setImmediate(() => {
 
 如果 `Event loop` 开启的比较快，则按照如上的顺序执行，但是如果 `Event loop` 开启的比较慢，开启的时候，`"f1"` 已经提前放入队列了，则直接先输出 `"f1"`，然后在输出 `"f2"`。
 
-所以为了确保执行顺序唯一，最好 **1s 后执行所需要运行的 js 代码** ，确保 `Event loop` 启动完毕，则执行顺序唯一。
+所以为了确保执行顺序唯一，最好 **延迟执行所需要运行的 js 代码** ，确保 `Event loop` 启动完毕，则执行顺序唯一。
+
+#### :warning: 以下所有案例的输出结果均为延迟执行的输出结果！
 
 ```js
 setTimeout(() => {
@@ -90,11 +100,7 @@ setTimeout(() => {
 
 ### 执行顺序
 
-**一、poll 阶段：**
-
-1、 等待
-
-**二、check 阶段：**
+**一、check 阶段：**
 
 `check` 队列 : [ ]
 `timers` 队列 : [ ]
@@ -110,7 +116,7 @@ setTimeout(() => {
 `check` 队列 : [ ~~`f1`~~ ]
 `timers` 队列 : [ `f3` , `f2` ]
 
-**三、timers 阶段：**
+**二、timers 阶段：**
 
 1、 先执行 `f3`，打印 `"ST2"`
 
@@ -121,11 +127,11 @@ setTimeout(() => {
 `check` 队列 : [ ~~`f1`~~ , `f4` ]
 `timers` 队列 : [ ~~`f3`~~ , ~~`f2`~~ ]
 
-**四、poll 阶段：**
+**三、poll 阶段：**
 
 1、发现 `check` 队列里有 `f4` 需要执行
 
-**五、check 阶段：**
+**四、check 阶段：**
 
 1、 执行 `f4`，打印 `"SI2"`
 
@@ -135,3 +141,22 @@ setTimeout(() => {
 ### 2、process.nextTick()
 
 `process.nextTick()` 不属于 `Event loop` 的某一个阶段，是紧跟着当前阶段执行的。
+
+```js
+setTimeout(() => {
+  setTimeout(() => {
+    console.log("f1");
+    process.nextTick(() => {
+      console.log("f2");
+    });
+  }, 0);
+
+  setImmediate(() => {
+    console.log("f3");
+  });
+
+  process.nextTick(() => {
+    console.log("f4");
+  });
+}, 1000);
+```
