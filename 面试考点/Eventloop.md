@@ -4,17 +4,33 @@
 
 类似 `ajax` 的异步请求是 `node.js` 完成以后，再传给 js 的。`node.js` 完成的这一部分遵循 `Event loop` 规则。
 
+### node.js
+
+- setTimeout -> timer
+- setImmediate -> check
+- proce.nextTick() -> 当前阶段后
+
+### chrome
+
+- setTimeout -> 一会儿（ 宏任务 ）
+- .then(fn) -> 马上（ 微任务 ）
+- await -> 转换成 Promise 然后考虑
+
+# node.js
+
 ## 事件循环过程
 
 1. :star: **timers** ( 处理 **setTimeout** 等 )
 2. I/O callback
 3. idle , prepare
 4. :star: **poll** ( 停留事件，准备处理 )
-5. :star: **check** ( 处理 **setImmediate** 等)
+5. :star: **check** ( 处理 **setImmediate** 等 )
 6. close callback
 7. （再回到 **timers** ）
 
-我们主要需要专注 **`timers、poll、check`** 三个阶段，且一般解决问题都是从 `poll` 阶段开始等待处理。
+我们主要需要专注 **`timers、poll、check`** 三个阶段，且一般解决问题都是 **从 `poll` 阶段开始等待处理** 。
+
+## Eventloop 三个 API
 
 ### 1、setTimout() 和 setImmediate()
 
@@ -31,23 +47,21 @@ setImmediate(() => {
 
 #### 执行顺序
 
-**一、timers 阶段：**
+**一、poll 阶段：**
 
-1、将 `setTimeout` 放入 `timers` 队列中，不立即执行( 即使 delay 为 0，仍然需要先进入 `poll` 阶段再循环)
+1、将 `setTimeout` 放入 `timers` 队列中，不执行（ 因为在 `poll` 阶段 ）
 
-2、将 `setImmediate` 放入 `check` 队列中，不执行（ 因为在 `timers` 阶段 ）
+2、将 `setImmediate` 放入 `check` 队列中，不执行（ 因为在 `poll` 阶段 ）
 
-**二、poll 阶段：**
-
-1、 发现 `check` 队列有任务需要执行，进入 `check` 队列
+3、发现 `check` 队列有任务需要执行，进入 `check` 阶段
 
 **三、check 阶段：**
 
-1、执行 `setImmediate` 为立刻执行，输出 `"f2"`
+1、执行 `setImmediate` 为立刻执行，**打印 `"f2"`**
 
 **四、timers 阶段：**
 
-1、执行 `setTimeout`，输出 `"f1"`
+1、执行 `setTimeout`，**打印 `"f1"`**
 
 #### 不定因素
 
@@ -100,63 +114,103 @@ setTimeout(() => {
 
 ### 执行顺序
 
-**一、check 阶段：**
+**一、poll 阶段：**
 
-`check` 队列 : [ ]
-`timers` 队列 : [ ]
+1、 将 `f1` 放入 `check` 队列，不执行（ 因为此时在 `poll` 阶段 ）
 
-1、 将 `f1` 放入 `check` 队列
+2、 将 `f3` 放入 `timers` 队列，不执行（ 因为此时在 `poll` 阶段 ）
 
-2、 将 `f3` 放入 `timers` 队列，不执行（ 因为此时在 `check` 阶段 ）
+3、 发现 `check` 队列有任务需要执行，进入 `check` 阶段
 
-3、 执行 `f1`，打印 `"SI1"`
+`check` 队列 : [ `f1` ]
+`timers` 队列 : [ `f3` ]
 
-4、 将 `f2` 放入 `timers` 队列，不执行（ 因为此时在 `check` 阶段 ）
+**二、check 阶段：**
+
+1、 执行 `f1`，**打印 `"SI1"`**
+
+2、 将 `f2` 放入 `timers` 队列，不执行（ 因为此时在 `check` 阶段 ）
 
 `check` 队列 : [ ~~`f1`~~ ]
 `timers` 队列 : [ `f3` , `f2` ]
 
-**二、timers 阶段：**
+**三、timers 阶段：**
 
-1、 先执行 `f3`，打印 `"ST2"`
+1、 先执行 `f3`，**打印 `"ST2"`**
 
 2、 将 `f4` 放入 `check` 队列，不执行（ 因为此时在 `timers` 阶段 ）
 
-3、 再执行 `f2`，打印 `"ST1"`
+3、 再执行 `f2`，**打印 `"ST1"`**
 
 `check` 队列 : [ ~~`f1`~~ , `f4` ]
 `timers` 队列 : [ ~~`f3`~~ , ~~`f2`~~ ]
 
-**三、poll 阶段：**
+**四、poll 阶段：**
 
 1、发现 `check` 队列里有 `f4` 需要执行
 
-**四、check 阶段：**
+**五、check 阶段：**
 
-1、 执行 `f4`，打印 `"SI2"`
+1、 执行 `f4`，**打印 `"SI2"`**
 
 `check` 队列 : [ ~~`f1`~~ , ~~`f4`~~ ]
 `timers` 队列 : [ ~~`f3`~~ , ~~`f2`~~ ]
 
 ### 2、process.nextTick()
 
-`process.nextTick()` 不属于 `Event loop` 的某一个阶段，是紧跟着当前阶段执行的。
+`process.nextTick()` 不属于 `Event loop` 的某一个阶段，在 **当前阶段离开之前** 运行。
 
 ```js
 setTimeout(() => {
-  setTimeout(() => {
-    console.log("f1");
-    process.nextTick(() => {
-      console.log("f2");
-    });
-  }, 0);
-
-  setImmediate(() => {
-    console.log("f3");
-  });
-
+  console.log("f1");
   process.nextTick(() => {
-    console.log("f4");
+    console.log("f2");
   });
-}, 1000);
+}, 0);
+
+setImmediate(() => {
+  console.log("f3");
+});
+
+process.nextTick(() => {
+  console.log("f4");
+});
 ```
+
+![Eventloop1.2](./img/Eventloop/Eventloop2.1.png)
+
+### 执行顺序
+
+**一、poll 阶段：**
+
+1、 将 `f1` 放入 `timers` 队列，不执行（ 因为此时在 `poll` 阶段 ）
+
+2、 将 `f3` 放入 `check` 队列，不执行（ 因为此时在 `poll` 阶段 ）
+
+3、 将 `f4` 放入 `poll` 队列最后，不执行（ 因为此时还未准备离开 `poll` 阶段 ）
+
+4、 发现 `check` 队列有任务需要执行，准备进入 `check` 阶段，离开之前执行 `f4` ，**打印 `"f4"`**
+
+`timers` 队列 : [ `f1` ]
+`poll` 队列 : [ ~~`f4`~~ ]
+`check` 队列 : [ `f3` ]
+
+**二、check 阶段：**
+
+1、 执行 `f3`，**打印 `"f3"`**
+
+`timers` 队列 : [ `f1` ]
+`poll` 队列 : [ ~~`f4`~~ ]
+`check` 队列 : [ ~~`f3`~~ ]
+
+**三、timers 阶段：**
+
+1、 执行 `f1`，**打印 `"f1"`**
+
+2、 将 `f2` 放入 `timers` 队列最后，不执行（ 因为此时还未准备离开 `timers` 阶段 ）
+
+3、 准备离开 `timers` 阶段，离开之前执行 `f2` ，**打印 `"f2"`**
+
+`timers` 队列 : [ ~~`f1`~~ , ~~`f2`~~ ]
+`poll` 队列 : [ ~~`f4`~~ ]
+`check` 队列 : [ ~~`f3`~~ ]

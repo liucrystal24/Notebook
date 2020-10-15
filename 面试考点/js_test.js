@@ -82,7 +82,6 @@
 // setTimeout(() => console.log("fn1"), 0);
 // setImmediate(() => console.log("fn2"));
 
-
 // setTimeout(() => {
 //   setImmediate(() => {
 //     console.log("SI1");
@@ -99,20 +98,19 @@
 //   }, 0);
 // }, 1000)
 
+// setTimeout(() => {
+//   setTimeout(() => {
+//     console.log("f1");
+//     process.nextTick(() => {
+//       console.log("f2");
+//     });
+//   }, 0);
 
-setTimeout(() => {
-  setTimeout(() => {
-    console.log("f1");
-    process.nextTick(() => {
-      console.log("f2");
-    });
-  }, 0);
+//   setImmediate(() => {
+//     console.log("f3");
+//   });
 
-  setImmediate(() => {
-    console.log("f3");
-  });
-
-  process.nextTick(() => {
-    console.log("f4");
-  });
-}, 1000);
+//   process.nextTick(() => {
+//     console.log("f4");
+//   });
+// }, 1000);
