@@ -8,13 +8,15 @@
 
 - setTimeout -> timer
 - setImmediate -> check
-- proce.nextTick() -> 当前阶段后
+- proce.nextTick() -> 当前阶段最后
+
+new Promise(fn) -> fn 是立马执行的，不放入队列
 
 ### chrome
 
 - setTimeout -> 一会儿（ 宏任务 ）
 - .then(fn) -> 马上（ 微任务 ）
-- await -> 转换成 Promise 然后考虑
+- await fn() -> 转换成 fn().then() 然后考虑
 
 # node.js
 
@@ -156,6 +158,10 @@ setTimeout(() => {
 `check` 队列 : [ ~~`f1`~~ , ~~`f4`~~ ]
 `timers` 队列 : [ ~~`f3`~~ , ~~`f2`~~ ]
 
+### 输出顺序
+
+SI1,ST2,ST1,SI2
+
 ### 2、process.nextTick()
 
 `process.nextTick()` 不属于 `Event loop` 的某一个阶段，在 **当前阶段离开之前** 运行。
@@ -214,3 +220,34 @@ process.nextTick(() => {
 `timers` 队列 : [ ~~`f1`~~ , ~~`f2`~~ ]
 `poll` 队列 : [ ~~`f4`~~ ]
 `check` 队列 : [ ~~`f3`~~ ]
+
+### 输出顺序
+
+f4,f3,f1,f2
+
+# Chrome
+
+```js
+async function async1() {
+  console.log(1);
+  await async2();
+  console.log(2);
+}
+
+async function async2() {
+  console.log(3);
+}
+
+async1();
+
+new Promise(function (resolve) {
+  console.log(4);
+  resolve();
+}).then(function () {
+  console.log(5);
+});
+```
+
+### 输出
+
+1 3 4 2 5
