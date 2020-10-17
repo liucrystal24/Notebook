@@ -248,6 +248,10 @@ new Promise(function (resolve) {
 });
 ```
 
+- 图
+
+### 执行顺序
+
 ### 输出
 
 1 3 4 2 5
