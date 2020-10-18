@@ -4,7 +4,7 @@
  * @Author: ChrisLiu
  * @Date: 2020-10-11 23:56:41
  * @LastEditors: ChrisLiu
- * @LastEditTime: 2020-10-18 23:37:51
+ * @LastEditTime: 2020-10-19 01:25:00
  * @Description: file content
  */
 // class Animal {
@@ -100,65 +100,66 @@
 //     console.log("f4");
 //   });
 // }, 1000);
+// setTimeout(() => {
+//   console.log('start');
+//   setTimeout(() => {          // callback1
+//     console.log(111);
+//     setTimeout(() => {        // callback2
+//       console.log(222);
+//     }, 0);
+//     setImmediate(() => {      // callback3
+//       console.log(333);
+//     })
+//     process.nextTick(() => {  // callback4
+//       console.log(444);
+//     })
+//   }, 0);
+//   setImmediate(() => {        // callback5
+//     console.log(555);
+//     process.nextTick(() => {  // callback6
+//       console.log(666);
+//     })
+//   })
+//   setTimeout(() => {          // callback7              
+//     console.log(777);
+//     process.nextTick(() => {  // callback8
+//       console.log(888);
+//     })
+//   }, 0);
+//   process.nextTick(() => {    // callback9
+//     console.log(999);
+//   })
+//   console.log('end');
+// }, 1000);
 setTimeout(function () {
-  console.log('1');
-
-  function async1() {
-    return regeneratorRuntime.async(function async1$(_context) {
-      while (1) {
-        switch (_context.prev = _context.next) {
-          case 0:
-            console.log('2');
-            _context.next = 3;
-            return regeneratorRuntime.awrap(async2());
-
-          case 3:
-            console.log('3');
-
-          case 4:
-          case "end":
-            return _context.stop();
-        }
-      }
+  setTimeout(function () {
+    console.log("f1");
+    process.nextTick(function () {
+      console.log("f2");
     });
-  }
-
-  function async2() {
-    return regeneratorRuntime.async(function async2$(_context2) {
-      while (1) {
-        switch (_context2.prev = _context2.next) {
-          case 0:
-            console.log('4');
-
-          case 1:
-          case "end":
-            return _context2.stop();
-        }
-      }
-    });
-  }
-
+  }, 0);
   process.nextTick(function () {
-    console.log('5');
+    console.log("test1");
   });
   setTimeout(function () {
-    console.log('6');
+    console.log("f11");
     process.nextTick(function () {
-      console.log('7');
+      console.log("f22");
     });
-    new Promise(function (resolve) {
-      console.log('8');
-      resolve();
-    }).then(function () {
-      console.log('9');
+  }, 0);
+  setImmediate(function () {
+    console.log("f3");
+    process.nextTick(function () {
+      console.log("s31");
     });
   });
-  async1();
-  new Promise(function (resolve) {
-    console.log('10');
-    resolve();
-  }).then(function () {
-    console.log('11');
+  setImmediate(function () {
+    console.log("f33");
+    process.nextTick(function () {
+      console.log("s331");
+    });
   });
-  console.log('12');
+  process.nextTick(function () {
+    console.log("f4");
+  });
 }, 1000);

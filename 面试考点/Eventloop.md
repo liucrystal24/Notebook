@@ -18,7 +18,7 @@ Event Loop 即事件循环，是指浏览器或 Node 的一种解决 javaScript 
 
 - Promise.then() -> 微任务（ 马上 ）
 
-  new Promise(fn).then(f1) -> fn 是立马执行的，不放入队列
+  new Promise(fn).then(f1) -> fn 是立马执行的，不放入队列，f1 放入微任务队列
 
 - await fn() -> 转换成 fn().then() 然后考虑
 
@@ -260,14 +260,23 @@ new Promise(function (resolve) {
 
 1.运行 `async1()`，执行 `f1`，打印 **`1`**
 
-2.将 `await async2()` 改写成 `async2().then(f2)` 考虑，先运行 `async2()`，即执行`f3`，打印 **`3`**，将 `f2` 放入宏任务队列
+2.将 `await async2()` 改写成 `async2().then(f2)` 考虑，先运行 `async2()`，即执行`f3`，打印 **`3`**，将 `f2` 放入微任务队列
 
 :warning: `await async2()` 下方均为 `f2` ，此处只有 `console.log(2);`
 
-3.执行 `f4`，打印 **`4`**，将 `f5` 放入宏任务队列
+3.执行 `f4`，打印 **`4`**，将 `f5` 放入微任务队列
 
 4.顺序执行 `f2`，`f5`，打印 **`2`**，**`5`**
 
 #### 输出
 
 1 3 4 2 5
+
+https://juejin.im/post/6844903670291628046
+
+重新整理 chrome
+
+- （浏览器）有微要立马跳转执行微，没有继续执行宏？
+- then 连续处理
+- ( node ) nextTick 是在一个 阶段 结束（目前看是这样） 还是 一个 fn 结束？是在一个小格的 fn 结束前！
+- ( node ) timers 里 添加 timers 不直接执行，先把 原 timers 里执行完，然后 check 再回来 timers ?
