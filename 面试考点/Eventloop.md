@@ -1,26 +1,30 @@
 # Event loop ( 事件循环 )
 
-:books: https://xiedaimala.com/tasks/eca23d4a-5c2a-4f4a-865b-9789130a4813/video_tutorials/cb67bdb1-9f3d-4232-aa50-cd293bb8a7d9
+Event Loop 即事件循环，是指浏览器或 Node 的一种解决 javaScript 单线程运行时不会阻塞的一种机制，也就是我们经常使用异步的原理。
 
-类似 `ajax` 的异步请求是 `node.js` 完成以后，再传给 js 的。`node.js` 完成的这一部分遵循 `Event loop` 规则。
+## 环境
 
 ### node.js
 
 - setTimeout -> timer
+
 - setImmediate -> check
-- proce.nextTick() -> 当前阶段最后
 
-new Promise(fn) -> fn 是立马执行的，不放入队列
+- proce.nextTick() -> 当前阶段最后（ 进入下一个阶段前 ）
 
-### chrome
+### 浏览器
 
-- setTimeout -> 一会儿（ 宏任务 ）
-- .then(fn) -> 马上（ 微任务 ）
+- setTimeout -> 宏任务（ 一会儿 ）
+
+- Promise.then() -> 微任务（ 马上 ）
+
+  new Promise(fn).then(f1) -> fn 是立马执行的，不放入队列
+
 - await fn() -> 转换成 fn().then() 然后考虑
 
-# node.js
+## 一、node.js
 
-## 事件循环过程
+### 事件循环过程
 
 1. :star: **timers** ( 处理 **setTimeout** 等 )
 2. I/O callback
@@ -32,7 +36,7 @@ new Promise(fn) -> fn 是立马执行的，不放入队列
 
 我们主要需要专注 **`timers、poll、check`** 三个阶段，且一般解决问题都是 **从 `poll` 阶段开始等待处理** 。
 
-## Eventloop 三个 API
+### Eventloop 三个 API
 
 ### 1、setTimout() 和 setImmediate()
 
@@ -114,7 +118,7 @@ setTimeout(() => {
 
 ![Eventloop1.2](./img/Eventloop/Eventloop1.2.png)
 
-### 执行顺序
+#### 执行顺序
 
 **一、poll 阶段：**
 
@@ -158,7 +162,7 @@ setTimeout(() => {
 `check` 队列 : [ ~~`f1`~~ , ~~`f4`~~ ]
 `timers` 队列 : [ ~~`f3`~~ , ~~`f2`~~ ]
 
-### 输出顺序
+#### 输出顺序
 
 SI1,ST2,ST1,SI2
 
@@ -185,7 +189,7 @@ process.nextTick(() => {
 
 ![Eventloop1.2](./img/Eventloop/Eventloop2.1.png)
 
-### 执行顺序
+#### 执行顺序
 
 **一、poll 阶段：**
 
@@ -221,11 +225,11 @@ process.nextTick(() => {
 `poll` 队列 : [ ~~`f4`~~ ]
 `check` 队列 : [ ~~`f3`~~ ]
 
-### 输出顺序
+#### 输出顺序
 
 f4,f3,f1,f2
 
-# Chrome
+## 二、浏览器
 
 ```js
 async function async1() {
@@ -248,10 +252,22 @@ new Promise(function (resolve) {
 });
 ```
 
-- 图
+#### 画图
 
-### 执行顺序
+![Eventloop3.1](./img/Eventloop/Eventloop3.1.png)
 
-### 输出
+#### 执行顺序
+
+1.运行 `async1()`，执行 `f1`，打印 **`1`**
+
+2.将 `await async2()` 改写成 `async2().then(f2)` 考虑，先运行 `async2()`，即执行`f3`，打印 **`3`**，将 `f2` 放入宏任务队列
+
+:warning: `await async2()` 下方均为 `f2` ，此处只有 `console.log(2);`
+
+3.执行 `f4`，打印 **`4`**，将 `f5` 放入宏任务队列
+
+4.顺序执行 `f2`，`f5`，打印 **`2`**，**`5`**
+
+#### 输出
 
 1 3 4 2 5

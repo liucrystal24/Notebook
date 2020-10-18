@@ -4,7 +4,7 @@
  * @Author: ChrisLiu
  * @Date: 2020-10-11 23:56:41
  * @LastEditors: ChrisLiu
- * @LastEditTime: 2020-10-15 01:20:31
+ * @LastEditTime: 2020-10-18 23:37:51
  * @Description: file content
  */
 // class Animal {
@@ -86,17 +86,79 @@
 //     });
 //   }, 0);
 // }, 1000)
+// setTimeout(() => {
+//   setTimeout(() => {
+//     console.log("f1");
+//     process.nextTick(() => {
+//       console.log("f2");
+//     });
+//   }, 0);
+//   setImmediate(() => {
+//     console.log("f3");
+//   });
+//   process.nextTick(() => {
+//     console.log("f4");
+//   });
+// }, 1000);
 setTimeout(function () {
-  setTimeout(function () {
-    console.log("f1");
-    process.nextTick(function () {
-      console.log("f2");
+  console.log('1');
+
+  function async1() {
+    return regeneratorRuntime.async(function async1$(_context) {
+      while (1) {
+        switch (_context.prev = _context.next) {
+          case 0:
+            console.log('2');
+            _context.next = 3;
+            return regeneratorRuntime.awrap(async2());
+
+          case 3:
+            console.log('3');
+
+          case 4:
+          case "end":
+            return _context.stop();
+        }
+      }
     });
-  }, 0);
-  setImmediate(function () {
-    console.log("f3");
-  });
+  }
+
+  function async2() {
+    return regeneratorRuntime.async(function async2$(_context2) {
+      while (1) {
+        switch (_context2.prev = _context2.next) {
+          case 0:
+            console.log('4');
+
+          case 1:
+          case "end":
+            return _context2.stop();
+        }
+      }
+    });
+  }
+
   process.nextTick(function () {
-    console.log("f4");
+    console.log('5');
   });
+  setTimeout(function () {
+    console.log('6');
+    process.nextTick(function () {
+      console.log('7');
+    });
+    new Promise(function (resolve) {
+      console.log('8');
+      resolve();
+    }).then(function () {
+      console.log('9');
+    });
+  });
+  async1();
+  new Promise(function (resolve) {
+    console.log('10');
+    resolve();
+  }).then(function () {
+    console.log('11');
+  });
+  console.log('12');
 }, 1000);

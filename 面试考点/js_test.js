@@ -2,7 +2,7 @@
  * @Author: ChrisLiu
  * @Date: 2020-10-11 23:56:41
  * @LastEditors: ChrisLiu
- * @LastEditTime: 2020-10-15 01:20:31
+ * @LastEditTime: 2020-10-18 23:37:51
  * @Description: file content
  */
 // class Animal {
@@ -114,3 +114,43 @@
 //     console.log("f4");
 //   });
 // }, 1000);
+
+setTimeout(() => {
+  console.log('1');
+  async function async1() {
+    console.log('2');
+    await async2();
+    console.log('3');
+  }
+  async function async2() {
+    console.log('4');
+  }
+
+  process.nextTick(function () {
+    console.log('5');
+  })
+
+  setTimeout(function () {
+    console.log('6');
+    process.nextTick(function () {
+      console.log('7');
+    })
+    new Promise(function (resolve) {
+      console.log('8');
+      resolve();
+    }).then(function () {
+      console.log('9')
+    })
+  })
+
+  async1();
+
+  new Promise(function (resolve) {
+    console.log('10');
+    resolve();
+  }).then(function () {
+    console.log('11');
+  });
+  console.log('12');
+
+}, 1000);
