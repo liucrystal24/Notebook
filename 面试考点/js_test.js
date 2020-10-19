@@ -138,7 +138,7 @@
 //     })
 //   })
 
-//   setTimeout(() => {          // callback7              
+//   setTimeout(() => {          // callback7
 //     console.log(777);
 //     process.nextTick(() => {  // callback8
 //       console.log(888);
@@ -153,40 +153,77 @@
 
 // }, 1000);
 
+// setTimeout(() => {
+//   setTimeout(() => {
+//     console.log("f1");
+//     process.nextTick(() => {
+//       console.log("f2");
+//     });
+//     setTimeout(() => {
+//       console.log("stst");
+//     }, 0);
+//   }, 0);
+//   process.nextTick(() => {
+//     console.log("test1");
+//   });
+//   setTimeout(() => {
+//     console.log("f11");
+//     process.nextTick(() => {
+//       console.log("f22");
+//     });
+//   }, 0);
+//   process.nextTick(() => {
+//     console.log("test2");
+//   });
+//   setImmediate(() => {
+//     console.log("f3");
+//     process.nextTick(() => {
+//       console.log("s31");
+//     });
+//     setImmediate(() => {
+//       console.log("f33");
+//       process.nextTick(() => {
+//         console.log("s331");
+//       });
+//     });
+//   });
+//   process.nextTick(() => {
+//     console.log("f4");
+//   });
+// }, 1000);
+
 setTimeout(() => {
-  setTimeout(() => {
-    console.log("f1");
-    process.nextTick(() => {
-      console.log("f2");
-    });
-  }, 0);
-
-  process.nextTick(() => {
-    console.log("test1");
-  });
+  console.log(1);
 
   setTimeout(() => {
-    console.log("f11");
-    process.nextTick(() => {
-      console.log("f22");
-    });
-  }, 0);
-
-  setImmediate(() => {
-    console.log("f3");
-    process.nextTick(() => {
-      console.log("s31");
+    console.log(2);
+    Promise.resolve().then(() => {
+      console.log(3);
     });
   });
 
-  setImmediate(() => {
-    console.log("f33");
-    process.nextTick(() => {
-      console.log("s331");
-    });
+  new Promise((resolve, reject) => {
+    console.log(4);
+    resolve(5);
+  }).then((data) => {
+    console.log(data);
+
+    Promise.resolve()
+      .then(() => {
+        console.log(6);
+      })
+      .then(() => {
+        console.log(7);
+
+        setTimeout(() => {
+          console.log(8);
+        }, 0);
+      });
   });
 
-  process.nextTick(() => {
-    console.log("f4");
+  setTimeout(() => {
+    console.log(9);
   });
+
+  console.log(10);
 }, 1000);
