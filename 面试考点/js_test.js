@@ -2,7 +2,7 @@
  * @Author: ChrisLiu
  * @Date: 2020-10-11 23:56:41
  * @LastEditors: ChrisLiu
- * @LastEditTime: 2020-10-19 01:25:00
+ * @LastEditTime: 2020-10-19 22:30:06
  * @Description: file content
  */
 // class Animal {
@@ -192,38 +192,52 @@
 //   });
 // }, 1000);
 
+// setTimeout(() => {
+//   console.log(1);
+
+//   setTimeout(() => {
+//     console.log(2);
+//     Promise.resolve().then(() => {
+//       console.log(3);
+//     });
+//   });
+
+//   new Promise((resolve, reject) => {
+//     console.log(4);
+//     resolve(5);
+//   }).then((data) => {
+//     console.log(data);
+
+//     Promise.resolve()
+//       .then(() => {
+//         console.log(6);
+//       })
+//       .then(() => {
+//         console.log(7);
+
+//         setTimeout(() => {
+//           console.log(8);
+//         }, 0);
+//       });
+//   });
+
+//   setTimeout(() => {
+//     console.log(9);
+//   });
+
+//   console.log(10);
+// }, 1000);
+
+
 setTimeout(() => {
-  console.log(1);
-
-  setTimeout(() => {
-    console.log(2);
-    Promise.resolve().then(() => {
-      console.log(3);
-    });
-  });
-
   new Promise((resolve, reject) => {
-    console.log(4);
-    resolve(5);
-  }).then((data) => {
-    console.log(data);
-
-    Promise.resolve()
-      .then(() => {
-        console.log(6);
-      })
-      .then(() => {
-        console.log(7);
-
-        setTimeout(() => {
-          console.log(8);
-        }, 0);
-      });
-  });
-
-  setTimeout(() => {
-    console.log(9);
-  });
-
-  console.log(10);
+    console.log(1)
+    resolve()
+  })
+    .then(() => {
+      console.log(2)
+    })
+    .then(() => {
+      console.log(6)
+    })
 }, 1000);
