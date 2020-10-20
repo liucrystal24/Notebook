@@ -51,6 +51,12 @@
         border: 1px solid green;
         clear: both;
       }
+      #moveDiv {
+        width: 100px;
+        height: 100px;
+        background-color: red;
+        position: absolute;
+      }
     </style>
   </head>
 
@@ -100,8 +106,69 @@
 
     <button onclick="handleClick()">节流</button>
     <button onclick="debounced()">防抖</button>
+
+    <ul id="list">
+      <li><span>item 1</span></li>
+      <li><span>item 2</span></li>
+      <li>item 3</li>
+      <li><span>item 4</span></li>
+    </ul>
+
+    <div id="moveDiv"></div>
   </body>
   <script>
+    let isMove = false;
+    let position = [];
+    document.getElementById("moveDiv").addEventListener("mousedown", (e) => {
+      console.log("down");
+      isMove = true;
+      position = [
+        e.clientX - e.target.offsetLeft,
+        e.clientY - e.target.offsetTop,
+      ];
+      console.log(position);
+    });
+
+    document.addEventListener("mouseup", () => {
+      console.log("up");
+      isMove = false;
+    });
+
+    document.addEventListener("mousemove", (e) => {
+      if (isMove) {
+        let el = document.getElementById("moveDiv");
+
+        let x = e.clientX;
+        let y = e.clientY;
+
+        el.style.left = x - position[0] + "px";
+        el.style.top = y - position[0] + "px";
+
+        // position = [x, y];
+      }
+      return;
+    });
+    function fn1() {
+      console.log(this);
+    }
+
+    function delegate(element, selector, eventType, fn) {
+      element.addEventListener(eventType, (e) => {
+        let el = e.target;
+        while (!el.matches(selector)) {
+          if (el === selector) {
+            el = null;
+            break;
+          }
+          el = el.parentNode;
+        }
+        el && fn.call(el, e);
+      });
+    }
+    window.onload = function () {
+      // delegate(document.getElementById("list"), "li", "click", fn1);
+    };
+
     let jieliu = function (fn, delay) {
       let canuse = true;
       return function () {
