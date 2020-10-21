@@ -172,13 +172,317 @@ export default {
 };
 ```
 
-### 3. Vuex
+### 3. :star: Vuex
 
-## 四、Vue 数据响应式怎么做到的？
+Vuex 是一个专为 Vue.js 应用程序开发的 **状态管理模式**
 
-## 五、Vue.set 是做什么用的？
+## 四、Vuex 你怎么用的？
 
-## 六、Vuex 你怎么用的？
+Vuex 是一个专为 Vue.js 应用程序开发的 **状态管理模式**
+
+通过 `store.js` 统一管理状态:
+
+**vuex/store.js：**
+
+```js
+import Vue from "vue";
+import Vuex from "vuex";
+Vue.use(Vuex);
+
+// 1.state（存储数据，computed : $store.state.xx 调用）
+
+// 2.getter（计算属性，computed : $store.getters.xx 调用）
+
+// 3.mutation（同步方法，methods : $store.commit('xx') 调用）
+
+// 4.action（可以包含异步方法，methods : $store.dispatch('xx') 调用）
+
+export default new Vuex.Store({
+  state,
+  mutations,
+  getters,
+  actions,
+});
+```
+
+### 1. State （store 的 存储数据）
+
+通过 `$store.state.xx` 调用：
+
+**vuex/store.js：**
+
+```js
+const state = {
+  count: 1,
+  age: 15,
+};
+```
+
+**component.vue：**
+
+```vue
+<template>
+  <div>
+    <p>{{ $store.state.count }}</p>
+  </div>
+</template>
+
+<script>
+import store from "@/vuex/store";
+export default {
+  name: "component1",
+  store,
+};
+</script>
+```
+
+当一个组件需要获取多个状态时候，使用 **mapState** 辅助函数，使用 **computed** 获取数据：
+
+```vue
+<template>
+  <div>
+    <p>{{ count }}</p>
+    <p>{{ age }}</p>
+  </div>
+</template>
+
+<script>
+import store from "@/vuex/store";
+// 引入 mapState
+import { mapState } from "vuex";
+export default {
+  computed(){
+    // 获取 store.state
+    ...mapState(["count","age"])
+  }
+  store,
+};
+</script>
+```
+
+### 2. Getter （store 的计算属性）
+
+通过 `$store.state.xx` 调用：
+
+**vuex/store.js：**
+
+```js
+const state = {
+  count: 1,
+  age: 15,
+};
+
+const getters = {
+  countMoney: (state) => `¥: ${state.count}`,
+  ageSui: (state) => `${state.age}岁`,
+};
+```
+
+**component.vue：**
+
+```vue
+<template>
+  <div>
+    <p>{{ countGetter }}</p>
+    <p>{{ ageGetter }}</p>
+  </div>
+</template>
+
+<script>
+import store from "@/vuex/store";
+export default {
+  name: "component1",
+  computed(){
+    countGetter(){
+      return this.$store.getters.countMoney;
+    },
+    ageGetter(){
+      return this.$store.getters.ageSui;
+    }
+  }
+  store,
+};
+</script>
+```
+
+**mapGetters** 辅助函数将 store 中的 getter 映射到局部计算属性：
+
+```vue
+<template>
+  <div>
+    <p>{{ countGetter }}</p>
+    <p>{{ ageGetter }}</p>
+  </div>
+</template>
+
+<script>
+import store from "@/vuex/store";
+// 引入 mapGetters
+import { mapGetters } from "vuex";
+export default {
+  computed(){
+    // 获取 store.getter
+    ...mapGetters({ countGetter: "countMoney", ageGetter: "ageSui" }),
+  }
+  store,
+};
+</script>
+```
+
+### 3. Mutation （store 的方法（同步））
+
+更改 Vuex 的 store 中的状态的 **唯一方法** 是提交 `mutation`，使用 `$store.commit（xx）` 调用
+
+:warning: Mutation **必须是同步函数**
+
+**vuex/store.js：**
+
+```js
+const state = {
+  count: 1,
+  age: 15,
+};
+
+const mutations = {
+  add(state) {
+    state.count++;
+  },
+  reduce(state, n) {
+    state.count -= n;
+  },
+};
+```
+
+**component.vue：**
+
+```vue
+<template>
+  <div>
+    <p>{{ $store.state.count }}</p>
+    <button @click="$store.commit('add')">add</button>
+  </div>
+</template>
+
+<script>
+import store from "@/vuex/store";
+export default {
+  name: "component1",
+  store,
+};
+</script>
+```
+
+**mapMutations** 辅助函数将组件中的 `methods` 映射为 `store.commit`:
+
+```vue
+<template>
+  <div>
+    <p>{{ count }}</p>
+    <button @click="reduce(10)">add</button>
+  </div>
+</template>
+
+<script>
+import store from "@/vuex/store";
+import { mapState , mapGetters } from "vuex";
+export default {
+  computed(){
+    ...mapState(["count"]),
+  }
+  methods:{
+    ...mapMutations(["reduce"])
+  }
+  store,
+};
+</script>
+```
+
+### 4. Action（类似 Mutation，可以包含异步操作）
+
+Action 通过 `$store.dispatch(xx)` 方法触发：
+
+**vuex/store.js：**
+
+```js
+const mutations = {
+  add(state) {
+    state.count++;
+  },
+};
+
+const actions = {
+  actionAdd({ commit }) {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        commit("add");
+        resolve();
+      }, 1000);
+    });
+  },
+
+  actionHandle(context, n) {
+    context.commit("add");
+    setTimeout(() => {
+      context.commit("reduce", n.amount);
+    }, 3000);
+  },
+};
+```
+
+**component.vue：**
+
+```vue
+<template>
+  <div>
+    <p>{{ $store.state.count }}</p>
+    <button @click="asyncAdd()">actionAdd</button>
+  </div>
+</template>
+
+<script>
+import store from "@/vuex/store";
+export default {
+  name: "component1",
+  methods:{
+    asyncAdd(){
+      this.$store.dispatch("actionAdd").then(() => {
+        console.log("等待1s，count + 1");
+      });
+    }
+  }
+  store,
+};
+</script>
+```
+
+**mapMutations** 辅助函数将组件的 `methods` 映射为 `store.dispatch` 调用：
+
+```vue
+<template>
+  <div>
+    <p>{{ count }}</p>
+    <button @click="actionHandle({ amount: 5 })">add</button>
+  </div>
+</template>
+
+<script>
+import store from "@/vuex/store";
+import { mapState , mapActions } from "vuex";
+export default {
+  computed(){
+    ...mapState(["count"]),
+  }
+  methods:{
+    ...mapMutations(["actionHandle"])
+  }
+  store,
+};
+</script>
+```
+
+## 五、Vue 数据响应式怎么做到的？
+
+## 六、Vue.set 是做什么用的？
 
 ## 七、VueRouter 你怎么用的？
 
