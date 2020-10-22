@@ -174,7 +174,15 @@ export default {
 
 ### 3. :star: Vuex
 
-Vuex 是一个专为 Vue.js 应用程序开发的 **状态管理模式**
+Vuex 是一个专为 Vue.js 应用程序开发的 **状态管理模式**，通过 `store.js` 统一管理状态
+
+- 1.state（存储数据，computed : \$store.state.xx 调用）
+
+- 2.getter（计算属性，computed : \$store.getters.xx 调用）
+
+- 3.mutation（同步方法，methods : \$store.commit('xx') 调用）
+
+- 4.action（可以包含异步方法，methods : \$store.dispatch('xx') 调用）
 
 ## 四、Vuex 你怎么用的？
 
@@ -482,8 +490,57 @@ export default {
 
 ## 五、Vue 数据响应式怎么做到的？
 
-## 六、Vue.set 是做什么用的？
+当你把一个普通的 JavaScript 对象传入 Vue 实例作为 data 选项，Vue 将遍历此对象所有的 property，使用 `Object.defineProperty` 把这些 property 全部转为 `getter/setter`。
 
-## 七、VueRouter 你怎么用的？
+### 数组和对象的变化
 
-## 八、路由守卫是什么？
+由于 JavaScript 的限制，Vue 不能检测数组和对象的变化，因此需要使用 `Vue.set`
+
+- 对象
+
+  ```js
+  Vue.set(vm.someObject, "b", 2);
+  this.$set(this.someObject, "b", 2);
+  ```
+
+- 数组
+
+  ```js
+  Vue.set(vm.items, indexOfItem, newValue);
+  this.$set(this.items, indexOfItem, newValue);
+  ```
+
+## 六、VueRouter 你怎么用的？
+
+Vue Router 是 Vue.js 官方的路由管理器。
+
+### 基础 api
+
+- < router-link to='/foo' >Go to Foo< /router-link > ：路由跳转标签
+
+- < router-view >< router-view > ：路由匹配的组件渲染出口
+
+- this.\$router.push({ name: 'user', params: { userId: '123' }})：编程式路由跳转
+
+- this.\$router.replace({ name: 'user', params: { userId: '123' }})：和 `router.push` 相似，不向 `history` 添加新纪录
+
+- this.\$router.go(1) / this.\$router.go(-1)：前进 / 后退
+
+### History 模式
+
+`vue-router` 默认 `hash` 模式 —— 使用 URL 的 hash 来模拟一个完整的 URL，于是当 URL 改变时，页面不会重新加载
+
+当你使用 `history` 模式时，URL 就像正常的 url
+
+:warning: 服务器需要配置 index.html ，服务器就不会在返回 404 错误页面 ，因为对所有路径都会返回 **index.html** ，路由需要设置：
+
+```js
+const router = new VueRouter({
+  mode: "history",
+  routes: [{ path: "*", component: NotFoundComponent }],
+});
+```
+
+### 导航守卫
+
+### 路由懒加载
