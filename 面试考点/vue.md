@@ -543,4 +543,108 @@ const router = new VueRouter({
 
 ### 导航守卫
 
+`vue-router` 提供的导航守卫主要用来通过 **跳转** 或 **取消** 的方式守卫导航。有多种机会植入路由导航过程中：全局的, 单个路由独享的, 或者组件级的。
+
+:warning: 参数或查询的改变并不会触发进入/离开的导航守卫!
+
+- #### 全局前置守卫
+
+```js
+const router = new VueRouter({ ... })
+
+router.beforeEach((to, from, next) => {
+    // ...
+})
+```
+
+**to: Route**: 即将要进入的目标 路由对象
+
+**from: Route**: 当前导航正要离开的路由
+
+**next: Function**: **一定要调用该方法** 来 resolve 这个钩子。执行效果依赖 next 方法的调用参数
+
+- #### 全局后置钩子
+
+和守卫不同的是，这些钩子不会接受 next 函数也不会改变导航本身
+
+```js
+router.afterEach((to, from) => {
+  // ...
+});
+```
+
+- #### 路由独享的守卫
+
+```js
+const router = new VueRouter({
+  routes: [
+    {
+      path: "/foo",
+      component: Foo,
+      beforeEnter: (to, from, next) => {
+        // ...
+      },
+    },
+  ],
+});
+```
+
+- #### 组件内的守卫
+
+```js
+const Foo = {
+  template: `...`,
+  beforeRouteEnter(to, from, next) {
+    // 在渲染该组件的对应路由被 confirm 前调用
+    // 不！能！获取组件实例 `this`
+    // 因为当守卫执行前，组件实例还没被创建
+  },
+  beforeRouteUpdate(to, from, next) {
+    // 在当前路由改变，但是该组件被复用时调用
+    // 举例来说，对于一个带有动态参数的路径 /foo/:id，在 /foo/1 和 /foo/2 之间跳转的时候，
+    // 由于会渲染同样的 Foo 组件，因此组件实例会被复用。而这个钩子就会在这个情况下被调用。
+    // 可以访问组件实例 `this`
+  },
+  beforeRouteLeave(to, from, next) {
+    // 导航离开该组件的对应路由时调用
+    // 可以访问组件实例 `this`
+  },
+};
+```
+
+- #### 完整的导航解析流程
+
+1、 失活的组件 `beforeRouteLeave` 守卫
+2、 全局前置 `beforeEach` 守卫
+3、 重用的组件 `beforeRouteUpdate` 守卫
+4、 路由 `beforeEnter`
+5、 解析异步路由组件
+6、 激活的组件 `beforeRouteEnter` 守卫
+7、 全局 `beforeResolve` 守卫
+8、 全局后置 `afterEach` 钩子
+9、 DOM 更新
+
 ### 路由懒加载
+
+当打包构建应用时，JavaScript 包会变得非常大，影响页面加载。如果我们能把不同路由对应的组件分割成不同的代码块，然后当路由被访问的时候才加载对应组件，这样就更加高效了。
+
+结合 Vue 的异步组件和 Webpack 的代码分割功能，轻松实现路由组件的懒加载：
+
+```js
+const Foo = () => import("./Foo.vue");
+
+// 路由配置不需要改变
+const router = new VueRouter({
+  routes: [{ path: "/foo", component: Foo }],
+});
+```
+
+- #### 组件按组分块
+
+将某个路由下的所有组件都打包在同个异步块 (chunk) 中。只需要使用 `命名 chunk`
+
+```js
+const Foo = () => import(/* webpackChunkName: "group-foo" */ "./Foo.vue");
+const Bar = () => import(/* webpackChunkName: "group-foo" */ "./Bar.vue");
+const Baz = () => import(/* webpackChunkName: "group-foo" */ "./Baz.vue");
+```
