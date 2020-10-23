@@ -615,13 +615,21 @@ const Foo = {
 - #### 完整的导航解析流程
 
 1、 失活的组件 `beforeRouteLeave` 守卫
+
 2、 全局前置 `beforeEach` 守卫
+
 3、 重用的组件 `beforeRouteUpdate` 守卫
+
 4、 路由 `beforeEnter`
+
 5、 解析异步路由组件
+
 6、 激活的组件 `beforeRouteEnter` 守卫
+
 7、 全局 `beforeResolve` 守卫
+
 8、 全局后置 `afterEach` 钩子
+
 9、 DOM 更新
 
 ### 路由懒加载
