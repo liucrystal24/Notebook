@@ -87,6 +87,9 @@
 
 ## 四、shouldComponentUpdate 作用
 
+用于在没有必要更新 UI 的时候返回 false，以提高渲染性能
+http://taobaofed.org/blog/2016/08/12/optimized-react-components/
+
 ## 五、虚拟 DOM 是什么
 
 ## 六、什么是高阶组件
