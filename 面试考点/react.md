@@ -88,9 +88,14 @@
 ## 四、shouldComponentUpdate 作用
 
 用于在没有必要更新 UI 的时候返回 false，以提高渲染性能
+
 http://taobaofed.org/blog/2016/08/12/optimized-react-components/
 
 ## 五、虚拟 DOM 是什么
+
+要点：虚拟 DOM 就是用来模拟 DOM 的一个对象，这个对象拥有一些重要属性，并且更新 UI 主要就是通过对比（DIFF）旧的虚拟 DOM 树 和新的虚拟 DOM 树的区别完成的。
+
+http://www.alloyteam.com/2015/10/react-virtual-analysis-of-the-dom/
 
 ## 六、什么是高阶组件
 
