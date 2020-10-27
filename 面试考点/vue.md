@@ -176,13 +176,13 @@ export default {
 
 Vuex 是一个专为 Vue.js 应用程序开发的 **状态管理模式**，通过 `store.js` 统一管理状态
 
-- 1.state（存储数据，computed : \$store.state.xx 调用）
+- 1.**state**（存储数据，computed : \$store.state.xx 调用）
 
-- 2.getter（计算属性，computed : \$store.getters.xx 调用）
+- 2.**getter**（计算属性，computed : \$store.getters.xx 调用）
 
-- 3.mutation（同步方法，methods : \$store.commit('xx') 调用）
+- 3.**mutation**（同步方法，methods : \$store.commit('xx') 调用）
 
-- 4.action（可以包含异步方法，methods : \$store.dispatch('xx') 调用）
+- 4.**action**（可以包含异步方法，methods : \$store.dispatch('xx') 调用）
 
 ## 四、Vuex 你怎么用的？
 

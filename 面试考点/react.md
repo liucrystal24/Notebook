@@ -81,9 +81,137 @@
 
 ## 三、React 如何实现组件间通信
 
-父子靠 props 传函数
-爷孙可以穿两次 props
-任意组件用 Redux（也可以自己写一个 eventBus）
+### 1. 父传子
+
+通过 `props` 拿到父向子的传值
+
+父：
+
+```js
+class Parents extends Component {
+  constructor() {
+    super();
+    this.state = {
+      price: 0,
+    };
+  }
+
+  clickGoods(e) {
+    this.setState({
+      price: e,
+    });
+  }
+
+  render() {
+    let { price } = this.state;
+    return (
+      <div>
+        <button onClick={this.clickGoods.bind(this, 100)}>goods1</button>
+        <button onClick={this.clickGoods.bind(this, 1000)}>goods2</button>
+        <Child price={price} />
+      </div>
+    );
+  }
+}
+```
+
+子：
+
+```js
+class Child extends Component {
+  render() {
+    // 通过 props 拿到值
+    let { price } = this.props;
+    return <div>{price}</div>;
+  }
+}
+```
+
+### 2. 子传父
+
+通过向子组件传递一个函数 `sendPrice` ，子元素通过这个函数传值
+
+父：
+
+```js
+class Parent extends Component {
+  constructor() {
+    super();
+    this.state = {
+      price: 0,
+    };
+  }
+
+  getpriceParent(e) {
+    this.setState({ price: e });
+  }
+
+  render() {
+    let { price } = this.state;
+    return (
+      <div>
+        <p>{price}</p>
+        <Child sendPrice={this.getpriceParent.bind(this)} />
+      </div>
+    );
+  }
+}
+```
+
+子：
+
+```js
+class Child extends Component {
+  getPriceSon(e) {
+    // 通过父元素传递的函数传值
+    this.props.sendPrice(e);
+  }
+
+  render() {
+    return (
+      <div>
+        <button onClick={this.getPriceSon.bind(this, 100)}>100</button>
+        <button onClick={this.getPriceSon.bind(this, 1000)}>1000</button>
+      </div>
+    );
+  }
+}
+```
+
+### 3. 发布者与订阅者模式（context）
+
+（1）创建 Context 对象
+
+在组件链的根组件上创建 `Context`，在组件链上都能使用发布的数据
+
+```js
+const StudentContext = React.createContext("test");
+```
+
+（2）创建 Provider 发布数据
+
+通过 `value` 传递数据
+
+```js
+<StudentContext.Provider value={[name, age]}></StudentContext.Provider>
+```
+
+（3）创建 Consumer 接收数据
+
+通过 `函数返回值` 接收数据
+
+```js
+<StudentContext.Consumer>
+  {([name, age]) => (
+    <div>
+      <p>{name}</p>
+      <p>{age}</p>
+    </div>
+  )}
+</StudentContext.Consumer>
+```
+
+### 4. Redux
 
 ## 四、shouldComponentUpdate 作用
 
