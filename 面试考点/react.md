@@ -49,6 +49,7 @@
   - Boolean 和 null，不会渲染任何东西
 
 - **componentDidMount()**
+
   - 在组件挂载后（插入 DOM 树中）立即调用，通过网络请求获取数据在此阶段
 
 请求数据
@@ -180,7 +181,7 @@ class Child extends Component {
 
 ### 3. 发布者与订阅者模式（context）
 
-（1）创建 Context 对象
+（1）创建 **Context** 对象
 
 在组件链的根组件上创建 `Context`，在组件链上都能使用发布的数据
 
@@ -188,7 +189,7 @@ class Child extends Component {
 const StudentContext = React.createContext("test");
 ```
 
-（2）创建 Provider 发布数据
+（2）创建 **Provider** 发布数据
 
 通过 `value` 传递数据
 
@@ -196,7 +197,7 @@ const StudentContext = React.createContext("test");
 <StudentContext.Provider value={[name, age]}></StudentContext.Provider>
 ```
 
-（3）创建 Consumer 接收数据
+（3）创建 **Consumer** 接收数据
 
 通过 `函数返回值` 接收数据
 
@@ -213,22 +214,44 @@ const StudentContext = React.createContext("test");
 
 ### 4. Redux
 
-## 四、shouldComponentUpdate 作用
+## 四、Redux 是什么
 
-用于在没有必要更新 UI 的时候返回 false，以提高渲染性能
+https://www.redux.org.cn/
 
-http://taobaofed.org/blog/2016/08/12/optimized-react-components/
+## 五、shouldComponentUpdate 作用
 
-## 五、虚拟 DOM 是什么
+```js
+shouldComponentUpdate(nextProps, nextState);
+```
 
-要点：虚拟 DOM 就是用来模拟 DOM 的一个对象，这个对象拥有一些重要属性，并且更新 UI 主要就是通过对比（DIFF）旧的虚拟 DOM 树 和新的虚拟 DOM 树的区别完成的。
+判断 React 组件的输出是否受当前 state 或 props 更改的影响
 
-http://www.alloyteam.com/2015/10/react-virtual-analysis-of-the-dom/
+- 默认返回 true ，更新 UI
 
-## 六、什么是高阶组件
+- 返回 false，不更新 UI ，以**提高渲染性能**
 
-## 七、React diff 原理
+## 六、虚拟 DOM （ virtual DOM ）
 
-## 八、Redux 是什么
+### 1、定义
+
+虚拟 DOM 就是用 Javascript 来模拟 DOM 的一个对象
+
+### 2、虚拟 DOM / 原生 DOM
+
+当一个大型列表中，只有一行数据发生变化时，重置整个 innerHTML，浪费资源，不如用虚拟 DOM 渲染。
+
+**:art: 重绘过程：**
+
+**原生 DOM**： render html string + 重新创建所有 DOM
+
+**虚拟 DOM**： render Virtual DOM + diff + 必要的 DOM 更新
+
+### 3、虚拟 DOM / MVVM
+
+MVVM 的变化检查是数据层面的，而 React 的检查是 DOM 结构层面的
+
+## 七、什么是高阶组件
+
+## 八、React diff 原理
 
 ## 九、connect 原理

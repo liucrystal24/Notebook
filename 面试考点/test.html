@@ -57,6 +57,59 @@
         background-color: red;
         position: absolute;
       }
+
+      .lu-btn-3d {
+        width: 100px;
+        height: 40px;
+        background: linear-gradient(to bottom, #accced 100%, red 100%);
+        border: none;
+        border-radius: 5px;
+        position: relative;
+        border-bottom: 5px solid #9eb8d7;
+        color: #fbfbfb;
+        font-weight: 600;
+        font-family: "Open Sans", sans-serif;
+        text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.4);
+        font-size: 15px;
+        text-align: center;
+        box-shadow: 0px 3px 0px rgba(0, 0, 0, 0.2);
+        cursor: pointer;
+        margin-bottom: 10px;
+      }
+
+      .button-3d {
+        width: 115px;
+        color: #fff;
+        border: 0;
+        font-size: 15px;
+        outline: none;
+        padding: 5px 10px;
+        background: #ace;
+        border-radius: 4px;
+        text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.3);
+        box-shadow: 0 5px 0 #9cb8d8;
+        /* box-shadow: 0px 3px 0px rgba(0, 0, 0, 0.2); */
+      }
+      .button-3d:active {
+        /* box-shadow: 0px 2px 0px rgba(0, 0, 0, 0.2); */
+        background: #2d5add;
+        box-shadow: 0 5px 0 #6c8bfa;
+        /* top: 1px; */
+      }
+      button:focus {
+        outline: 0;
+      }
+      .lu-btn-3d:active {
+        box-shadow: 0px 2px 0px rgba(0, 0, 0, 0.2);
+        top: 1px;
+      }
+      .lu-btn-3d-selected {
+        background: linear-gradient(to bottom, #6c8bfa 100%, #2d5add 100%);
+        border-bottom: 5px solid #2d5add;
+        display: block;
+        width: 100px;
+        line-height: 40px;
+      }
     </style>
   </head>
 
@@ -64,6 +117,12 @@
     <div id="a">a</div>
     <div id="b">b</div>
     <div id="c">c</div>
+
+    <div id="3dbutton">
+      <button class="lu-btn-3d"></button>
+      <a class="lu-btn-3d lu-btn-3d-selected"></a>
+      <button class="button-3d">123</button>
+    </div>
 
     <div class="parent">
       <div class="child">我是儿子</div>
