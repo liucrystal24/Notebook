@@ -252,6 +252,10 @@ MVVM 的变化检查是数据层面的，而 React 的检查是 DOM 结构层面
 
 ## 七、什么是高阶组件
 
+https://www.jianshu.com/p/5dea58b49d0e
+
+https://www.jianshu.com/p/0aae7d4d9bc1
+
 ## 八、React diff 原理
 
 ## 九、connect 原理
