@@ -258,4 +258,10 @@ https://www.jianshu.com/p/0aae7d4d9bc1
 
 ## 八、React diff 原理
 
+https://www.jianshu.com/p/3ba0822018cf'
+
+https://zhuanlan.zhihu.com/p/20346379
+
 ## 九、connect 原理
+
+https://www.dazhuanlan.com/2019/10/16/5da67f8829439/
