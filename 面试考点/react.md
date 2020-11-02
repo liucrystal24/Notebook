@@ -250,18 +250,31 @@ shouldComponentUpdate(nextProps, nextState);
 
 MVVM 的变化检查是数据层面的，而 React 的检查是 DOM 结构层面的
 
-## 七、什么是高阶组件
-
-https://www.jianshu.com/p/5dea58b49d0e
-
-https://www.jianshu.com/p/0aae7d4d9bc1
-
-## 八、React diff 原理
+## 七、React diff 原理
 
 https://www.jianshu.com/p/3ba0822018cf'
 
 https://zhuanlan.zhihu.com/p/20346379
 
+## 八、什么是高阶组件
+
+高阶组件是参数为组件，返回值为新组件的函数
+
+`React-Redux` 里 `connect` 就是一个高阶组件
+
+`connect(mapState)` 就是高阶组件，传入 `myComponent` 为参数，返回新的组件：
+
+```js
+connect(mapState)(MyComponent);
+
+// 分解为：
+
+let fn = connect(mapState);
+let com2 = fn(myComponent);
+```
+
 ## 九、connect 原理
+
+connect 是一个返回高阶组件的高阶函数
 
 https://www.dazhuanlan.com/2019/10/16/5da67f8829439/
