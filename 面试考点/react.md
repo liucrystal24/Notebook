@@ -216,7 +216,41 @@ const StudentContext = React.createContext("test");
 
 ## 四、Redux 是什么
 
-https://www.redux.org.cn/
+Redux 是 JavaScript **状态容器**，提供可预测化的**状态管理**。
+
+### 核心概念
+
+#### 1、Action
+
+Action 是把数据从应用传到 store 的有效载荷，它是 store 数据的唯一来源。（ 一个描述“发生了什么”的普通对象 ），例如：
+
+```js
+{ type: 'LIKE_ARTICLE', articleId: 42 }
+{ type: 'FETCH_USER_SUCCESS', response: { id: 3, name: 'Mary' } }
+{ type: 'ADD_TODO', text: 'Read the Redux docs.' }
+```
+
+一般来说会通过 `store.dispatch()` 将 action 传到 store
+
+#### 2、Reducer
+
+Reducers 指定了应用状态的变化如何响应 actions 并发送到 store 的，**描述应用如何更新 state**（ 纯函数 ）
+
+Reducer 一定要保持纯净。只要传入参数相同，返回计算得到的下一个 state 就一定相同。没有特殊情况、没有副作用，没有 API 请求、没有变量修改，**单纯执行计算**
+
+#### 3、Store
+
+Store 就是把 `action` 、 `reducer` 联系到一起的对象。Store 有以下职责：
+
+- 维持应用的 state；
+- 提供 `getState()` 方法获取 state；
+- 提供 `dispatch(action)` 方法更新 state；
+- 通过 `subscribe(listener)` 注册监听器;
+- 通过 `subscribe(listener)` 返回的函数注销监听器。
+
+#### 4、数据流
+
+严格的单向数据流是 Redux 架构的设计核心，所有的数据都遵循相同的生命周期
 
 ## 五、shouldComponentUpdate 作用
 
@@ -275,6 +309,11 @@ let com2 = fn(myComponent);
 
 ## 九、connect 原理
 
-connect 是一个返回高阶组件的高阶函数
+`React-Redux`提供一个 `connect` 方法使你可以从 `Redux store` 中读取数据，`connect` 方法接收两个参数，都是可选参数：
 
-https://www.dazhuanlan.com/2019/10/16/5da67f8829439/
+- **mapStateToProps**：每当 store state 发生变化时，就被调用。接收整个 store state，并且返回一个该组件所需要的数据对象
+
+- **mapDispatchToProps**：这个参数可以是一个函数或对象
+
+  - 如果是一个函数，一旦该组件被创建，就会被调用。接收 dispatch 作为一个参数，并且返回一个能够使用 dispatch 来分发 actions 的若干函数组成的对象
+  - 如果是一个 action creators 构成的对象，每一个 action creator 将会转化为一个 prop function 并会在调用时自动分发 actions。（ **建议使用这种形式** ）
