@@ -286,9 +286,26 @@ MVVM 的变化检查是数据层面的，而 React 的检查是 DOM 结构层面
 
 ## 七、React diff 原理
 
-https://www.jianshu.com/p/3ba0822018cf'
+React diff 能计算出 Virtual DOM 中真正变化的部分，并只针对该部分进行实际 DOM 操作，而非重新渲染整个页面，从而保证了每次操作更新后页面的高效渲染。
 
-https://zhuanlan.zhihu.com/p/20346379
+### diff 策略
+
+### 1、tree diff
+
+由于 **Web UI 中 DOM 节点跨层级的移动操作特别少** ，所以 React 对树进行分层比较，两棵树只会对 **同一层次的节点** 进行比较。当发现节点已经不存在，则该节点及其子节点会被完全删除掉，不会用于进一步的比较。这样只需要对树进行一次遍历，便能完成整个 DOM 树的比较。
+![treeDiff](./img/react/treeDiff.png)
+
+### 2、component diff
+
+- 如果是同一类型的组件，按照原策略继续比较 virtual DOM tree，如果不是，则替换整个组件下的所有子节点。
+
+![componentDiff](./img/react/componentDiff.png)
+
+- 对于同一类型的组件，有可能其 Virtual DOM 没有任何变化，如果能够确切的知道这点那可以节省大量的 diff 运算时间，因此 React 允许用户通过 shouldComponentUpdate() 来判断该组件是否需要进行 diff
+
+### 3、element diff
+
+对于同一层级的一组子节点，它们可以通过唯一 id 进行区分，这样在 diff 时，涉及到只是位置变化的，可以只移动元素，避免删除创建等重复的操作。
 
 ## 八、什么是高阶组件
 
