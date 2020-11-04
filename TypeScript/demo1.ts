@@ -417,24 +417,24 @@
 //   sconct: 5,
 // };
 
-interface Shout {
-  shout();
-}
-class Cat implements Shout {
-  shout() {
-    console.log("cat shout");
-  }
-}
-class Person implements Shout {
-  shout() {
-    console.log("person shout");
-  }
-}
-let cat: Cat = new Cat();
-let chris: Person = new Person();
+// interface Shout {
+//   shout();
+// }
+// class Cat implements Shout {
+//   shout() {
+//     console.log("cat shout");
+//   }
+// }
+// class Person implements Shout {
+//   shout() {
+//     console.log("person shout");
+//   }
+// }
+// let cat: Cat = new Cat();
+// let chris: Person = new Person();
 
-cat.shout();
-chris.shout();
+// cat.shout();
+// chris.shout();
 
 // class Student {
 //   hi() {
@@ -462,3 +462,35 @@ chris.shout();
 // let x = { a: 1, b: 2, c: 3, d: 4 };
 
 // console.log(copyFields(x, { b: 10, d: 20 }));
+
+interface Foo {
+  type: "foo";
+}
+
+interface Bar {
+  type: "bar";
+}
+
+interface Chris {
+  type: "chris";
+}
+
+type All = Foo | Bar | Chris;
+
+function handleValue(val: All) {
+  switch (val.type) {
+    case "foo":
+      // 这里 val 被收窄为 Foo
+      break;
+    case "bar":
+      // val 在这里是 Bar
+      break;
+    default:
+      // val 在这里是 never
+      const typeCheck: never = val;
+      break;
+  }
+}
+
+const name1: Chris = { type: "chris" };
+handleValue(name1);
