@@ -1,40 +1,12 @@
 # TypeScript
 
-## 一、基础
+https://www.zhihu.com/question/354601204 添加 never
 
-## 1. Hello TypeScript
+## 一、TS 类型检查
 
-- 安装
+**TypeScript 只会在编译时对类型进行静态检查，如果发现有错误，编译的时候就会报错**。而在运行时，与普通的 `JavaScript` 文件一样，不会对类型进行检查。
 
-  ```bash
-  npm install typescript -g
-  npm install ts-node -g
-  ```
-
-- 编辑
-
-  ```ts
-  function welcome(person: string) {
-    console.log("hello " + person);
-  }
-  let user1 = "chris";
-  welcome(user1); // hello chris
-
-  let user2 = [1, 2, 3];
-  welcome(user2); // 报错，user2 的类型应为 string
-  ```
-
-- 运行
-
-  ```bash
-  ts-node demo1.ts
-  ```
-
-  :point_right: `ts-node` 可以直接运行 `.ts`（实现原理还是先编译成 `.js`，然后运行 js 文件）,省略了 `$ tsc demo.ts`
-
-  :warning: **TypeScript 只会在编译时对类型进行静态检查，如果发现有错误，编译的时候就会报错**。而在运行时，与普通的 `JavaScript` 文件一样，不会对类型进行检查。
-
-## 2. 数据类型
+## 二. 数据类型
 
 - ### 原始数据类型
 
