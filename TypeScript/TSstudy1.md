@@ -993,7 +993,7 @@ console.log(Days[1] === "Mon"); // true
     x: number;
   }
   type Point2d = PointX & { y: number };
-  interface Point3d {
+  interface Point3d extends PointX {
     y: number;
     z: number;
   }

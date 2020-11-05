@@ -2,7 +2,7 @@
  * @Author: ChrisLiu
  * @Date: 2020-09-03 21:44:26
  * @LastEditors: ChrisLiu
- * @LastEditTime: 2020-09-13 23:39:17
+ * @LastEditTime: 2020-11-05 22:21:46
  * @Description: file content
  */
 // const arr1 = [1, { a: 1 }, 3];
@@ -463,56 +463,63 @@
 
 // console.log(copyFields(x, { b: 10, d: 20 }));
 
-interface Foo {
-  type: "foo";
+// interface Foo {
+//   type: "foo";
+// }
+
+// interface Bar {
+//   type: "bar";
+// }
+
+// interface Chris {
+//   type: "chris";
+// }
+
+// type All = Foo | Bar | Chris;
+
+// function handleValue(val: All) {
+//   switch (val.type) {
+//     case "foo":
+//       // 这里 val 被收窄为 Foo
+//       break;
+//     case "bar":
+//       // val 在这里是 Bar
+//       break;
+//     default:
+//       // val 在这里是 never
+//       const typeCheck: never = val;
+//       break;
+//   }
+// }
+
+// interface CreateArrayFunc<T> {
+//   (length: number, value: T): Array<T>;
+// }
+
+// let createArray: CreateArrayFunc<any>;
+// createArray = function <T>(length: number, value: T): Array<T> {
+//   let result: T[] = [];
+//   for (let i = 0; i < length; i++) {
+//     result[i] = value;
+//   }
+//   return result;
+// };
+
+// createArray(3, "x"); // ['x', 'x', 'x']
+
+interface CreateArrayFunc<T> {
+  (length: number, value: T): Array<T>;
 }
 
-interface Bar {
-  type: "bar";
-}
-
-interface Chris {
-  type: "chris";
-}
-
-type All = Foo | Bar | Chris;
-
-function handleValue(val: All) {
-  switch (val.type) {
-    case "foo":
-      // 这里 val 被收窄为 Foo
-      break;
-    case "bar":
-      // val 在这里是 Bar
-      break;
-    default:
-      // val 在这里是 never
-      const typeCheck: never = val;
-      break;
+let createArray: CreateArrayFunc<any> = function <T>(
+  length: number,
+  value: T
+): Array<T> {
+  let result: T[] = [];
+  for (let i = 0; i < length; i++) {
+    result[i] = value;
   }
-}
-
-const name1: Chris = { type: "chris" };
-handleValue(name1);
-
-interface Animal {
-  name: string;
-}
-interface Cat {
-  name: string;
-  run(): void;
-}
-
-const animal: Animal = {
-  name: "tom",
+  return result;
 };
 
-const cat: Cat = {
-  name: "liu",
-  run() {
-    console.log(1);
-  },
-};
-
-// let tom = animal as Cat; // Cat、Animal 互相兼容，可以使用 as
-let tom: Animal = cat; // 报错：animal 中没有 run(),Cat 不兼容 Animal
+createArray(3, "x"); // ['x', 'x', 'x']

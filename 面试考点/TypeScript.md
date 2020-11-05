@@ -1,12 +1,10 @@
 # TypeScript
 
-https://www.zhihu.com/question/354601204 添加 never
-
 ## 一、TS 类型检查
 
 **TypeScript 只会在编译时对类型进行静态检查，如果发现有错误，编译的时候就会报错**。而在运行时，与普通的 `JavaScript` 文件一样，不会对类型进行检查。
 
-## 二. 数据类型
+## 二、数据类型
 
 - ### 原始数据类型
 
@@ -24,6 +22,43 @@ https://www.zhihu.com/question/354601204 添加 never
   let u: void;
   let num: number = u;
   ```
+
+  :question: **never** 类型的作用：
+
+  ```ts
+  interface Foo {
+    type: "foo";
+  }
+
+  interface Bar {
+    type: "bar";
+  }
+
+  type All = Foo | Bar;
+
+  function handleValue(val: All) {
+    switch (val.type) {
+      case "foo":
+        // 这里 val 被收窄为 Foo
+        break;
+      case "bar":
+        // val 在这里是 Bar
+        break;
+      default:
+        // val 在这里是 never
+        const exhaustiveCheck: never = val;
+        break;
+    }
+  }
+  ```
+
+  逻辑正确时，不会编译通过，但是如果有一天，更改了 `All` 的类型：
+
+  ```ts
+  type All = Foo | Bar | Baz;
+  ```
+
+  然而他忘记了在 handleValue 里面加上针对 Baz 的处理逻辑，这个时候在 default branch 里面 val 会被收窄为 Baz，导致无法赋值给 never，产生一个编译错误。
 
 - ### 任意类型
 
@@ -72,7 +107,7 @@ https://www.zhihu.com/question/354601204 添加 never
 
   :books: interface 用来定义 **对象** 的类型，除了可用于对类的一部分行为进行抽象以外，也常用于对「**对象的形状（Shape）**」进行描述。
 
-  - :warning: 变量的属性与必须接口一致（ **chris** 的 **形状** 必须和 **Student** 一致 ），**多 / 少** 属性都会报错。
+  :warning: 变量的属性与必须接口一致（ **chris** 的 **形状** 必须和 **Student** 一致 ），**多 / 少** 属性都会报错。
 
   ```ts
   interface Student {
@@ -101,27 +136,21 @@ https://www.zhihu.com/question/354601204 添加 never
 
   - #### 任意属性
 
-  ```ts
-  interface Student {
-    name: string;
-    [propname: string]: string;
-  }
-
-  let chris = {
-    name: "chris",
-    gender: "male",
-  };
-  ```
-
   :warning: 一旦定义了任意属性，那么 **确定属性** 和 **可选属性** 的类型都必须是它的类型的 **子集**，如果出现冲突，应对 **任意属性** 定义 **联合类型**。
 
   ```ts
   interface Student {
     name: string;
     age: number;
-    [propname: string]: string; // 报错，因为age是number类型，不属于string的子集
-    // [propname: string]: string | number;
+    [propname: string]: string; // 报错，age是number类型，不属于string的子集
+    // 应该为 [propname: string]: string | number;
   }
+
+  let chris = {
+    name: "chris",
+    age: "18",
+    gender: "male",
+  };
   ```
 
   - #### 只读属性
@@ -226,7 +255,7 @@ https://www.zhihu.com/question/354601204 添加 never
   const resultAdd = add({ a: 1, b: 2 });
   ```
 
-## 三. 类型断言
+## 三、类型断言
 
 :books: **类型断言**：用来手动指定一个值的类型
 
@@ -314,7 +343,7 @@ https://www.zhihu.com/question/354601204 添加 never
   let tom: Cat = animal; // 报错：animal 中没有 run(), Animal 不包含 Cat
   ```
 
-## 四. 类型别名 / 字符串字面量类型
+## 四、类型别名 / 字符串字面量类型
 
 :books: 类型别名用来给一个类型起个新名字，常用于联合类型
 
@@ -331,73 +360,59 @@ let fruit1: Fruit = "apple";
 let fruit1: Fruit = "peach"; // 报错，不能将类型“"peach"”分配给类型“Fruit”
 ```
 
-## 五. 类
+## 五、类
 
 - ### 访问修饰符( `public` / `private` / `protected` )
 
-  :dart: **public** ：当类中的参数定义时，默认为 public 访问方式，public 可以在类的**内部、外部**调用，且**可以继承**。
+  - **public** ：当类中的参数定义时，默认为 public 访问方式，public 可以在类的**内部、外部**调用，且**可以继承**。
+
+  - **private** ：只能在类的**内部调用，不可以继承**。
+
+  - **protected** ：只能在类的**内部调用，可以继承**。
 
   ```ts
   class Person {
-    name: string = "chris";
     // 相当于 public name:string = "chris";
-    sayHello() {
-      console.log("hello " + this.name);
+    name_public: string = "chris1";
+    private name_private: string = "chris2";
+    protected name_protected: string = "chris3";
+
+    personPublic() {
+      console.log("hello " + this.name_public);
+    }
+    personPrivate() {
+      console.log("hello " + this.name_private);
+    }
+    personProtected() {
+      console.log("hello " + this.name_protected);
     }
   }
   const chris = new Person();
+
   class Teacher extends Person {
-    sayBye() {
-      console.log("bye " + this.name);
+    teacherPublic() {
+      console.log("bye " + this.name_public);
+    }
+    teacherPrivate() {
+      console.log("bye " + this.name_private);
+    }
+    teacherProtected() {
+      console.log("bye " + this.name_protected);
     }
   }
   const crystal = new Teacher();
-  /* ---- 类的外部调用 ---- */
-  console.log(chris.name); // chris
-  chris.sayHello(); // hello chris
-  crystal.sayBye(); // bye chris
-  ```
 
-  :dart: **private** ：只能在类的**内部调用，不可以继承**。
+  console.log(chris.name_public); // chris
+  console.log(chris.name_private); // 报错，不可以在类的外部调用
+  console.log(chris.name_protected); // 报错，不可以在类的外部调用
 
-  ```ts
-  class Person {
-    private name: string = "chris";
-    sayHello() {
-      console.log("hello " + this.name);
-    }
-  }
-  const chris = new Person();
-  class Teacher extends Person {
-    sayBye() {
-      console.log("bye " + this.name);
-    }
-  }
-  const crystal = new Teacher();
-  console.log(chris.name); // 报错，不可以在类的外部调用
-  chris.sayHello(); // hello chris
-  crystal.sayBye(); // 报错，不可以继承
-  ```
+  chris.personPublic(); // hello chris
+  chris.personPrivate(); // hello chris
+  chris.personProtected(); // hello chris
 
-  :dart: **protected** ：只能在类的**内部调用，可以继承**。
-
-  ```ts
-  class Person {
-    protected name: string = "chris";
-    sayHello() {
-      console.log("hello " + this.name);
-    }
-  }
-  const chris = new Person();
-  class Teacher extends Person {
-    sayBye() {
-      console.log("bye " + this.name);
-    }
-  }
-  const crystal = new Teacher();
-  console.log(chris.name); // 报错，不可以在类的外部调用
-  chris.sayHello(); // hello chris
-  crystal.sayBye(); // bye chris
+  crystal.teacherPublic(); // bye chris
+  crystal.teacherPrivate(); // 报错，不可以继承
+  crystal.teacherProtected(); // bye chris
   ```
 
 - ### 参数属性
@@ -442,19 +457,6 @@ let fruit1: Fruit = "peach"; // 报错，不能将类型“"peach"”分配给�
   :books: `abstract` 用于定义 **抽象类** 和其中的 **抽象方法** 。
 
   :warning: 抽象类是不允许被实例化
-
-  ```ts
-  abstract class Animal {
-    public name;
-    public constructor(name) {
-      this.name = name;
-    }
-    public abstract sayHi();
-  }
-
-  let a = new Animal("Jack"); // 报错，不允许实例化
-  ```
-
   :warning: 抽象类中的抽象方法 **不给出具体实现**，继承抽象类的 **子类** 必须 **实现抽象类中的抽象方法**
 
   ```ts
@@ -467,6 +469,8 @@ let fruit1: Fruit = "peach"; // 报错，不能将类型“"peach"”分配给�
     public abstract sayHi();
   }
 
+  let a = new Animal("Jack"); // 报错，抽象类不允许实例化
+
   class Cat extends Animal {
     // 2. 继承子类必须实现抽象中的抽象方法
     public sayHi() {
@@ -477,11 +481,11 @@ let fruit1: Fruit = "peach"; // 报错，不能将类型“"peach"”分配给�
   let cat = new Cat("Tom");
   ```
 
-## 4. 类与接口
+## 六. 类与接口
 
 - ### 类实现接口
 
-  :books: 接口除了可以用于对「对象的形状（Shape）」进行描述，还可以对类的一部分行为进行**抽象**。
+  :books: 接口除了可以用于对「**对象**的形状（Shape）」进行描述，还可以对类的一部分行为进行**抽象**。
 
   :books: **实现（implements）** 是面向对象中的一个重要概念。一般来讲，一个类只能继承自另一个类，有时候不同类之间可以有一些共有的特性，这时候就可以把特性提取成接口 **（interfaces）**，用 **implements** 关键字来实现。这个特性大大提高了面向对象的灵活性。
 
@@ -587,13 +591,13 @@ let fruit1: Fruit = "peach"; // 报错，不能将类型“"peach"”分配给�
     x: number;
   }
   type Point2d = PointX & { y: number };
-  interface Point3d {
+  interface Point3d extends PointX {
     y: number;
     z: number;
   }
   ```
 
-## 5. 泛型
+## 七. 泛型
 
 :books: 泛型：在定义函数、接口或类的时候，不预先指定具体的类型，而在使用的时候再指定类型的一种特性
 
@@ -657,8 +661,10 @@ let fruit1: Fruit = "peach"; // 报错，不能将类型“"peach"”分配给�
   }
 
   // 在使用泛型接口的时候，需要定义泛型的类型
-  let createArray: CreateArrayFunc<any>;
-  createArray = function <T>(length: number, value: T): Array<T> {
+  let createArray: CreateArrayFunc<any> = function <T>(
+    length: number,
+    value: T
+  ): Array<T> {
     let result: T[] = [];
     for (let i = 0; i < length; i++) {
       result[i] = value;
@@ -700,13 +706,13 @@ let fruit1: Fruit = "peach"; // 报错，不能将类型“"peach"”分配给�
   }
   ```
 
-## 6. 声明合并
+## 八. 声明合并
 
 :books: 如果定义了两个相同名字的函数、接口或类，那么它们会合并成一个类型
 
 - ### 函数合并
 
-  :point_right: 之前说明的 **重载** 定义多个函数类型：
+  :point_right: **重载** 定义多个函数类型：
 
   ```ts
   function reverse(x: number): number;
