@@ -494,3 +494,25 @@ function handleValue(val: All) {
 
 const name1: Chris = { type: "chris" };
 handleValue(name1);
+
+interface Animal {
+  name: string;
+}
+interface Cat {
+  name: string;
+  run(): void;
+}
+
+const animal: Animal = {
+  name: "tom",
+};
+
+const cat: Cat = {
+  name: "liu",
+  run() {
+    console.log(1);
+  },
+};
+
+// let tom = animal as Cat; // Cat、Animal 互相兼容，可以使用 as
+let tom: Animal = cat; // 报错：animal 中没有 run(),Cat 不兼容 Animal

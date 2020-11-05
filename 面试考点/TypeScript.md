@@ -12,30 +12,15 @@ https://www.zhihu.com/question/354601204 添加 never
 
   :books: 原始数据类型包括：**布尔值、数值、字符串、null、undefined** 以及 ES6 中的新类型 **Symbol**
 
-  ```ts
-  let isDone: boolean = false;
-  let id: number = 1;
-  let myName: string = "chris";
-  // null 和 undefined
-  let u: undefined = undefined;
-  let n: null = null;
-  // void 表示没有任何返回值的函数
-  function sayHello(): void {
-    console.log("hello");
-  }
-  ```
-
   :question: **void** 和 **null、undefined**区别：
 
   `undefined` 和 `null` 是所有类型的子类型。也就是说 `undefined` 类型的变量，可以赋值给 `number` 类型的变量，而 `void` 类型的变量不能赋值给 `number` 类型的变量
 
   ```ts
-  // 1. 不会报错
-  let num: number = undefined;
-  // 2. 不会报错
+  // 不报错
   let u: undefined;
   let num: number = u;
-  // 3. 报错
+  // 报错
   let u: void;
   let num: number = u;
   ```
@@ -85,7 +70,7 @@ https://www.zhihu.com/question/354601204 添加 never
 
 - ### 对象类型 - interface 接口
 
-  :books: interface 用来定义对象的类型，除了可用于对类的一部分行为进行抽象以外，也常用于对「**对象的形状（Shape）**」进行描述。
+  :books: interface 用来定义 **对象** 的类型，除了可用于对类的一部分行为进行抽象以外，也常用于对「**对象的形状（Shape）**」进行描述。
 
   - :warning: 变量的属性与必须接口一致（ **chris** 的 **形状** 必须和 **Student** 一致 ），**多 / 少** 属性都会报错。
 
@@ -230,20 +215,6 @@ https://www.zhihu.com/question/354601204 添加 never
   };
   ```
 
-  - #### 可选参数
-
-  :warning: 可选参数后面不允许再出现必需参数
-
-  ```ts
-  let sayHello: Student = (
-    name: string,
-    age: string,
-    hobby?: string
-  ): string => {
-    return `hello,I'm ${name},I'm ${age},I like ${hobby}`;
-  };
-  ```
-
   - #### 对象参数
 
   :warning: 对象参数要单独类型定义，不能在对象内类型定义。
@@ -255,25 +226,7 @@ https://www.zhihu.com/question/354601204 添加 never
   const resultAdd = add({ a: 1, b: 2 });
   ```
 
-  - #### 重载
-
-  :books: 重载允许一个函数接受不同数量或类型的参数时，作出不同的处理。
-
-  :point_right: 多次定义 `reverse`，前两次是函数定义，最后一次是函数实现，TypeScript 会 **优先从最前面的函数定义开始匹配** ，所以多个函数定义如果有包含关系，需要优先 **把精确的定义写在前面** 。
-
-  ```ts
-  function reverse(x: number): number;
-  function reverse(x: string): string;
-  function reverse(x: number | string): number | string {
-    if (typeof x === "number") {
-      return Number(x.toString().split("").reverse().join(""));
-    } else if (typeof x === "string") {
-      return x.split("").reverse().join("");
-    }
-  }
-  ```
-
-## 3. 类型断言
+## 三. 类型断言
 
 :books: **类型断言**：用来手动指定一个值的类型
 
@@ -283,7 +236,7 @@ https://www.zhihu.com/question/354601204 添加 never
 值 as 类型；
 ```
 
-:warning: 不推荐使用 `<类型>值` 的用法，在 React 的 tsx 语法中表示一个 `ReactNode`，在 ts 中可以能表达一个泛型，有歧义。
+:x: 不推荐 `<类型>值` 的用法，在 React 中表示一个 `ReactNode`，在 ts 中可以能表达一个泛型，有歧义。
 
 - ### 使用场景
 
@@ -310,28 +263,7 @@ https://www.zhihu.com/question/354601204 添加 never
    }
    ```
 
-2. #### 将一个父类断言为更加具体的子类
-
-   :books: ts 当类之间有继承关系时，可以使用类型断言：
-
-   ```ts
-   interface Cat extends Animal {
-     run(): void;
-   }
-   interface Fish extends Animal {
-     swim(): void;
-   }
-
-   function getSkill(animal: Animal) {
-     // type of animal.swim 会报错，swim 不属于 Cat,Fish 共有的方法
-     if (typeof (animal as Cat).run === "function") {
-       return true;
-     }
-     return false;
-   }
-   ```
-
-3. #### 将任何一个类型断言为 any
+2. #### 将任何一个类型断言为 any
 
    :books: 我们可以将某对象临时断言为 any 类型，因为在 any 类型的变量上，访问任何属性都是允许的
 
@@ -340,78 +272,18 @@ https://www.zhihu.com/question/354601204 添加 never
    (window as any).foo = 1;
    ```
 
-   :warning: 将一个变量断言为 any 有可能掩盖了真正的类型错误，所以如果不是非常确定，就不要使用 as any。
-
-4. #### 将 any 断言为一个具体的类型
-
-   :books: 在日常的开发中，我们不可避免的需要处理 any 类型的变量，我们可以通过类型断言及时的把 any 断言为精确的类型，使我们的代码拥有更高的可维护性
-
-   ```ts
-   // getCacheData 本来是返回值是 any
-   function getCacheData(key: string): any {
-     return (window as any).cache[key];
-   }
-
-   interface Cat {
-     name: string;
-     run(): void;
-   }
-   // 调用完 getCacheData 之后，将它断言为 Cat 类型，后续对 tom 的访问时就有了代码补全
-   const tom = getCacheData("tom") as Cat;
-   tom.run();
-   ```
-
-- ### 类型断言的限制
-
-  :books: 要使得 A 能够被断言为 B，只需要 A 兼容 B 或 B 兼容 A
-
-  ```ts
-  interface Animal {
-    name: string;
-  }
-  interface Cat {
-    name: string;
-    run(): void;
-  }
-
-  let tom: Cat = {
-    name: "Tom",
-    run: () => {
-      console.log("run");
-    },
-  };
-  let animal: Animal = tom;
-  ```
-
-  :point_right: `Cat` 包含了 `Animal` 中的所有属性，等价于 `Cat extends Animal`
-
-  ```ts
-  interface Animal {
-    name: string;
-  }
-  interface Cat extends Animal {
-    run(): void;
-  }
-  ```
-
-  :point_right: 就像面向对象编程中我们可以将子类的实例赋值给类型为父类的变量, `Cat` 类型的 tom 可以赋值给 `Animal` 类型的 animal，即 `Animal` 兼容 `Cat`
-
-  :dart: 上述的四种类型断言的使用场景都符合互相兼容
-
 - ### 类型断言比较
 
   - #### 类型断言 vs 类型转换
+
+  类型断言只会影响 TypeScript 编译时的类型，**类型断言语句在编译结果中会被删除**,所以它不会真的影响到变量的类型，若要进行类型转换，需要直接调用类型转换的方法：
 
   ```ts
   function toBoolean(something: any): boolean {
     return something as boolean;
   }
   toBoolean(1); // 1
-  ```
 
-  :warning: 类型断言只会影响 TypeScript 编译时的类型，**类型断言语句在编译结果中会被删除**,所以它不会真的影响到变量的类型，若要进行类型转换，需要直接调用类型转换的方法：
-
-  ```ts
   function toBoolean(something: any): boolean {
     return Boolean(something);
   }
@@ -423,7 +295,7 @@ https://www.zhihu.com/question/354601204 添加 never
 
   类型断言 ( A as B ) 条件： `A` 兼容 `B`，或 `B` 兼容 `A`
 
-  类型声明 ( A = B ) 条件： `A` 兼容(包含) `B`
+  类型声明 ( A = B ) 条件： `B` 包含 `A`
 
   ```ts
   interface Animal {
@@ -439,12 +311,10 @@ https://www.zhihu.com/question/354601204 添加 never
   };
 
   let tom = animal as Cat; // Cat、Animal 互相兼容，可以使用 as
-  let tom: Cat = animal; // 报错：animal 中没有 run(),Cat 不兼容 Animal
+  let tom: Cat = animal; // 报错：animal 中没有 run(), Animal 不包含 Cat
   ```
 
-## 二、进阶
-
-## 1. 类型别名 / 字符串字面量类型
+## 四. 类型别名 / 字符串字面量类型
 
 :books: 类型别名用来给一个类型起个新名字，常用于联合类型
 
@@ -461,257 +331,9 @@ let fruit1: Fruit = "apple";
 let fruit1: Fruit = "peach"; // 报错，不能将类型“"peach"”分配给类型“Fruit”
 ```
 
-:warning: 类型别名与字符串字面量类型都是使用 `type` 进行定义
+## 五. 类
 
-## 2. 枚举
-
-:books:枚举成员会被赋值为从 0 开始递增的数字，同时也会对枚举值到枚举名进行反向映射
-
-```ts
-enum Days {
-  Sun,
-  Mon,
-  Tue,
-  Wed,
-  Thu,
-  Fri,
-  Sat,
-}
-
-console.log(Days["Sun"] === 0); // true
-console.log(Days["Mon"] === 1); // true
-
-console.log(Days[0] === "Sun"); // true
-console.log(Days[1] === "Mon"); // true
-```
-
-- ### 手动赋值
-
-  :books: 未手动赋值的枚举项会接着上一个枚举项递增 **1** ,即使手动赋值的枚举项是小数或负数。
-
-  ```ts
-  enum Days {
-    Sun = 7,
-    Mon = 1,
-    Tue,
-    Wed,
-    Thu = 4.5,
-    Fri,
-    Sat,
-  }
-
-  console.log(Days["Sun"] === 7); // true
-  console.log(Days["Mon"] === 1); // true
-  console.log(Days["Tue"] === 2); // true
-  console.log(Days["Fri"]); // 5.5
-  console.log(Days["Sat"]); // 6.5
-  ```
-
-- ### 常数项和计算所得项
-
-  :books: 枚举项有两种类型：**常数项** 和 **计算所得项**。
-
-  :warning: **如果紧接在计算所得项后面的是未手动赋值的项，那么它就会因为无法获得初始值而报错**
-
-  ```ts
-  enum Color1 {
-    Red,
-    Green,
-    Blue = "blue".length,
-  }
-
-  console.log(Color1); // { '0': 'Red', '1': 'Green', '4': 'Blue', Red: 0, Green: 1, Blue: 4 }
-
-  enum Color2 {
-    Red = "red".length,
-    Green, // 报错，枚举成员必须具有初始化表达式。
-    Blue,
-  }
-  ```
-
-- ### 常数枚举
-
-  :books: 常数枚举是使用 `const enum` 定义的枚举类型：
-
-  :warning: 常数枚举与普通枚举的区别是，它会在**编译阶段被删除**，并且**不能包含计算成员**
-
-  ```ts
-  const enum Directions {
-    Up,
-    Down,
-    Left,
-    Right,
-  }
-
-  let directions = [
-    Directions.Up,
-    Directions.Down,
-    Directions.Left,
-    Directions.Right,
-  ];
-  ```
-
-  :point_right: 编译结果:
-
-  ```ts
-  var directions = [0 /* Up */, 1 /* Down */, 2 /* Left */, 3 /* Right */];
-  ```
-
-- ### 外部枚举
-
-  :books: 外部枚举是使用 `declare enum` 定义的枚举类型：
-
-  :warning: `declare` 定义的类型只会用于编译时的检查，编译结果中会被删除
-
-  ```ts
-  declare enum Directions {
-    Up,
-    Down,
-    Left,
-    Right,
-  }
-
-  let directions = [
-    Directions.Up,
-    Directions.Down,
-    Directions.Left,
-    Directions.Right,
-  ];
-  ```
-
-  :point_right: 编译结果:
-
-  ```ts
-  var directions = [
-    Directions.Up,
-    Directions.Down,
-    Directions.Left,
-    Directions.Right,
-  ];
-  ```
-
-## 3. 类
-
-### ES6 中类的用法
-
-- #### 属性和方法
-
-  :books: 使用 `class` 定义类，使用 `constructor` 定义构造函数。通过 `new` 生成新实例的时候，会自动调用构造函数。
-
-  ```ts
-  class Animal {
-    public name;
-    constructor(name) {
-      this.name = name;
-    }
-    sayHi() {
-      return `My name is ${this.name}`;
-    }
-  }
-
-  let a = new Animal("Jack");
-  console.log(a.sayHi()); // My name is Jack
-  ```
-
-- #### 类的继承
-
-  :books: 使用 `extends` 关键字实现继承，子类中使用 `super` 关键字来调用父类的构造函数和方法。
-
-  ```ts
-  class Cat extends Animal {
-    constructor(name) {
-      super(name); // 调用父类的 constructor(name)
-      console.log(this.name);
-    }
-    sayHi() {
-      return "Meow, " + super.sayHi(); // 调用父类的 sayHi()
-    }
-  }
-
-  let c = new Cat("Tom"); // Tom
-  console.log(c.sayHi()); // Meow, My name is Tom
-  ```
-
-- #### 存取器
-
-  :books: 使用 `getter` 和 `setter` 可以改变属性的赋值和读取行为
-
-  ```ts
-  class Animal {
-    constructor(name) {
-      this.name = name;
-    }
-    get name() {
-      return "Jack";
-    }
-    set name(value) {
-      console.log("setter: " + value);
-    }
-  }
-
-  let a = new Animal("Kitty"); // setter: Kitty
-  a.name = "Tom"; // setter: Tom
-  console.log(a.name); // Jack
-  ```
-
-- #### 静态方法
-
-  :books: 使用 `static` 修饰符修饰的方法称为静态方法，它们不需要实例化，而是直接通过类来调用:
-
-  ```ts
-  class Animal {
-    static isAnimal(a) {
-      return a instanceof Animal;
-    }
-    static say() {
-      console.log("hi");
-    }
-  }
-
-  let a = new Animal();
-  console.log(Animal.isAnimal(a)); // true
-  a.isAnimal(a); // 报错,isAnimal 是静态方法
-  Animal.say(); // hi
-  ```
-
-### ES7 中类的用法
-
-- #### 实例属性
-
-  :books:ES6 中实例的属性只能通过构造函数中的 this.xxx 来定义，ES7 提案中可以直接在类里面定义：
-
-  ```ts
-  class Animal {
-    name = "Jack";
-
-    constructor() {
-      // ...
-    }
-  }
-
-  let a = new Animal();
-  console.log(a.name); // Jack
-  ```
-
-- #### 静态属性
-
-  :books: ES7 提案中，可以使用 `static` 定义一个静态属性：
-
-  ```ts
-  class Animal {
-    static num = 42;
-
-    constructor() {
-      // ...
-    }
-  }
-
-  console.log(Animal.num); // 42
-  ```
-
-### TypeScript 中类的用法
-
-- #### 访问修饰符( `public` / `private` / `protected` )
+- ### 访问修饰符( `public` / `private` / `protected` )
 
   :dart: **public** ：当类中的参数定义时，默认为 public 访问方式，public 可以在类的**内部、外部**调用，且**可以继承**。
 
@@ -778,7 +400,7 @@ console.log(Days[1] === "Mon"); // true
   crystal.sayBye(); // bye chris
   ```
 
-- #### 参数属性
+- ### 参数属性
 
   :books: `修饰符` 和 `readonly` 还可以使用在构造函数参数中，等同于类中定义该属性同时给该属性赋值，使代码更简洁:
 
@@ -799,7 +421,7 @@ console.log(Days[1] === "Mon"); // true
   }
   ```
 
-- #### readonly
+- ### readonly
 
   :books: 只读属性关键字，只允许出现在 **属性声明** 或 **索引签名** 或 **构造函数**
 
@@ -815,7 +437,7 @@ console.log(Days[1] === "Mon"); // true
   a.name = "Tom"; // 报错，name 只读
   ```
 
-- #### 抽象类
+- ### 抽象类
 
   :books: `abstract` 用于定义 **抽象类** 和其中的 **抽象方法** 。
 
