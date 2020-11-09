@@ -607,6 +607,7 @@ bar();
 ## 九. 如何实现深拷贝？
 
 :books: https://juejin.im/post/6844903929705136141 + video
+https://juejin.im/post/6844904195758391310
 
 ### 要点
 
@@ -729,6 +730,7 @@ _.uniq(array);
 ## 十三. 手写一个 Promise
 
 :books: https://juejin.im/post/6844903577828196365
+https://juejin.im/post/6850037281206566919
 
 ## 十四、遍历
 
