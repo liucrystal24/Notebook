@@ -1,6 +1,6 @@
 # JS 常考点
 
-## 1. ES 6 语法知道哪些，分别怎么用?
+## 一. ES 6 语法知道哪些，分别怎么用?
 
 - ### let
 
@@ -292,7 +292,7 @@
   console.log(b); // 1
   ```
 
-## 2. Promise、Promise.all、Promise.race 分别怎么用?
+## 二. Promise、Promise.all、Promise.race 分别怎么用?
 
 - ### Promise :
 
@@ -324,7 +324,7 @@
 
   :point_right: **promise1** , **promise2** 中第一个成功或失败，就认为结果成功或失败。
 
-## 3. 手写函数节流和函数防抖
+## 三. 手写函数节流和函数防抖
 
 - ### 函数节流 （控制频率）
 
@@ -400,7 +400,7 @@
   debounced(); // 不打印（ 需要在 1s后执行才打印 ）
   ```
 
-## 4. 手写 AJAX
+## 四. 手写 AJAX
 
 ```js
 const request = new XMLHttpRequest();
@@ -414,7 +414,7 @@ request.onreadystatechange = function () {
 request.send();
 ```
 
-## 5. this
+## 五. this
 
 - fn()
   this => **window / global**
@@ -431,7 +431,7 @@ request.send();
 - fn = () => {}
   this => **外面的 this**
 
-## 6. 闭包/立即执行函数是什么?
+## 六. 闭包/立即执行函数是什么?
 
 - ### 闭包
 
@@ -500,7 +500,7 @@ request.send();
 
   作用：创建一个独立的作用域，避免「变量污染」
 
-## 7. 什么是 JSONP，什么是 CORS，什么是跨域？
+## 七. 什么是 JSONP，什么是 CORS，什么是跨域？
 
 - ### JSONP ( JSON with padding )
 
@@ -554,7 +554,7 @@ request.send();
 
   跨源资源共享 (CORS) 是一种机制，该机制使用附加的 HTTP 头来告诉浏览器，准许运行在一个源上的 Web 应用访问位于另一不同源选定的资源。
 
-## 8. async/await 怎么用，如何捕获异常？
+## 八. async/await 怎么用，如何捕获异常？
 
 > 一个异步函数由 `async` 关键字定义，`async` 和 `await` 关键字可以使得对有等待时间的（异步），以 Promise 为基础的函数的定义更加简洁优雅，减少特意配置对于 promise 的链式调用。
 
@@ -604,7 +604,7 @@ async function bar() {
 bar();
 ```
 
-## 9. 如何实现深拷贝？
+## 九. 如何实现深拷贝？
 
 :books: https://juejin.im/post/6844903929705136141 + video
 
@@ -615,7 +615,7 @@ bar();
 - 检查环（ 循环引用 ） 对象引用自己，可能死循环
 - 需要忽略原型，不考虑 `__proto__` ,浪费内存
 
-## 10. 如何用正则实现 trim()？
+## 十. 如何用正则实现 trim()？
 
 :books: https://www.bilibili.com/video/BV1ef4y1U7V4?from=search&seid=3176001865319661104
 
@@ -625,7 +625,7 @@ function trim(string) {
 }
 ```
 
-## 11. 不用 class 如何实现继承？用 class 又如何实现？
+## 十一. 不用 class 如何实现继承？用 class 又如何实现？
 
 ### 不用 class
 
@@ -687,7 +687,7 @@ let tom = new Cat("tom", "yellow");
 tom.shout(); // miao
 ```
 
-## 12. 如何实现数组去重？
+## 十二. 如何实现数组去重？
 
 假设有数组：
 
@@ -726,6 +726,28 @@ let arr1 = [...new Set(array)];
 _.uniq(array);
 ```
 
-## 13. 手写一个 Promise
+## 十三. 手写一个 Promise
 
 :books: https://juejin.im/post/6844903577828196365
+
+## 十四、遍历
+
+### 数组
+
+```js
+for (let i = 0; i < arr.length; i++) {
+  console.log(arr[i]);
+}
+
+for (let i in arr) {
+  console.log(arr[i]);
+}
+
+for (let v of arr) {
+  console.log(v);
+}
+
+arr.forEach((v, i) => {});
+```
+
+### 对象

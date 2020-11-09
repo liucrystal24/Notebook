@@ -228,16 +228,44 @@
 //   console.log(10);
 // }, 1000);
 
+// setTimeout(() => {
+//   new Promise((resolve, reject) => {
+//     console.log(1)
+//     resolve()
+//   })
+//     .then(() => {
+//       console.log(2)
+//     })
+//     .then(() => {
+//       console.log(6)
+//     })
+// }, 1000);
+let arr1 = [];
+let element = 0;
 
-setTimeout(() => {
-  new Promise((resolve, reject) => {
-    console.log(1)
-    resolve()
-  })
-    .then(() => {
-      console.log(2)
-    })
-    .then(() => {
-      console.log(6)
-    })
-}, 1000);
+for (let i = 0; i < 10000000; i++) {
+  arr1.push(i);
+}
+
+function getAverageTime(cb) {
+  var _start = new Date();
+  for (var k = 0; k < 20; k++) {
+    cb(); //  遍历函数
+  }
+  return (new Date() - _start) / 20 + "ms";
+}
+var time = getAverageTime(function () {
+  // for (let i = 0; i < arr1.length; i++) {
+  //   element += arr1[i];
+  // }
+
+  // for (let i = 0, length = arr1.length; i < length; i++) {
+  //   element += arr1[i];
+  // }
+
+  arr1.forEach((v, i) => {
+    element += v / 10;
+  });
+});
+console.log(element);
+console.log(time);
