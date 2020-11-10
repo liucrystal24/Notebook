@@ -240,32 +240,50 @@
 //       console.log(6)
 //     })
 // }, 1000);
-let arr1 = [];
-let element = 0;
 
+let arr1 = [];
+let obj1 = {};
 for (let i = 0; i < 10000000; i++) {
   arr1.push(i);
 }
-
-function getAverageTime(cb) {
-  var _start = new Date();
-  for (var k = 0; k < 20; k++) {
-    cb(); //  遍历函数
-  }
-  return (new Date() - _start) / 20 + "ms";
+for (let i = 0; i < 10000000; i++) {
+  obj1[i] = i;
 }
-var time = getAverageTime(function () {
-  // for (let i = 0; i < arr1.length; i++) {
-  //   element += arr1[i];
-  // }
 
-  // for (let i = 0, length = arr1.length; i < length; i++) {
-  //   element += arr1[i];
-  // }
+let avg20 = function (cb) {
+  console.time();
+  for (let i = 0; i < 1; i++) {
+    cb();
+  }
+  console.timeEnd();
+};
 
-  arr1.forEach((v, i) => {
-    element += v / 10;
-  });
+// avg20(function () {
+//   for (let i in arr1) {
+//     // console.log(arr1[i]);
+//     let item = arr1[i];
+//   }
+// });
+
+avg20(function () {
+  for (let i in obj1) {
+    let item = obj1[i];
+  }
 });
-console.log(element);
-console.log(time);
+
+// 6768.882ms
+// for (let i in obj) {
+//   console.log(i, obj[i]);
+// }
+
+// Object.keys(obj).forEach((i) => {
+//   console.log(i, obj[i]);
+// });
+
+// Object.values(obj).forEach((v) => {
+//   console.log(v);
+// });
+
+// Object.getOwnPropertyNames(obj).forEach((i) => {
+//   console.log(i, obj[i]);
+// });

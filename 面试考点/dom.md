@@ -1,6 +1,6 @@
 # DOM
 
-## 1.事件委托
+## 一.事件委托
 
 定义：事件委托就是利用事件冒泡机制，指定一个事件处理程序，来管理某一类型的所有事件
 
@@ -73,7 +73,7 @@ function delegate(element, selector, eventType, fn) {
 }
 ```
 
-## 2.用 mouse 事件写一个可拖拽的 div
+## 二.用 mouse 事件写一个可拖拽的 div
 
 ```js
 // 控制是否可以移动

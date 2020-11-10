@@ -1,4 +1,4 @@
-# JS 常考点
+# JS
 
 ## 一. ES 6 语法知道哪些，分别怎么用?
 
@@ -748,6 +748,28 @@ for (let v of arr) {
 }
 
 arr.forEach((v, i) => {});
+
+arr.map((v, i) => {});
 ```
 
+耗时对比结论 ： **for 循环** < **for (..of..)** < **forEach** < **map** < **for (.. in ..)**
+
 ### 对象
+
+```js
+for (let i in obj) {
+  console.log(i, obj[i]);
+}
+
+Object.keys(obj).forEach((i) => {
+  console.log(i, obj[i]);
+});
+
+Object.values(obj).forEach((v) => {
+  console.log(v);
+});
+
+Object.getOwnPropertyNames(obj).forEach((i) => {
+  console.log(i, obj[i]);
+});
+```

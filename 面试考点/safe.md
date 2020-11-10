@@ -1,6 +1,6 @@
 # 安全
 
-## 1、XSS
+## 一、XSS
 
 ### 什么是 XSS
 
@@ -24,7 +24,7 @@ Cross-Site Scripting - 跨站脚本攻击
 
 通过过滤，将可疑的符号 `<` 符号变成 `&lt;` （HTML 实体）
 
-## 2、什么是 CSRF
+## 二、什么是 CSRF
 
 Cross Site Request Forgery - 跨站请求伪造
 
