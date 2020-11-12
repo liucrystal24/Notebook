@@ -30,7 +30,7 @@
 - 本项目是借鉴 macOS UI 动态交互动画的模拟桌面，目前主要实现的模块包括 **Docker 栏动态展示和画板** 等，主要功能包括 **绘画、擦除、调色盘、撤销、前进、清空、保存** ，并且**封装了弹窗的拖拽组件**。
 - 技术栈：**React Hooks + TypeScript + ES 6/7 + Sass + flex**
 - 部署：**Github actions**
-- 这个项目作为学习实践 **React Hook + TypeScript** 开发， 每项功能的 **实现原理和分析** 与 **React Hooks 总结** 都已上传至博客：[MacOS UI - 画板功能部分总结](https://github.com/liucrystal24/macos-desk#%E6%80%BB%E7%BB%93) 、[React Hooks 总结](https://github.com/liucrystal24/Notebook/issues/19)
+- 这个项目作为学习实践 **React Hook + TypeScript** 开发， 每项功能的 **实现原理和分析** 与 **React Hooks 总结** 都已上传至博客：[MacOS UI - 画板功能部分总结](https://github.com/liucrystal24/macos-desk/blob/master/README.md#%E6%80%BB%E7%BB%93) 、[React Hooks 总结](https://github.com/liucrystal24/Notebook/issues/19)
 
 ---
 
@@ -55,7 +55,6 @@
 
 - 通过按需加载、CDN 加载、减少请求等优化手段极大提升了公司平台项目的性能。
 - 将许多类似模块、组件进行进一步封装，极大提升了团队开发的便捷性。
-- 推动公司 Git 提交及流程规范化，促使团队进行必要的 code review。
 - 定期组织内部分享，包括 Git 的使用、ES6 新特性、TypeScript 等话题。
 
 #### 南京摩尼伊度网络科技有限公司 （ 2016.7-2017.3 ）
@@ -66,23 +65,25 @@
 
 **主要贡献**
 
-- 根据设计图还原多页页面样式。
-- 参与商品展示模块的业务模块。
+- 根据设计图还原多个功能页面。
+- 参与商品展示模块的开发业务。
 
 ## 项目经历
 
 ### 江苏省流量巡测在线平台
 
-- 项目 demo 版地址：http://47.98.47.248:8083
-- 项目介绍
+平台实现水文局处理日常测流事务，进行数据分析处理，并将测流信息在地图展示。主要功能包括：测流实时数据监控、测流任务发布审核、断面维护、测流数据图表分析 等。
+
 - 技术栈：**Vue + Vuex + VueRouter + axios + ElementUI + Echarts + BaiduMap**
 - 部署：**Egg + Nginx**
-- 项目负责
-- 项目总结
+- **总负责平台前、后端项目搭建**，数据接口格式规定和编写，协调组员进行各个模块功能的开发。
+- **二次封装** Element UI，实现表格列表配置组件，促使列字段能自定义配置，极大提高咨询师工作效率，并 **提供团队及各平台沿用** 。
+- 使用懒加载优化拥有数万条测流数据的整体分析页，极大 **提升性能和用户体验**。
 
-### 某边境地区水文插值统计平台
+### 某边境地区灾害性天气信息整编平台
 
-- 项目介绍
-- 技术栈：**HTML + JQuery + arcGis for js + Echarts**
-- 项目负责
-- 项目总结
+平台将海洋站、气象站等地的数据整合处理，通过图表进行查询、统计，并在 ArcGIS 地图服务中通过站点选择查看多要素信息。主要功能包括：站点数据统计 / 查询、卫星云图 / 雷达图查询轮播、台风路径信息绘制、地区要素插值图绘制 等。
+
+- 技术栈：**HTML5 + JQuery + Bootstrap + ArcGIS for JS + Echarts**
+- 负责平台前端项目搭建和数据绘制，调用地图服务绘制台风路径、插值图等。
+- 使用 echarts 、ArcGIS for JS 实现整体 **数据分析可视化**。
