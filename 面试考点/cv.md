@@ -12,7 +12,7 @@
 
 ## 技能
 
-- 熟练掌握 **HTML5 & CSS3** ，具有 **快速** 还原设计稿的能力。
+- 熟练掌握 **`HTML5 & CSS3`** ，具有 **快速** 还原设计稿的能力。
 - 熟练使用 **原生 JavaScript**，掌握重要概念如： **原型**， **闭包**， **作用域链** 等，熟悉 **ES6** 新特性。
 - 熟练使用 **Vue 、Vuex、VueRouter** 开发项目。
 - 熟悉 **Git**，可使用进行版本控制。
@@ -28,7 +28,7 @@
 - 项目演示地址：https://liucrystal24.github.io/macos-desk
 - Github 源码：https://github.com/liucrystal24/macos-desk
 - 本项目是借鉴 macOS UI 动态交互动画的模拟桌面，目前主要实现的模块包括 **Docker 栏动态展示和画板** 等，主要功能包括 **绘画、擦除、调色盘、撤销、前进、清空、保存** ，并且**封装了弹窗的拖拽组件**。
-- 技术栈：**React Hooks + TypeScript + ES 6/7 + Sass + flex**
+- 技术栈：**React Hooks + TypeScript + ES 6/7 + Scss + flex**
 - 部署：**Github actions**
 - 这个项目作为学习实践 **React Hook + TypeScript** 开发， 每项功能的 **实现原理和分析** 与 **React Hooks 总结** 都已上传至博客：[MacOS UI - 画板功能部分总结](https://github.com/liucrystal24/macos-desk/blob/master/README.md#%E6%80%BB%E7%BB%93) 、[React Hooks 总结](https://github.com/liucrystal24/Notebook/issues/19)
 
@@ -39,7 +39,7 @@
 - 微信小程序搜索 " **Chris Wallpaper** " 或者扫描二维码
 - Github 源码：https://github.com/liucrystal24/mp-pic
 - 本项目通过 **瀑布流** 的模式展示分类壁纸，目前主要实现的模块包括 **推荐、热门、分类、专辑** 等，主要功能包括 **图片评论列表、手势滑动切换图片、下载图片** ，并且**封装了手势滑动组件**。
-- 技术栈：**@vue/cli + uni-app + ES 6 + Sass + flex**
+- 技术栈：**@vue/cli + uni-app + ES 6 + Scss + flex**
 - 这个项目作为学习实践 **@vue/cli + uni-app** 开发， 主要功能的 **实现原理和分析** 已总结至博客：[Chris Wallpaper 功能总结](https://github.com/liucrystal24/mp-pic)
 
 ## 工作经历
