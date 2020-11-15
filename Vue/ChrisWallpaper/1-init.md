@@ -16,7 +16,7 @@ npm run dev:mp-weixin
 
 目录： .\chriswallpaper\dist\dev\mp-weixin
 
-![tree](./tree.png)
+![tree](./img/tree.png)
 
 ### 安装 sass
 
@@ -35,7 +35,7 @@ npm install sass-loader node-sass
 - **onHide()**：应用隐藏
 - **onLoad()**：页面初始化
 - **mounted()**：组件挂载完毕
-- **onReachBottom()**：页面触及底部
+- **onReachBottom()**：全局页面触及底部
 
 ### 2、小程序单位换算
 
