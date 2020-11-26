@@ -1,263 +1,30 @@
-<!--
- * @Author: ChrisLiu
- * @Date: 2020-09-28 22:22:04
- * @LastEditors: ChrisLiu
- * @LastEditTime: 2020-10-05 00:53:23
- * @Description: file content
--->
 <!DOCTYPE html>
-<html lang="en">
+<html>
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>Document</title>
-    <style>
-      /* body {
-      overflow: hidden;
-    } */
-
-      .parent {
-        width: 100px;
-        height: 200px;
-        background: red;
-        margin-top: 50px;
-        border: 1px solid blue;
-      }
-
-      .child {
-        width: 50px;
-        height: 50px;
-        margin-top: 100px;
-        border: 1px solid blue;
-      }
-
-      #a {
-        height: 100px;
-        width: 100px;
-        border: 1px solid red;
-        float: left;
-      }
-
-      #b {
-        height: 100px;
-        width: 100px;
-        border: 1px solid red;
-        float: right;
-      }
-
-      #c {
-        height: 50px;
-        border: 1px solid green;
-        clear: both;
-      }
-      #moveDiv {
-        width: 100px;
-        height: 100px;
-        background-color: red;
-        position: absolute;
-      }
-
-      .lu-btn-3d {
-        width: 100px;
-        height: 40px;
-        background: linear-gradient(to bottom, #accced 100%, red 100%);
-        border: none;
-        border-radius: 5px;
-        position: relative;
-        border-bottom: 5px solid #9eb8d7;
-        color: #fbfbfb;
-        font-weight: 600;
-        font-family: "Open Sans", sans-serif;
-        text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.4);
-        font-size: 15px;
-        text-align: center;
-        box-shadow: 0px 3px 0px rgba(0, 0, 0, 0.2);
-        cursor: pointer;
-        margin-bottom: 10px;
-      }
-
-      .button-3d {
-        width: 115px;
-        color: #fff;
-        border: 0;
-        font-size: 15px;
-        outline: none;
-        padding: 5px 10px;
-        background: #ace;
-        border-radius: 4px;
-        text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.3);
-        box-shadow: 0 5px 0 #9cb8d8;
-        /* box-shadow: 0px 3px 0px rgba(0, 0, 0, 0.2); */
-      }
-      .button-3d:active {
-        /* box-shadow: 0px 2px 0px rgba(0, 0, 0, 0.2); */
-        background: #2d5add;
-        box-shadow: 0 5px 0 #6c8bfa;
-        /* top: 1px; */
-      }
-      button:focus {
-        outline: 0;
-      }
-      .lu-btn-3d:active {
-        box-shadow: 0px 2px 0px rgba(0, 0, 0, 0.2);
-        top: 1px;
-      }
-      .lu-btn-3d-selected {
-        background: linear-gradient(to bottom, #6c8bfa 100%, #2d5add 100%);
-        border-bottom: 5px solid #2d5add;
-        display: block;
-        width: 100px;
-        line-height: 40px;
-      }
-    </style>
+    <meta charset="utf-8" />
+    <title>JS Bin</title>
   </head>
-
   <body>
-    <div id="a">a</div>
-    <div id="b">b</div>
-    <div id="c">c</div>
-
-    <div id="3dbutton">
-      <button class="lu-btn-3d"></button>
-      <a class="lu-btn-3d lu-btn-3d-selected"></a>
-      <button class="button-3d">123</button>
+    <div id="d1">
+      <div>
+        <div>1-1</div>
+        <div>1-2</div>
+        <div>1-3</div>
+      </div>
+      <div>
+        <div>2-1</div>
+        <div>2-2</div>
+        <div>2-3</div>
+      </div>
+      <div>
+        <div>3-1</div>
+        <div>3-2</div>
+        <div>3-3</div>
+      </div>
     </div>
-
-    <div class="parent">
-      <div class="child">我是儿子</div>
-    </div>
-
-    <mark>123</mark>
-
-    <input id="myCar" list="cars" />
-    <datalist id="cars">
-      <option value="BMW"></option>
-      <option value="Ford"></option>
-      <option value="Volvo"></option>
-    </datalist>
-
-    <meter value="60" min="0" max="100" low="20" high="80"></meter>
-
-    <progress id="file" max="100" value="20"></progress>
-
-    <form oninput="result.value=parseInt(a.value)+parseInt(b.value)">
-      <input type="range" name="b" value="50" /> +
-      <input type="number" name="a" value="10" /> =
-      <output name="result"></output>
-    </form>
-
-    <video
-      controls="controls"
-      width="400"
-      autoplay="autoplay"
-      height="300"
-      loop="loop"
-    >
-      <source src="./test.mp4" type="video/mp4" />
-      Sorry, your browser doesn't support embedded videos.
-    </video>
-
-    <audio controls src="./test.mp3">
-      Your browser does not support the
-      <code>audio</code> element.
-    </audio>
-
-    <button onclick="handleClick()">节流</button>
-    <button onclick="debounced()">防抖</button>
-
-    <ul id="list">
-      <li><span>item 1</span></li>
-      <li><span>item 2</span></li>
-      <li>item 3</li>
-      <li><span>item 4</span></li>
-    </ul>
-
-    <div id="moveDiv"></div>
   </body>
   <script>
-    let isMove = false;
-    let position = [];
-    document.getElementById("moveDiv").addEventListener("mousedown", (e) => {
-      console.log("down");
-      isMove = true;
-      position = [
-        e.clientX - e.target.offsetLeft,
-        e.clientY - e.target.offsetTop,
-      ];
-      console.log(position);
-    });
-
-    document.addEventListener("mouseup", () => {
-      console.log("up");
-      isMove = false;
-    });
-
-    document.addEventListener("mousemove", (e) => {
-      if (isMove) {
-        let el = document.getElementById("moveDiv");
-
-        let x = e.clientX;
-        let y = e.clientY;
-
-        el.style.left = x - position[0] + "px";
-        el.style.top = y - position[0] + "px";
-
-        // position = [x, y];
-      }
-      return;
-    });
-    function fn1() {
-      console.log(this);
-    }
-
-    function delegate(element, selector, eventType, fn) {
-      element.addEventListener(eventType, (e) => {
-        let el = e.target;
-        while (!el.matches(selector)) {
-          if (el === selector) {
-            el = null;
-            break;
-          }
-          el = el.parentNode;
-        }
-        el && fn.call(el, e);
-      });
-    }
-    window.onload = function () {
-      // delegate(document.getElementById("list"), "li", "click", fn1);
-    };
-
-    let jieliu = function (fn, delay) {
-      let canuse = true;
-      return function () {
-        if (!canuse) return;
-        canuse = false;
-        setTimeout(() => {
-          fn.apply(this, arguments);
-          canuse = true;
-        }, delay);
-      };
-    };
-
-    function debounce(fn, delay) {
-      let timerequest = null;
-      return function () {
-        if (timerequest) {
-          clearTimeout(timerequest);
-        }
-        let callnow = !timerequest;
-        timerequest = setTimeout(() => {
-          timerequest = null;
-        }, delay);
-        if (callnow) {
-          fn.apply(this, arguments);
-        }
-      };
-    }
-
-    const debounced = debounce(() => console.log("hi"), 1000);
-
-    let handleClick = jieliu(() => console.log(1), 2000);
+    const tree = document.getElementById("d1");
+    console.log(tree.children[2].children[1].innerHTML)
   </script>
 </html>

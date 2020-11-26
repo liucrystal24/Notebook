@@ -609,7 +609,11 @@ bar();
 :books: https://juejin.im/post/6844903929705136141 + video
 https://juejin.im/post/6844904195758391310
 
-### 要点
+### JSON.parse()和JSON.stringify
+
+缺点： 值为undefined、symbol 的属性在转换后丢失
+
+### 手写要点
 
 - 递归
 - 判断类型
