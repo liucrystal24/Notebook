@@ -198,13 +198,18 @@
 //   });
 //   console.log(10);
 // }, 1000);
-setTimeout(function () {
-  new Promise(function (resolve, reject) {
-    console.log(1);
-    resolve();
-  }).then(function () {
-    console.log(2);
-  }).then(function () {
-    console.log(6);
-  });
-}, 1000);
+
+// setTimeout(function () {
+//   new Promise(function (resolve, reject) {
+//     console.log(1);
+//     resolve();
+//   }).then(function () {
+//     console.log(2);
+//   }).then(function () {
+//     console.log(6);
+//   });
+// }, 1000);
+
+let aaa = 448 + 112 + 28 + 410;
+
+console.log(aaa);

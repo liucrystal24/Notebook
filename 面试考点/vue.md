@@ -463,7 +463,7 @@ export default {
 </script>
 ```
 
-**mapMutations** 辅助函数将组件的 `methods` 映射为 `store.dispatch` 调用：
+**mapActions** 辅助函数将组件的 `methods` 映射为 `store.dispatch` 调用：
 
 ```vue
 <template>
@@ -598,6 +598,7 @@ const Foo = {
     // 在渲染该组件的对应路由被 confirm 前调用
     // 不！能！获取组件实例 `this`
     // 因为当守卫执行前，组件实例还没被创建
+    // 使用 next(vm=>{})调用this
   },
   beforeRouteUpdate(to, from, next) {
     // 在当前路由改变，但是该组件被复用时调用

@@ -241,22 +241,22 @@
 //     })
 // }, 1000);
 
-let arr1 = [];
-let obj1 = {};
-for (let i = 0; i < 10000000; i++) {
-  arr1.push(i);
-}
-for (let i = 0; i < 10000000; i++) {
-  obj1[i] = i;
-}
+// let arr1 = [];
+// let obj1 = {};
+// for (let i = 0; i < 10000000; i++) {
+//   arr1.push(i);
+// }
+// for (let i = 0; i < 10000000; i++) {
+//   obj1[i] = i;
+// }
 
-let avg20 = function (cb) {
-  console.time();
-  for (let i = 0; i < 1; i++) {
-    cb();
-  }
-  console.timeEnd();
-};
+// let avg20 = function (cb) {
+//   console.time();
+//   for (let i = 0; i < 1; i++) {
+//     cb();
+//   }
+//   console.timeEnd();
+// };
 
 // avg20(function () {
 //   for (let i in arr1) {
@@ -265,11 +265,11 @@ let avg20 = function (cb) {
 //   }
 // });
 
-avg20(function () {
-  for (let i in obj1) {
-    let item = obj1[i];
-  }
-});
+// avg20(function () {
+//   for (let i in obj1) {
+//     let item = obj1[i];
+//   }
+// });
 
 // 6768.882ms
 // for (let i in obj) {
@@ -287,3 +287,36 @@ avg20(function () {
 // Object.getOwnPropertyNames(obj).forEach((i) => {
 //   console.log(i, obj[i]);
 // });
+
+// let str = 'A Famous Saying: Much Ado About Nothing (2012/8).'
+// let arr = []
+// let arrSpace = {}
+// for(let i =0;i<str.length;i++){
+//   if((str[i].toLowerCase().charCodeAt() >= 97 && str[i].toLowerCase().charCodeAt() <=122)){
+//       arr.push(str[i])
+//   }else{
+//     arrSpace[i] = str[i];
+//   }
+// }
+// arr.sort(function(a,b){
+//   return a.toLowerCase().charCodeAt() - b.toLowerCase().charCodeAt()
+// })
+// for(let i in arrSpace){
+//   arr.splice(i,0,arrSpace[i])
+// }
+// console.log(arr.join(''))
+let line = 5;
+let arr2d = [[1]];
+for (let i = 1; i < line; i++) {
+  arr2d.push([]);
+  for (let j = 0; j < (i + 1) * 2 - 1; j++) {
+    let a = arr2d[i - 1][j] == undefined ? 0 : arr2d[i - 1][j];
+    let b = arr2d[i - 1][j - 1] == undefined ? 0 : arr2d[i - 1][j - 1];
+    let c = arr2d[i - 1][j - 2] == undefined ? 0 : arr2d[i - 1][j - 2];
+    arr2d[i][j] = a + b + c;
+  }
+}
+let result = arr2d[line - 1].findIndex((v, i) => {
+  return v % 2 == 0;
+});
+console.log(result);
