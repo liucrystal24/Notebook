@@ -305,18 +305,50 @@
 //   arr.splice(i,0,arrSpace[i])
 // }
 // console.log(arr.join(''))
-let line = 5;
-let arr2d = [[1]];
-for (let i = 1; i < line; i++) {
-  arr2d.push([]);
-  for (let j = 0; j < (i + 1) * 2 - 1; j++) {
-    let a = arr2d[i - 1][j] == undefined ? 0 : arr2d[i - 1][j];
-    let b = arr2d[i - 1][j - 1] == undefined ? 0 : arr2d[i - 1][j - 1];
-    let c = arr2d[i - 1][j - 2] == undefined ? 0 : arr2d[i - 1][j - 2];
-    arr2d[i][j] = a + b + c;
+// let line = 5;
+// let arr2d = [[1]];
+// for (let i = 1; i < line; i++) {
+//   arr2d.push([]);
+//   for (let j = 0; j < (i + 1) * 2 - 1; j++) {
+//     let a = arr2d[i - 1][j] == undefined ? 0 : arr2d[i - 1][j];
+//     let b = arr2d[i - 1][j - 1] == undefined ? 0 : arr2d[i - 1][j - 1];
+//     let c = arr2d[i - 1][j - 2] == undefined ? 0 : arr2d[i - 1][j - 2];
+//     arr2d[i][j] = a + b + c;
+//   }
+// }
+// let result = arr2d[line - 1].findIndex((v, i) => {
+//   return v % 2 == 0;
+// });
+// console.log(result);
+
+const array1 = [3, 2, 3, 1];
+const reducer = (accumulator, currentValue) => accumulator + currentValue;
+
+// 1 + 2 + 3 + 4
+console.log(array1.reduce(reducer));
+// expected output: 10
+
+// 5 + 1 + 2 + 3 + 4
+// console.log(array1.reduce(reducer, 5));
+// // expected output: 15
+
+let arr = [1, 4, 5, 7, 9, 32, 23, 3];
+
+function quickSort(arr) {
+  if (arr.length <= 1) {
+    return arr;
   }
+  let baseValue = arr.shift();
+  let lessArr = [];
+  let moreArr = [];
+  for (let v of arr) {
+    if (v <= baseValue) {
+      lessArr.push(v);
+    } else {
+      moreArr.push(v);
+    }
+  }
+  return quickSort(lessArr).concat(baseValue, quickSort(moreArr));
 }
-let result = arr2d[line - 1].findIndex((v, i) => {
-  return v % 2 == 0;
-});
-console.log(result);
+
+console.log(quickSort(arr));
